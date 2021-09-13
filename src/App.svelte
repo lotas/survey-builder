@@ -44,6 +44,7 @@ import { genId } from './SurveyBuilder/utils';
 </script>
 
 <main>
+  <button>Normal button</button>
   <div id="survey-builder"></div>
 </main>
 

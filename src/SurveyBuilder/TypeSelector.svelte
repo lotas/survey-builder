@@ -7,9 +7,8 @@ import SurveyBuilder from './SurveyBuilder.svelte';
 
   const dropdownOptions = [
     [SurveyBuilderTypes.TextInput, 'User input'],
-    [SurveyBuilderTypes.TextValue, 'Text value'],
-    [SurveyBuilderTypes.SingleSelect, 'Single value'],
-    [SurveyBuilderTypes.MultipleSelect, 'Multiple values'],
+    [SurveyBuilderTypes.SingleSelect, 'Single option'],
+    [SurveyBuilderTypes.MultipleSelect, 'Multiple options'],
     [SurveyBuilderTypes.StarsRating, 'Rating'],
   ]
 
