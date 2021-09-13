@@ -1,6 +1,4 @@
 <script lang="ts">
-import SurveyBuilder from './SurveyBuilder.svelte';
-
   import { SurveyBuilderTypes } from './types'
 
   export let questionType: string
@@ -12,11 +10,13 @@ import SurveyBuilder from './SurveyBuilder.svelte';
     [SurveyBuilderTypes.StarsRating, 'Rating'],
   ]
 
-  export let onChange: (any) => void
+  export let onChange: (arg0: any) => void
+
+  const handleInput = (evt: any) => onChange(evt.target.value)
 </script>
 
 <main>
-  <select bind:value={questionType} on:input={evt => onChange(evt.target.value)}>
+  <select bind:value={questionType} on:input={handleInput}>
     {#each dropdownOptions as [value, label]}
       <option value={value}>{label}</option>
     {/each}

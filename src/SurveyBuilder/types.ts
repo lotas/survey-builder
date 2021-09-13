@@ -11,7 +11,8 @@ export interface SurveyBuilderQuestion {
   title: string;
   type: SurveyBuilderTypes;
   required?: boolean;
-  options?: SurveyBuilderQuestion[] | number;
+  answers?: SurveyBuilderQuestion[];
+  options?: string | number;
 }
 
 export interface SurveyBuilderSnapshot {

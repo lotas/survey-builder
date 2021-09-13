@@ -3,7 +3,7 @@ import { genId } from './SurveyBuilder/utils';
 
 
   setTimeout(() => {
-    const builder = (window as any).SurveyBuilder({
+    (window as any).SurveyBuilder({
       target: document.getElementById('survey-builder'),
       props: {
         snapshot: {
@@ -17,10 +17,17 @@ import { genId } from './SurveyBuilder/utils';
             },
             {
               id: genId('q'),
+              title: 'User name',
+              type: 'rating',
+              required: true,
+              options: 5
+            },
+            {
+              id: genId('q'),
               title: 'Account type',
               type: 'single',
               required: true,
-              options: [
+              answers: [
                 {
                   id: genId('a'),
                   title: 'Private account',
@@ -35,7 +42,7 @@ import { genId } from './SurveyBuilder/utils';
             },
           ]
         },
-        onExport: (data) => {
+        onExport: (data: any) => {
           console.log('Congrats: export', data)
         }
       }
