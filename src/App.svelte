@@ -1,11 +1,10 @@
 <script lang="ts">
-import type { SurveyBuilderSnapshot } from './SurveyBuilder/types';
+  import type { SurveyBuilderSnapshot } from './SurveyBuilder/types'
 
-import { genId } from './SurveyBuilder/utils';
-
+  import { genId } from './SurveyBuilder/utils'
 
   setTimeout(() => {
-    (window as any).SurveyBuilder({
+    ;(window as any).SurveyBuilderInit({
       target: document.getElementById('survey-builder'),
       props: {
         haveTitle: false,
@@ -16,14 +15,14 @@ import { genId } from './SurveyBuilder/utils';
               id: genId('q'),
               title: 'User name',
               type: 'input',
-              required: true
+              required: true,
             },
             {
               id: genId('q'),
               title: 'User name',
               type: 'rating',
               required: true,
-              options: 5
+              options: 5,
             },
             {
               id: genId('q'),
@@ -40,24 +39,24 @@ import { genId } from './SurveyBuilder/utils';
                   id: genId('a'),
                   title: 'Business account',
                   type: 'text',
-                }
-              ]
+                },
+              ],
             },
-          ]
+          ],
         },
         onExport: (data: SurveyBuilderSnapshot) => {
           console.log('Congrats: export', data)
         },
         onChange: (data: SurveyBuilderSnapshot) => {
           console.log('Model changed', data)
-        }
-      }
+        },
+      },
     })
   }, 5)
 </script>
 
 <main>
-  <div id="survey-builder"></div>
+  <div id="survey-builder" />
 </main>
 
 <style>
@@ -65,4 +64,3 @@ import { genId } from './SurveyBuilder/utils';
     border: 1px solid #ccc;
   }
 </style>
-

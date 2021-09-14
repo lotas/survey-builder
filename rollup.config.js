@@ -30,14 +30,32 @@ function serve() {
 	};
 }
 
+const output = production ? [{
+	format: 'cjs',
+	file: 'dist/survey-builder.js'
+}, {
+	format: 'iife',
+	name: 'SurveyBuilder',
+	file: 'dist/survey-builder.min.js',
+	plugins: [terser()]
+}] : {
+	sourcemap: true,
+	format: 'iife',
+	name: 'app',
+	file: 'public/build/bundle.js'
+}
+
+const cssOutput = production ? {
+	output: 'survey-builder.css'
+} : {
+	output: 'bundle.css'
+}
+
+const input = production ? 'src/lib.ts' : 'src/main.ts'
+
 export default {
-	input: 'src/main.ts',
-	output: {
-		sourcemap: true,
-		format: 'iife',
-		name: 'app',
-		file: 'public/build/bundle.js'
-	},
+	input,
+	output,
 	plugins: [
 		svelte({
 			preprocess: sveltePreprocess({ sourceMap: !production }),
@@ -48,7 +66,7 @@ export default {
 		}),
 		// we'll extract any component CSS out into
 		// a separate file - better for performance
-		css({ output: 'bundle.css' }),
+		css(cssOutput),
 
 		// If you have external dependencies installed from
 		// npm, you'll most likely need these plugins. In
@@ -72,10 +90,6 @@ export default {
 		// Watch the `public` directory and refresh the
 		// browser on changes when not in production
 		!production && livereload('public'),
-
-		// If we're building for production (npm run build
-		// instead of npm run dev), minify
-		production && terser()
 	],
 	watch: {
 		clearScreen: false

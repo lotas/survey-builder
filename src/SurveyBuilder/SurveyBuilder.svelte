@@ -21,7 +21,8 @@
     snapshot.questions.push({
       id: genId(),
       title: 'New question',
-      type: SurveyBuilderTypes.TextValue,
+      required: true,
+      type: SurveyBuilderTypes.TextInput,
     })
     // to make it reactive, reassing value
     snapshot = snapshot

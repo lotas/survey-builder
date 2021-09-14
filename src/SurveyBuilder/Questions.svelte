@@ -49,6 +49,14 @@
         <span class="number">{idx + 1}</span>
         <input class="title" type="text" bind:value={item.title} />
         {#if !parentType}
+        <label>
+          <input type="checkbox" bind:checked={item.required} />
+          Required
+        </label>
+        {:else}
+          <div></div>
+        {/if}
+        {#if !parentType}
         <TypeSelector
           questionType={item.type}
           onChange={(value) => onQuestionTypeChange(idx, value)}
@@ -96,7 +104,7 @@
 
     align-items: center;
     display: grid;
-    grid-template-columns: 20px auto 200px 140px;
+    grid-template-columns: 20px auto 100px 200px 140px;
     column-gap: 5px;
   }
   .questions li .number {
