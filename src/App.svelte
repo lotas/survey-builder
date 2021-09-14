@@ -1,4 +1,6 @@
 <script lang="ts">
+import type { SurveyBuilderSnapshot } from './SurveyBuilder/types';
+
 import { genId } from './SurveyBuilder/utils';
 
 
@@ -6,6 +8,7 @@ import { genId } from './SurveyBuilder/utils';
     (window as any).SurveyBuilder({
       target: document.getElementById('survey-builder'),
       props: {
+        haveTitle: false,
         snapshot: {
           title: 'Sample survey',
           questions: [
@@ -42,8 +45,11 @@ import { genId } from './SurveyBuilder/utils';
             },
           ]
         },
-        onExport: (data: any) => {
+        onExport: (data: SurveyBuilderSnapshot) => {
           console.log('Congrats: export', data)
+        },
+        onChange: (data: SurveyBuilderSnapshot) => {
+          console.log('Model changed', data)
         }
       }
     })
@@ -51,7 +57,6 @@ import { genId } from './SurveyBuilder/utils';
 </script>
 
 <main>
-  <button>Normal button</button>
   <div id="survey-builder"></div>
 </main>
 

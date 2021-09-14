@@ -19,3 +19,13 @@ export interface SurveyBuilderSnapshot {
   title?: string;
   questions?: SurveyBuilderQuestion[];
 }
+
+export interface SurveyBuilderOpts {
+  target: HTMLElement | Element;
+  props: {
+    haveTitle?: boolean;
+    snapshot?: SurveyBuilderSnapshot;
+    onChange?: (snapshot: SurveyBuilderSnapshot) => void;
+    onExport?: (snapshot: SurveyBuilderSnapshot) => void;
+  };
+}

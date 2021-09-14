@@ -6,11 +6,15 @@
   import Questions from './Questions.svelte';
   import { genId } from './utils';
 
+  export let haveTitle = true;
   export let snapshot: SurveyBuilderSnapshot = {};
-  export let onExport: (snapshot: SurveyBuilderSnapshot) => void;
+  export let onChange: (snapshot: SurveyBuilderSnapshot) => void = () => {};
+  export let onExport: (snapshot: SurveyBuilderSnapshot) => void = () => {};
 
   $: {
-    onExport(snapshot)
+    if (typeof onChange === 'function') {
+      onChange(snapshot)
+    }
   }
 
   function addRow() {
@@ -34,10 +38,12 @@
 
 <main>
   <h1>Survey builder &quot;{snapshot.title || 'no name'}&quot;</h1>
+  {#if haveTitle}
   <label for="title">
     Title:
     <input id="title" type="text" bind:value={snapshot.title} />
   </label>
+  {/if}
   <button on:click={handleExport}>
     Export
   </button>
