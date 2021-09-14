@@ -54,6 +54,7 @@
     + Add row
   </button>
 
+  <h4>Data model:</h4>
   <pre class="debug">
     {JSON.stringify(snapshot, null, 2)}
   </pre>
@@ -66,6 +67,8 @@
     --survey-builder-button-border-hover: rgb(52, 196, 240);
     --survey-builder-button-background: rgb(184, 227, 247);
     --survey-builder-button-background-hover: rgb(154, 220, 250);
+    --survey-builder-secondary-button-border: rgb(34, 172, 92);
+    --survey-builder-secondary-button-background: rgb(184, 247, 195);
   }
 
   main {

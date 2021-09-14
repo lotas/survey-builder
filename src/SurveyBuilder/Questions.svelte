@@ -115,4 +115,9 @@
   .questions li .answers {
     grid-column: 2/5;
   }
+
+  .questions :global(.questions button) {
+    border: 1px solid var(--survey-builder-secondary-button-border);
+    background-color: var(--survey-builder-secondary-button-background);
+  }
 </style>
