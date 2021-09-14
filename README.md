@@ -29,6 +29,11 @@ export interface SurveyBuilderOpts {
 To use it:
 
 ```html
+<head>
+  <link rel='stylesheet' href='/dist/survey-builder.css'>
+  <script src='/dist/survey-builder.min.js'></script>
+</head>
+
 <div id="element-root"></div>
 
 <script>
