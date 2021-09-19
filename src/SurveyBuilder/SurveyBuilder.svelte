@@ -1,4 +1,3 @@
-<svelte:options immutable={false} />
 
 <script lang="ts">
   import type { SurveyBuilderSnapshot } from './types'
@@ -43,10 +42,12 @@
 <main>
   <h1>Survey builder &quot;{snapshot.title || 'no name'}&quot;</h1>
   {#if haveTitle}
-    <label for="title">
-      Title:
-      <input id="title" type="text" bind:value={snapshot.title} />
-    </label>
+    <div class="survey-title">
+      <label for="survey-title">
+        Title:
+        <input id="survey-title" type="text" bind:value={snapshot.title} />
+      </label>
+    </div>
   {/if}
   <div class="controls">
     <button on:click|preventDefault={addRow}> + Add row </button>
@@ -117,9 +118,15 @@
     display: flex;
     justify-content: space-between;
   }
+  .survey-title {
+    margin: 20px 0;
+  }
 
   .debug {
     width: 100%;
     text-align: left;
+  }
+  label {
+    font-size: 15px;
   }
 </style>
