@@ -792,155 +792,27 @@ const genId = (prefix = 'q') => `${prefix}-${randomBase32()}`;
 
 function get_each_context(ctx, list, i) {
 	const child_ctx = ctx.slice();
-	child_ctx[17] = list[i];
-	child_ctx[18] = list;
-	child_ctx[19] = i;
+	child_ctx[24] = list[i];
+	child_ctx[25] = list;
+	child_ctx[26] = i;
 	return child_ctx;
 }
 
-// (50:8) {:else}
-function create_else_block_1(ctx) {
-	let div;
-
-	return {
-		c() {
-			div = element("div");
-		},
-		m(target, anchor) {
-			insert(target, div, anchor);
-		},
-		p: noop,
-		d(detaching) {
-			if (detaching) detach(div);
-		}
-	};
-}
-
-// (45:8) {#if !parentType}
-function create_if_block_6(ctx) {
-	let label;
-	let input;
-	let t;
-	let mounted;
-	let dispose;
-
-	function input_change_handler() {
-		/*input_change_handler*/ ctx[8].call(input, /*each_value*/ ctx[18], /*idx*/ ctx[19]);
-	}
-
-	return {
-		c() {
-			label = element("label");
-			input = element("input");
-			t = text("\n          Required");
-			attr(input, "type", "checkbox");
-		},
-		m(target, anchor) {
-			insert(target, label, anchor);
-			append(label, input);
-			input.checked = /*item*/ ctx[17].required;
-			append(label, t);
-
-			if (!mounted) {
-				dispose = listen(input, "change", input_change_handler);
-				mounted = true;
-			}
-		},
-		p(new_ctx, dirty) {
-			ctx = new_ctx;
-
-			if (dirty & /*questions*/ 1) {
-				input.checked = /*item*/ ctx[17].required;
-			}
-		},
-		d(detaching) {
-			if (detaching) detach(label);
-			mounted = false;
-			dispose();
-		}
-	};
-}
-
-// (58:8) {:else}
-function create_else_block(ctx) {
-	let div;
-
-	return {
-		c() {
-			div = element("div");
-		},
-		m(target, anchor) {
-			insert(target, div, anchor);
-		},
-		p: noop,
-		i: noop,
-		o: noop,
-		d(detaching) {
-			if (detaching) detach(div);
-		}
-	};
-}
-
-// (53:8) {#if !parentType}
-function create_if_block_5(ctx) {
-	let typeselector;
-	let current;
-
-	function func(...args) {
-		return /*func*/ ctx[9](/*idx*/ ctx[19], ...args);
-	}
-
-	typeselector = new TypeSelector({
-			props: {
-				questionType: /*item*/ ctx[17].type,
-				onChange: func
-			}
-		});
-
-	return {
-		c() {
-			create_component(typeselector.$$.fragment);
-		},
-		m(target, anchor) {
-			mount_component(typeselector, target, anchor);
-			current = true;
-		},
-		p(new_ctx, dirty) {
-			ctx = new_ctx;
-			const typeselector_changes = {};
-			if (dirty & /*questions*/ 1) typeselector_changes.questionType = /*item*/ ctx[17].type;
-			if (dirty & /*questions*/ 1) typeselector_changes.onChange = func;
-			typeselector.$set(typeselector_changes);
-		},
-		i(local) {
-			if (current) return;
-			transition_in(typeselector.$$.fragment, local);
-			current = true;
-		},
-		o(local) {
-			transition_out(typeselector.$$.fragment, local);
-			current = false;
-		},
-		d(detaching) {
-			destroy_component(typeselector, detaching);
-		}
-	};
-}
-
-// (62:10) {#if idx < questions.length - 1}
-function create_if_block_4(ctx) {
+// (62:8) {#if idx < questions.length - 1}
+function create_if_block_9(ctx) {
 	let button;
 	let mounted;
 	let dispose;
 
 	function click_handler() {
-		return /*click_handler*/ ctx[10](/*idx*/ ctx[19]);
+		return /*click_handler*/ ctx[12](/*idx*/ ctx[26]);
 	}
 
 	return {
 		c() {
 			button = element("button");
 			button.textContent = "↓";
+			attr(button, "class", "svelte-1d6g9ie");
 		},
 		m(target, anchor) {
 			insert(target, button, anchor);
@@ -962,19 +834,20 @@ function create_if_block_4(ctx) {
 }
 
 // (65:10) {#if idx > 0}
-function create_if_block_3(ctx) {
+function create_if_block_8(ctx) {
 	let button;
 	let mounted;
 	let dispose;
 
 	function click_handler_1() {
-		return /*click_handler_1*/ ctx[11](/*idx*/ ctx[19]);
+		return /*click_handler_1*/ ctx[13](/*idx*/ ctx[26]);
 	}
 
 	return {
 		c() {
 			button = element("button");
 			button.textContent = "↑";
+			attr(button, "class", "svelte-1d6g9ie");
 		},
 		m(target, anchor) {
 			insert(target, button, anchor);
@@ -995,108 +868,228 @@ function create_if_block_3(ctx) {
 	};
 }
 
-// (69:8) {#if !parentType}
-function create_if_block$1(ctx) {
-	let div;
-	let t;
-	let current;
-	let if_block0 = /*item*/ ctx[17].type === SurveyBuilderTypes.StarsRating && create_if_block_2(ctx);
-	let if_block1 = /*item*/ ctx[17].type !== SurveyBuilderTypes.StarsRating && create_if_block_1(ctx);
+// (68:10) {:else}
+function create_else_block(ctx) {
+	let button0;
+	let t1;
+	let button1;
+	let mounted;
+	let dispose;
+
+	function click_handler_3() {
+		return /*click_handler_3*/ ctx[15](/*idx*/ ctx[26]);
+	}
 
 	return {
 		c() {
-			div = element("div");
-			if (if_block0) if_block0.c();
-			t = space();
-			if (if_block1) if_block1.c();
-			attr(div, "class", "answers svelte-10w8t0o");
+			button0 = element("button");
+			button0.textContent = "× Yes, delete";
+			t1 = space();
+			button1 = element("button");
+			button1.textContent = "Cancel";
+			attr(button0, "class", "danger svelte-1d6g9ie");
+			attr(button1, "class", "danger svelte-1d6g9ie");
 		},
 		m(target, anchor) {
-			insert(target, div, anchor);
-			if (if_block0) if_block0.m(div, null);
-			append(div, t);
-			if (if_block1) if_block1.m(div, null);
-			current = true;
-		},
-		p(ctx, dirty) {
-			if (/*item*/ ctx[17].type === SurveyBuilderTypes.StarsRating) {
-				if (if_block0) {
-					if_block0.p(ctx, dirty);
-				} else {
-					if_block0 = create_if_block_2(ctx);
-					if_block0.c();
-					if_block0.m(div, t);
-				}
-			} else if (if_block0) {
-				if_block0.d(1);
-				if_block0 = null;
-			}
+			insert(target, button0, anchor);
+			insert(target, t1, anchor);
+			insert(target, button1, anchor);
 
-			if (/*item*/ ctx[17].type !== SurveyBuilderTypes.StarsRating) {
-				if (if_block1) {
-					if_block1.p(ctx, dirty);
+			if (!mounted) {
+				dispose = [
+					listen(button0, "click", prevent_default(click_handler_3)),
+					listen(button1, "click", prevent_default(/*click_handler_4*/ ctx[16]))
+				];
 
-					if (dirty & /*questions*/ 1) {
-						transition_in(if_block1, 1);
-					}
-				} else {
-					if_block1 = create_if_block_1(ctx);
-					if_block1.c();
-					transition_in(if_block1, 1);
-					if_block1.m(div, null);
-				}
-			} else if (if_block1) {
-				group_outros();
-
-				transition_out(if_block1, 1, 1, () => {
-					if_block1 = null;
-				});
-
-				check_outros();
+				mounted = true;
 			}
 		},
-		i(local) {
-			if (current) return;
-			transition_in(if_block1);
-			current = true;
-		},
-		o(local) {
-			transition_out(if_block1);
-			current = false;
+		p(new_ctx, dirty) {
+			ctx = new_ctx;
 		},
 		d(detaching) {
-			if (detaching) detach(div);
-			if (if_block0) if_block0.d();
-			if (if_block1) if_block1.d();
+			if (detaching) detach(button0);
+			if (detaching) detach(t1);
+			if (detaching) detach(button1);
+			mounted = false;
+			run_all(dispose);
 		}
 	};
 }
 
-// (71:10) {#if item.type === SurveyBuilderTypes.StarsRating}
-function create_if_block_2(ctx) {
+// (66:10) {#if deleteConfirmation !== idx}
+function create_if_block_7(ctx) {
+	let button;
+	let mounted;
+	let dispose;
+
+	function click_handler_2() {
+		return /*click_handler_2*/ ctx[14](/*idx*/ ctx[26]);
+	}
+
+	return {
+		c() {
+			button = element("button");
+			button.textContent = "× Delete";
+			attr(button, "class", "danger svelte-1d6g9ie");
+		},
+		m(target, anchor) {
+			insert(target, button, anchor);
+
+			if (!mounted) {
+				dispose = listen(button, "click", prevent_default(click_handler_2));
+				mounted = true;
+			}
+		},
+		p(new_ctx, dirty) {
+			ctx = new_ctx;
+		},
+		d(detaching) {
+			if (detaching) detach(button);
+			mounted = false;
+			dispose();
+		}
+	};
+}
+
+// (73:8) {#if !parentType}
+function create_if_block_6(ctx) {
+	let div;
+	let typeselector;
+	let current;
+
+	function func(...args) {
+		return /*func*/ ctx[17](/*idx*/ ctx[26], ...args);
+	}
+
+	typeselector = new TypeSelector({
+			props: {
+				questionType: /*item*/ ctx[24].type,
+				onChange: func
+			}
+		});
+
+	return {
+		c() {
+			div = element("div");
+			create_component(typeselector.$$.fragment);
+			attr(div, "class", "type-selector svelte-1d6g9ie");
+		},
+		m(target, anchor) {
+			insert(target, div, anchor);
+			mount_component(typeselector, div, null);
+			current = true;
+		},
+		p(new_ctx, dirty) {
+			ctx = new_ctx;
+			const typeselector_changes = {};
+			if (dirty & /*questions*/ 1) typeselector_changes.questionType = /*item*/ ctx[24].type;
+			if (dirty & /*questions*/ 1) typeselector_changes.onChange = func;
+			typeselector.$set(typeselector_changes);
+		},
+		i(local) {
+			if (current) return;
+			transition_in(typeselector.$$.fragment, local);
+			current = true;
+		},
+		o(local) {
+			transition_out(typeselector.$$.fragment, local);
+			current = false;
+		},
+		d(detaching) {
+			if (detaching) detach(div);
+			destroy_component(typeselector);
+		}
+	};
+}
+
+// (81:8) {#if !parentType}
+function create_if_block_4(ctx) {
+	let t0;
 	let label;
-	let t;
+	let input;
+	let t1;
+	let mounted;
+	let dispose;
+	let if_block = /*customInputNames*/ ctx[2] && create_if_block_5(ctx);
+
+	function input_change_handler() {
+		/*input_change_handler*/ ctx[19].call(input, /*each_value*/ ctx[25], /*idx*/ ctx[26]);
+	}
+
+	return {
+		c() {
+			if (if_block) if_block.c();
+			t0 = space();
+			label = element("label");
+			input = element("input");
+			t1 = text("\n          Required");
+			attr(input, "type", "checkbox");
+			attr(label, "class", "svelte-1d6g9ie");
+		},
+		m(target, anchor) {
+			if (if_block) if_block.m(target, anchor);
+			insert(target, t0, anchor);
+			insert(target, label, anchor);
+			append(label, input);
+			input.checked = /*item*/ ctx[24].required;
+			append(label, t1);
+
+			if (!mounted) {
+				dispose = listen(input, "change", input_change_handler);
+				mounted = true;
+			}
+		},
+		p(new_ctx, dirty) {
+			ctx = new_ctx;
+
+			if (/*customInputNames*/ ctx[2]) {
+				if (if_block) {
+					if_block.p(ctx, dirty);
+				} else {
+					if_block = create_if_block_5(ctx);
+					if_block.c();
+					if_block.m(t0.parentNode, t0);
+				}
+			} else if (if_block) {
+				if_block.d(1);
+				if_block = null;
+			}
+
+			if (dirty & /*questions*/ 1) {
+				input.checked = /*item*/ ctx[24].required;
+			}
+		},
+		d(detaching) {
+			if (if_block) if_block.d(detaching);
+			if (detaching) detach(t0);
+			if (detaching) detach(label);
+			mounted = false;
+			dispose();
+		}
+	};
+}
+
+// (82:8) {#if customInputNames}
+function create_if_block_5(ctx) {
 	let input;
 	let mounted;
 	let dispose;
 
 	function input_input_handler_1() {
-		/*input_input_handler_1*/ ctx[13].call(input, /*each_value*/ ctx[18], /*idx*/ ctx[19]);
+		/*input_input_handler_1*/ ctx[18].call(input, /*each_value*/ ctx[25], /*idx*/ ctx[26]);
 	}
 
 	return {
 		c() {
-			label = element("label");
-			t = text("Max stars\n              ");
 			input = element("input");
-			attr(input, "type", "number");
-			attr(input, "placeholder", "5");
+			attr(input, "class", "name svelte-1d6g9ie");
+			attr(input, "type", "text");
+			attr(input, "placeholder", "input-name");
 		},
 		m(target, anchor) {
-			insert(target, label, anchor);
-			append(label, t);
-			append(label, input);
-			set_input_value(input, /*item*/ ctx[17].options);
+			insert(target, input, anchor);
+			set_input_value(input, /*item*/ ctx[24].name);
 
 			if (!mounted) {
 				dispose = listen(input, "input", input_input_handler_1);
@@ -1106,8 +1099,55 @@ function create_if_block_2(ctx) {
 		p(new_ctx, dirty) {
 			ctx = new_ctx;
 
-			if (dirty & /*questions*/ 1 && to_number(input.value) !== /*item*/ ctx[17].options) {
-				set_input_value(input, /*item*/ ctx[17].options);
+			if (dirty & /*questions*/ 1 && input.value !== /*item*/ ctx[24].name) {
+				set_input_value(input, /*item*/ ctx[24].name);
+			}
+		},
+		d(detaching) {
+			if (detaching) detach(input);
+			mounted = false;
+			dispose();
+		}
+	};
+}
+
+// (90:8) {#if item.type === SurveyBuilderTypes.StarsRating}
+function create_if_block_3(ctx) {
+	let label;
+	let t;
+	let input;
+	let mounted;
+	let dispose;
+
+	function input_input_handler_2() {
+		/*input_input_handler_2*/ ctx[20].call(input, /*each_value*/ ctx[25], /*idx*/ ctx[26]);
+	}
+
+	return {
+		c() {
+			label = element("label");
+			t = text("Max rating\n            ");
+			input = element("input");
+			attr(input, "type", "number");
+			attr(input, "placeholder", "5");
+			attr(label, "class", "svelte-1d6g9ie");
+		},
+		m(target, anchor) {
+			insert(target, label, anchor);
+			append(label, t);
+			append(label, input);
+			set_input_value(input, /*item*/ ctx[24].options);
+
+			if (!mounted) {
+				dispose = listen(input, "input", input_input_handler_2);
+				mounted = true;
+			}
+		},
+		p(new_ctx, dirty) {
+			ctx = new_ctx;
+
+			if (dirty & /*questions*/ 1 && to_number(input.value) !== /*item*/ ctx[24].options) {
+				set_input_value(input, /*item*/ ctx[24].options);
 			}
 		},
 		d(detaching) {
@@ -1118,8 +1158,65 @@ function create_if_block_2(ctx) {
 	};
 }
 
-// (77:10) {#if item.type !== SurveyBuilderTypes.StarsRating}
-function create_if_block_1(ctx) {
+// (97:8) {#if !parentType}
+function create_if_block_1$1(ctx) {
+	let div;
+	let current;
+	let if_block = /*item*/ ctx[24].type !== SurveyBuilderTypes.StarsRating && /*item*/ ctx[24].type !== SurveyBuilderTypes.TextInput && create_if_block_2(ctx);
+
+	return {
+		c() {
+			div = element("div");
+			if (if_block) if_block.c();
+			attr(div, "class", "answers svelte-1d6g9ie");
+		},
+		m(target, anchor) {
+			insert(target, div, anchor);
+			if (if_block) if_block.m(div, null);
+			current = true;
+		},
+		p(ctx, dirty) {
+			if (/*item*/ ctx[24].type !== SurveyBuilderTypes.StarsRating && /*item*/ ctx[24].type !== SurveyBuilderTypes.TextInput) {
+				if (if_block) {
+					if_block.p(ctx, dirty);
+
+					if (dirty & /*questions*/ 1) {
+						transition_in(if_block, 1);
+					}
+				} else {
+					if_block = create_if_block_2(ctx);
+					if_block.c();
+					transition_in(if_block, 1);
+					if_block.m(div, null);
+				}
+			} else if (if_block) {
+				group_outros();
+
+				transition_out(if_block, 1, 1, () => {
+					if_block = null;
+				});
+
+				check_outros();
+			}
+		},
+		i(local) {
+			if (current) return;
+			transition_in(if_block);
+			current = true;
+		},
+		o(local) {
+			transition_out(if_block);
+			current = false;
+		},
+		d(detaching) {
+			if (detaching) detach(div);
+			if (if_block) if_block.d();
+		}
+	};
+}
+
+// (99:10) {#if item.type !== SurveyBuilderTypes.StarsRating && item.type !== SurveyBuilderTypes.TextInput}
+function create_if_block_2(ctx) {
 	let questions_1;
 	let updating_questions;
 	let updating_parentType;
@@ -1130,29 +1227,29 @@ function create_if_block_1(ctx) {
 	let dispose;
 
 	function questions_1_questions_binding(value) {
-		/*questions_1_questions_binding*/ ctx[14](value, /*item*/ ctx[17]);
+		/*questions_1_questions_binding*/ ctx[21](value, /*item*/ ctx[24]);
 	}
 
 	function questions_1_parentType_binding(value) {
-		/*questions_1_parentType_binding*/ ctx[15](value, /*item*/ ctx[17]);
+		/*questions_1_parentType_binding*/ ctx[22](value, /*item*/ ctx[24]);
 	}
 
 	let questions_1_props = {};
 
-	if (/*item*/ ctx[17].answers !== void 0) {
-		questions_1_props.questions = /*item*/ ctx[17].answers;
+	if (/*item*/ ctx[24].answers !== void 0) {
+		questions_1_props.questions = /*item*/ ctx[24].answers;
 	}
 
-	if (/*item*/ ctx[17].type !== void 0) {
-		questions_1_props.parentType = /*item*/ ctx[17].type;
+	if (/*item*/ ctx[24].type !== void 0) {
+		questions_1_props.parentType = /*item*/ ctx[24].type;
 	}
 
 	questions_1 = new Questions({ props: questions_1_props });
 	binding_callbacks.push(() => bind(questions_1, 'questions', questions_1_questions_binding));
 	binding_callbacks.push(() => bind(questions_1, 'parentType', questions_1_parentType_binding));
 
-	function click_handler_3() {
-		return /*click_handler_3*/ ctx[16](/*idx*/ ctx[19]);
+	function click_handler_5() {
+		return /*click_handler_5*/ ctx[23](/*idx*/ ctx[26]);
 	}
 
 	return {
@@ -1161,6 +1258,7 @@ function create_if_block_1(ctx) {
 			t0 = space();
 			button = element("button");
 			button.textContent = "+ Answer";
+			attr(button, "class", "add-answer svelte-1d6g9ie");
 		},
 		m(target, anchor) {
 			mount_component(questions_1, target, anchor);
@@ -1169,7 +1267,7 @@ function create_if_block_1(ctx) {
 			current = true;
 
 			if (!mounted) {
-				dispose = listen(button, "click", prevent_default(click_handler_3));
+				dispose = listen(button, "click", prevent_default(click_handler_5));
 				mounted = true;
 			}
 		},
@@ -1179,13 +1277,13 @@ function create_if_block_1(ctx) {
 
 			if (!updating_questions && dirty & /*questions*/ 1) {
 				updating_questions = true;
-				questions_1_changes.questions = /*item*/ ctx[17].answers;
+				questions_1_changes.questions = /*item*/ ctx[24].answers;
 				add_flush_callback(() => updating_questions = false);
 			}
 
 			if (!updating_parentType && dirty & /*questions*/ 1) {
 				updating_parentType = true;
-				questions_1_changes.parentType = /*item*/ ctx[17].type;
+				questions_1_changes.parentType = /*item*/ ctx[24].type;
 				add_flush_callback(() => updating_parentType = false);
 			}
 
@@ -1210,25 +1308,22 @@ function create_if_block_1(ctx) {
 	};
 }
 
-// (41:4) {#each questions as item, idx (item.id)}
+// (57:4) {#each questions as item, idx (item.id)}
 function create_each_block(key_1, ctx) {
 	let li;
 	let span;
-	let t0_value = /*idx*/ ctx[19] + 1 + "";
+	let t0_value = /*idx*/ ctx[26] + 1 + "";
 	let t0;
 	let t1;
 	let input;
 	let t2;
-	let t3;
-	let current_block_type_index;
-	let if_block1;
-	let t4;
 	let div;
+	let t3;
+	let t4;
 	let t5;
 	let t6;
-	let button;
+	let t7;
 	let t8;
-	let t9;
 	let rect;
 	let stop_animation = noop;
 	let current;
@@ -1236,34 +1331,23 @@ function create_each_block(key_1, ctx) {
 	let dispose;
 
 	function input_input_handler() {
-		/*input_input_handler*/ ctx[7].call(input, /*each_value*/ ctx[18], /*idx*/ ctx[19]);
+		/*input_input_handler*/ ctx[11].call(input, /*each_value*/ ctx[25], /*idx*/ ctx[26]);
 	}
 
+	let if_block0 = /*idx*/ ctx[26] < /*questions*/ ctx[0].length - 1 && create_if_block_9(ctx);
+	let if_block1 = /*idx*/ ctx[26] > 0 && create_if_block_8(ctx);
+
 	function select_block_type(ctx, dirty) {
-		if (!/*parentType*/ ctx[1]) return create_if_block_6;
-		return create_else_block_1;
+		if (/*deleteConfirmation*/ ctx[3] !== /*idx*/ ctx[26]) return create_if_block_7;
+		return create_else_block;
 	}
 
 	let current_block_type = select_block_type(ctx);
-	let if_block0 = current_block_type(ctx);
-	const if_block_creators = [create_if_block_5, create_else_block];
-	const if_blocks = [];
-
-	function select_block_type_1(ctx, dirty) {
-		if (!/*parentType*/ ctx[1]) return 0;
-		return 1;
-	}
-
-	current_block_type_index = select_block_type_1(ctx);
-	if_block1 = if_blocks[current_block_type_index] = if_block_creators[current_block_type_index](ctx);
-	let if_block2 = /*idx*/ ctx[19] < /*questions*/ ctx[0].length - 1 && create_if_block_4(ctx);
-	let if_block3 = /*idx*/ ctx[19] > 0 && create_if_block_3(ctx);
-
-	function click_handler_2() {
-		return /*click_handler_2*/ ctx[12](/*idx*/ ctx[19]);
-	}
-
-	let if_block4 = !/*parentType*/ ctx[1] && create_if_block$1(ctx);
+	let if_block2 = current_block_type(ctx);
+	let if_block3 = !/*parentType*/ ctx[1] && create_if_block_6(ctx);
+	let if_block4 = !/*parentType*/ ctx[1] && create_if_block_4(ctx);
+	let if_block5 = /*item*/ ctx[24].type === SurveyBuilderTypes.StarsRating && create_if_block_3(ctx);
+	let if_block6 = !/*parentType*/ ctx[1] && create_if_block_1$1(ctx);
 
 	return {
 		key: key_1,
@@ -1275,25 +1359,25 @@ function create_each_block(key_1, ctx) {
 			t1 = space();
 			input = element("input");
 			t2 = space();
-			if_block0.c();
-			t3 = space();
-			if_block1.c();
-			t4 = space();
 			div = element("div");
-			if (if_block2) if_block2.c();
+			if (if_block0) if_block0.c();
+			t3 = space();
+			if (if_block1) if_block1.c();
+			t4 = space();
+			if_block2.c();
 			t5 = space();
 			if (if_block3) if_block3.c();
 			t6 = space();
-			button = element("button");
-			button.textContent = "Delete";
-			t8 = space();
 			if (if_block4) if_block4.c();
-			t9 = space();
-			attr(span, "class", "number svelte-10w8t0o");
-			attr(input, "class", "title");
+			t7 = space();
+			if (if_block5) if_block5.c();
+			t8 = space();
+			if (if_block6) if_block6.c();
+			attr(span, "class", "number svelte-1d6g9ie");
+			attr(input, "class", "title svelte-1d6g9ie");
 			attr(input, "type", "text");
-			attr(div, "class", "actions svelte-10w8t0o");
-			attr(li, "class", "svelte-10w8t0o");
+			attr(div, "class", "actions svelte-1d6g9ie");
+			attr(li, "class", "svelte-1d6g9ie");
 			this.first = li;
 		},
 		m(target, anchor) {
@@ -1302,122 +1386,142 @@ function create_each_block(key_1, ctx) {
 			append(span, t0);
 			append(li, t1);
 			append(li, input);
-			set_input_value(input, /*item*/ ctx[17].title);
+			set_input_value(input, /*item*/ ctx[24].title);
 			append(li, t2);
-			if_block0.m(li, null);
-			append(li, t3);
-			if_blocks[current_block_type_index].m(li, null);
-			append(li, t4);
 			append(li, div);
-			if (if_block2) if_block2.m(div, null);
-			append(div, t5);
-			if (if_block3) if_block3.m(div, null);
-			append(div, t6);
-			append(div, button);
-			append(li, t8);
+			if (if_block0) if_block0.m(div, null);
+			append(div, t3);
+			if (if_block1) if_block1.m(div, null);
+			append(div, t4);
+			if_block2.m(div, null);
+			append(li, t5);
+			if (if_block3) if_block3.m(li, null);
+			append(li, t6);
 			if (if_block4) if_block4.m(li, null);
-			append(li, t9);
+			append(li, t7);
+			if (if_block5) if_block5.m(li, null);
+			append(li, t8);
+			if (if_block6) if_block6.m(li, null);
 			current = true;
 
 			if (!mounted) {
-				dispose = [
-					listen(input, "input", input_input_handler),
-					listen(button, "click", prevent_default(click_handler_2))
-				];
-
+				dispose = listen(input, "input", input_input_handler);
 				mounted = true;
 			}
 		},
 		p(new_ctx, dirty) {
 			ctx = new_ctx;
-			if ((!current || dirty & /*questions*/ 1) && t0_value !== (t0_value = /*idx*/ ctx[19] + 1 + "")) set_data(t0, t0_value);
+			if ((!current || dirty & /*questions*/ 1) && t0_value !== (t0_value = /*idx*/ ctx[26] + 1 + "")) set_data(t0, t0_value);
 
-			if (dirty & /*questions*/ 1 && input.value !== /*item*/ ctx[17].title) {
-				set_input_value(input, /*item*/ ctx[17].title);
+			if (dirty & /*questions*/ 1 && input.value !== /*item*/ ctx[24].title) {
+				set_input_value(input, /*item*/ ctx[24].title);
 			}
 
-			if (current_block_type === (current_block_type = select_block_type(ctx)) && if_block0) {
-				if_block0.p(ctx, dirty);
-			} else {
-				if_block0.d(1);
-				if_block0 = current_block_type(ctx);
-
+			if (/*idx*/ ctx[26] < /*questions*/ ctx[0].length - 1) {
 				if (if_block0) {
+					if_block0.p(ctx, dirty);
+				} else {
+					if_block0 = create_if_block_9(ctx);
 					if_block0.c();
-					if_block0.m(li, t3);
+					if_block0.m(div, t3);
+				}
+			} else if (if_block0) {
+				if_block0.d(1);
+				if_block0 = null;
+			}
+
+			if (/*idx*/ ctx[26] > 0) {
+				if (if_block1) {
+					if_block1.p(ctx, dirty);
+				} else {
+					if_block1 = create_if_block_8(ctx);
+					if_block1.c();
+					if_block1.m(div, t4);
+				}
+			} else if (if_block1) {
+				if_block1.d(1);
+				if_block1 = null;
+			}
+
+			if (current_block_type === (current_block_type = select_block_type(ctx)) && if_block2) {
+				if_block2.p(ctx, dirty);
+			} else {
+				if_block2.d(1);
+				if_block2 = current_block_type(ctx);
+
+				if (if_block2) {
+					if_block2.c();
+					if_block2.m(div, null);
 				}
 			}
 
-			let previous_block_index = current_block_type_index;
-			current_block_type_index = select_block_type_1(ctx);
+			if (!/*parentType*/ ctx[1]) {
+				if (if_block3) {
+					if_block3.p(ctx, dirty);
 
-			if (current_block_type_index === previous_block_index) {
-				if_blocks[current_block_type_index].p(ctx, dirty);
-			} else {
+					if (dirty & /*parentType*/ 2) {
+						transition_in(if_block3, 1);
+					}
+				} else {
+					if_block3 = create_if_block_6(ctx);
+					if_block3.c();
+					transition_in(if_block3, 1);
+					if_block3.m(li, t6);
+				}
+			} else if (if_block3) {
 				group_outros();
 
-				transition_out(if_blocks[previous_block_index], 1, 1, () => {
-					if_blocks[previous_block_index] = null;
+				transition_out(if_block3, 1, 1, () => {
+					if_block3 = null;
 				});
 
 				check_outros();
-				if_block1 = if_blocks[current_block_type_index];
-
-				if (!if_block1) {
-					if_block1 = if_blocks[current_block_type_index] = if_block_creators[current_block_type_index](ctx);
-					if_block1.c();
-				} else {
-					if_block1.p(ctx, dirty);
-				}
-
-				transition_in(if_block1, 1);
-				if_block1.m(li, t4);
-			}
-
-			if (/*idx*/ ctx[19] < /*questions*/ ctx[0].length - 1) {
-				if (if_block2) {
-					if_block2.p(ctx, dirty);
-				} else {
-					if_block2 = create_if_block_4(ctx);
-					if_block2.c();
-					if_block2.m(div, t5);
-				}
-			} else if (if_block2) {
-				if_block2.d(1);
-				if_block2 = null;
-			}
-
-			if (/*idx*/ ctx[19] > 0) {
-				if (if_block3) {
-					if_block3.p(ctx, dirty);
-				} else {
-					if_block3 = create_if_block_3(ctx);
-					if_block3.c();
-					if_block3.m(div, t6);
-				}
-			} else if (if_block3) {
-				if_block3.d(1);
-				if_block3 = null;
 			}
 
 			if (!/*parentType*/ ctx[1]) {
 				if (if_block4) {
 					if_block4.p(ctx, dirty);
-
-					if (dirty & /*parentType*/ 2) {
-						transition_in(if_block4, 1);
-					}
 				} else {
-					if_block4 = create_if_block$1(ctx);
+					if_block4 = create_if_block_4(ctx);
 					if_block4.c();
-					transition_in(if_block4, 1);
-					if_block4.m(li, t9);
+					if_block4.m(li, t7);
 				}
 			} else if (if_block4) {
+				if_block4.d(1);
+				if_block4 = null;
+			}
+
+			if (/*item*/ ctx[24].type === SurveyBuilderTypes.StarsRating) {
+				if (if_block5) {
+					if_block5.p(ctx, dirty);
+				} else {
+					if_block5 = create_if_block_3(ctx);
+					if_block5.c();
+					if_block5.m(li, t8);
+				}
+			} else if (if_block5) {
+				if_block5.d(1);
+				if_block5 = null;
+			}
+
+			if (!/*parentType*/ ctx[1]) {
+				if (if_block6) {
+					if_block6.p(ctx, dirty);
+
+					if (dirty & /*parentType*/ 2) {
+						transition_in(if_block6, 1);
+					}
+				} else {
+					if_block6 = create_if_block_1$1(ctx);
+					if_block6.c();
+					transition_in(if_block6, 1);
+					if_block6.m(li, null);
+				}
+			} else if (if_block6) {
 				group_outros();
 
-				transition_out(if_block4, 1, 1, () => {
-					if_block4 = null;
+				transition_out(if_block6, 1, 1, () => {
+					if_block6 = null;
 				});
 
 				check_outros();
@@ -1436,24 +1540,59 @@ function create_each_block(key_1, ctx) {
 		},
 		i(local) {
 			if (current) return;
-			transition_in(if_block1);
-			transition_in(if_block4);
+			transition_in(if_block3);
+			transition_in(if_block6);
 			current = true;
 		},
 		o(local) {
-			transition_out(if_block1);
-			transition_out(if_block4);
+			transition_out(if_block3);
+			transition_out(if_block6);
 			current = false;
 		},
 		d(detaching) {
 			if (detaching) detach(li);
-			if_block0.d();
-			if_blocks[current_block_type_index].d();
-			if (if_block2) if_block2.d();
+			if (if_block0) if_block0.d();
+			if (if_block1) if_block1.d();
+			if_block2.d();
 			if (if_block3) if_block3.d();
 			if (if_block4) if_block4.d();
+			if (if_block5) if_block5.d();
+			if (if_block6) if_block6.d();
 			mounted = false;
-			run_all(dispose);
+			dispose();
+		}
+	};
+}
+
+// (107:4) {#if !parentType}
+function create_if_block$1(ctx) {
+	let li;
+	let button;
+	let mounted;
+	let dispose;
+
+	return {
+		c() {
+			li = element("li");
+			button = element("button");
+			button.textContent = "+ Add question";
+			attr(button, "class", "svelte-1d6g9ie");
+			attr(li, "class", "add-question svelte-1d6g9ie");
+		},
+		m(target, anchor) {
+			insert(target, li, anchor);
+			append(li, button);
+
+			if (!mounted) {
+				dispose = listen(button, "click", prevent_default(/*addRow*/ ctx[10]));
+				mounted = true;
+			}
+		},
+		p: noop,
+		d(detaching) {
+			if (detaching) detach(li);
+			mounted = false;
+			dispose();
 		}
 	};
 }
@@ -1463,15 +1602,18 @@ function create_fragment$1(ctx) {
 	let ol;
 	let each_blocks = [];
 	let each_1_lookup = new Map();
+	let t;
 	let current;
 	let each_value = /*questions*/ ctx[0];
-	const get_key = ctx => /*item*/ ctx[17].id;
+	const get_key = ctx => /*item*/ ctx[24].id;
 
 	for (let i = 0; i < each_value.length; i += 1) {
 		let child_ctx = get_each_context(ctx, each_value, i);
 		let key = get_key(child_ctx);
 		each_1_lookup.set(key, each_blocks[i] = create_each_block(key, child_ctx));
 	}
+
+	let if_block = !/*parentType*/ ctx[1] && create_if_block$1(ctx);
 
 	return {
 		c() {
@@ -1482,7 +1624,9 @@ function create_fragment$1(ctx) {
 				each_blocks[i].c();
 			}
 
-			attr(ol, "class", "questions svelte-10w8t0o");
+			t = space();
+			if (if_block) if_block.c();
+			attr(ol, "class", "questions svelte-1d6g9ie");
 		},
 		m(target, anchor) {
 			insert(target, main, anchor);
@@ -1492,16 +1636,31 @@ function create_fragment$1(ctx) {
 				each_blocks[i].m(ol, null);
 			}
 
+			append(ol, t);
+			if (if_block) if_block.m(ol, null);
 			current = true;
 		},
 		p(ctx, [dirty]) {
-			if (dirty & /*addAnswer, questions, SurveyBuilderTypes, parentType, deleteRow, moveDown, moveUp, onQuestionTypeChange*/ 127) {
+			if (dirty & /*addAnswer, questions, SurveyBuilderTypes, parentType, customInputNames, onQuestionTypeChange, deleteRow, deleteConfirmation, deleteRowConfirm, moveDown, moveUp*/ 1023) {
 				each_value = /*questions*/ ctx[0];
 				group_outros();
 				for (let i = 0; i < each_blocks.length; i += 1) each_blocks[i].r();
-				each_blocks = update_keyed_each(each_blocks, dirty, get_key, 1, ctx, each_value, each_1_lookup, ol, fix_and_outro_and_destroy_block, create_each_block, null, get_each_context);
+				each_blocks = update_keyed_each(each_blocks, dirty, get_key, 1, ctx, each_value, each_1_lookup, ol, fix_and_outro_and_destroy_block, create_each_block, t, get_each_context);
 				for (let i = 0; i < each_blocks.length; i += 1) each_blocks[i].a();
 				check_outros();
+			}
+
+			if (!/*parentType*/ ctx[1]) {
+				if (if_block) {
+					if_block.p(ctx, dirty);
+				} else {
+					if_block = create_if_block$1(ctx);
+					if_block.c();
+					if_block.m(ol, null);
+				}
+			} else if (if_block) {
+				if_block.d(1);
+				if_block = null;
 			}
 		},
 		i(local) {
@@ -1526,6 +1685,8 @@ function create_fragment$1(ctx) {
 			for (let i = 0; i < each_blocks.length; i += 1) {
 				each_blocks[i].d();
 			}
+
+			if (if_block) if_block.d();
 		}
 	};
 }
@@ -1534,10 +1695,17 @@ function instance$1($$self, $$props, $$invalidate) {
 	
 	let { questions = [] } = $$props;
 	let { parentType = null } = $$props;
+	let { customInputNames = true } = $$props;
+	let deleteConfirmation = -1;
 
 	function deleteRow(idx) {
+		$$invalidate(3, deleteConfirmation = idx);
+	}
+
+	function deleteRowConfirm(idx) {
 		questions.splice(idx, 1);
 		$$invalidate(0, questions);
+		$$invalidate(3, deleteConfirmation = -1);
 	}
 
 	function onQuestionTypeChange(idx, newType) {
@@ -1565,7 +1733,19 @@ function instance$1($$self, $$props, $$invalidate) {
 		questions[idx].answers.push({
 			id: genId(),
 			title: 'Answer ',
+			name: '',
 			type: SurveyBuilderTypes.TextValue
+		});
+
+		$$invalidate(0, questions);
+	}
+
+	function addRow() {
+		questions.push({
+			id: genId(),
+			title: 'New question',
+			required: true,
+			type: SurveyBuilderTypes.TextInput
 		});
 
 		$$invalidate(0, questions);
@@ -1576,17 +1756,24 @@ function instance$1($$self, $$props, $$invalidate) {
 		$$invalidate(0, questions);
 	}
 
+	const click_handler = idx => moveUp(idx);
+	const click_handler_1 = idx => moveDown(idx);
+	const click_handler_2 = idx => deleteRow(idx);
+	const click_handler_3 = idx => deleteRowConfirm(idx);
+	const click_handler_4 = () => deleteRow(-1);
+	const func = (idx, value) => onQuestionTypeChange(idx, value);
+
+	function input_input_handler_1(each_value, idx) {
+		each_value[idx].name = this.value;
+		$$invalidate(0, questions);
+	}
+
 	function input_change_handler(each_value, idx) {
 		each_value[idx].required = this.checked;
 		$$invalidate(0, questions);
 	}
 
-	const func = (idx, value) => onQuestionTypeChange(idx, value);
-	const click_handler = idx => moveUp(idx);
-	const click_handler_1 = idx => moveDown(idx);
-	const click_handler_2 = idx => deleteRow(idx);
-
-	function input_input_handler_1(each_value, idx) {
+	function input_input_handler_2(each_value, idx) {
 		each_value[idx].options = to_number(this.value);
 		$$invalidate(0, questions);
 	}
@@ -1605,44 +1792,58 @@ function instance$1($$self, $$props, $$invalidate) {
 		}
 	}
 
-	const click_handler_3 = idx => addAnswer(idx);
+	const click_handler_5 = idx => addAnswer(idx);
 
 	$$self.$$set = $$props => {
 		if ('questions' in $$props) $$invalidate(0, questions = $$props.questions);
 		if ('parentType' in $$props) $$invalidate(1, parentType = $$props.parentType);
+		if ('customInputNames' in $$props) $$invalidate(2, customInputNames = $$props.customInputNames);
 	};
 
 	return [
 		questions,
 		parentType,
+		customInputNames,
+		deleteConfirmation,
 		deleteRow,
+		deleteRowConfirm,
 		onQuestionTypeChange,
 		moveUp,
 		moveDown,
 		addAnswer,
+		addRow,
 		input_input_handler,
-		input_change_handler,
-		func,
 		click_handler,
 		click_handler_1,
 		click_handler_2,
+		click_handler_3,
+		click_handler_4,
+		func,
 		input_input_handler_1,
+		input_change_handler,
+		input_input_handler_2,
 		questions_1_questions_binding,
 		questions_1_parentType_binding,
-		click_handler_3
+		click_handler_5
 	];
 }
 
 class Questions extends SvelteComponent {
 	constructor(options) {
 		super();
-		init(this, options, instance$1, create_fragment$1, safe_not_equal, { questions: 0, parentType: 1 });
+
+		init(this, options, instance$1, create_fragment$1, safe_not_equal, {
+			questions: 0,
+			parentType: 1,
+			customInputNames: 2
+		});
 	}
 }
 
 /* src/SurveyBuilder/SurveyBuilder.svelte generated by Svelte v3.42.4 */
 
-function create_if_block(ctx) {
+function create_if_block_1(ctx) {
+	let div;
 	let label;
 	let t;
 	let input;
@@ -1651,21 +1852,25 @@ function create_if_block(ctx) {
 
 	return {
 		c() {
+			div = element("div");
 			label = element("label");
-			t = text("Title:\n    ");
+			t = text("Title:\n        ");
 			input = element("input");
-			attr(input, "id", "title");
+			attr(input, "id", "survey-title");
 			attr(input, "type", "text");
-			attr(label, "for", "title");
+			attr(label, "for", "survey-title");
+			attr(label, "class", "svelte-100xnvf");
+			attr(div, "class", "survey-title svelte-100xnvf");
 		},
 		m(target, anchor) {
-			insert(target, label, anchor);
+			insert(target, div, anchor);
+			append(div, label);
 			append(label, t);
 			append(label, input);
 			set_input_value(input, /*snapshot*/ ctx[0].title);
 
 			if (!mounted) {
-				dispose = listen(input, "input", /*input_input_handler*/ ctx[6]);
+				dispose = listen(input, "input", /*input_input_handler*/ ctx[7]);
 				mounted = true;
 			}
 		},
@@ -1675,9 +1880,43 @@ function create_if_block(ctx) {
 			}
 		},
 		d(detaching) {
-			if (detaching) detach(label);
+			if (detaching) detach(div);
 			mounted = false;
 			dispose();
+		}
+	};
+}
+
+// (43:2) {#if debug}
+function create_if_block(ctx) {
+	let h3;
+	let t1;
+	let pre;
+	let t2_value = JSON.stringify(/*snapshot*/ ctx[0], null, 2) + "";
+	let t2;
+
+	return {
+		c() {
+			h3 = element("h3");
+			h3.textContent = "Data model:";
+			t1 = space();
+			pre = element("pre");
+			t2 = text(t2_value);
+			attr(pre, "class", "debug svelte-100xnvf");
+		},
+		m(target, anchor) {
+			insert(target, h3, anchor);
+			insert(target, t1, anchor);
+			insert(target, pre, anchor);
+			append(pre, t2);
+		},
+		p(ctx, dirty) {
+			if (dirty & /*snapshot*/ 1 && t2_value !== (t2_value = JSON.stringify(/*snapshot*/ ctx[0], null, 2) + "")) set_data(t2, t2_value);
+		},
+		d(detaching) {
+			if (detaching) detach(h3);
+			if (detaching) detach(t1);
+			if (detaching) detach(pre);
 		}
 	};
 }
@@ -1691,25 +1930,26 @@ function create_fragment(ctx) {
 	let t2;
 	let t3;
 	let t4;
-	let button0;
+	let div;
+	let button;
 	let t6;
+	let h3;
+	let t8;
 	let questions;
 	let updating_questions;
-	let t7;
-	let button1;
+	let updating_customInputNames;
 	let t9;
-	let h4;
-	let t11;
-	let pre;
-	let t12_value = JSON.stringify(/*snapshot*/ ctx[0], null, 2) + "";
-	let t12;
 	let current;
 	let mounted;
 	let dispose;
-	let if_block = /*haveTitle*/ ctx[1] && create_if_block(ctx);
+	let if_block0 = /*haveTitle*/ ctx[2] && create_if_block_1(ctx);
 
 	function questions_questions_binding(value) {
-		/*questions_questions_binding*/ ctx[7](value);
+		/*questions_questions_binding*/ ctx[8](value);
+	}
+
+	function questions_customInputNames_binding(value) {
+		/*questions_customInputNames_binding*/ ctx[9](value);
 	}
 
 	let questions_props = {};
@@ -1718,8 +1958,14 @@ function create_fragment(ctx) {
 		questions_props.questions = /*snapshot*/ ctx[0].questions;
 	}
 
+	if (/*customInputNames*/ ctx[1] !== void 0) {
+		questions_props.customInputNames = /*customInputNames*/ ctx[1];
+	}
+
 	questions = new Questions({ props: questions_props });
 	binding_callbacks.push(() => bind(questions, 'questions', questions_questions_binding));
+	binding_callbacks.push(() => bind(questions, 'customInputNames', questions_customInputNames_binding));
+	let if_block1 = /*debug*/ ctx[3] && create_if_block(ctx);
 
 	return {
 		c() {
@@ -1729,24 +1975,21 @@ function create_fragment(ctx) {
 			t1 = text(t1_value);
 			t2 = text("\"");
 			t3 = space();
-			if (if_block) if_block.c();
+			if (if_block0) if_block0.c();
 			t4 = space();
-			button0 = element("button");
-			button0.textContent = "Export";
+			div = element("div");
+			button = element("button");
+			button.textContent = "Export";
 			t6 = space();
+			h3 = element("h3");
+			h3.textContent = "Questions:";
+			t8 = space();
 			create_component(questions.$$.fragment);
-			t7 = space();
-			button1 = element("button");
-			button1.textContent = "+ Add row";
 			t9 = space();
-			h4 = element("h4");
-			h4.textContent = "Data model:";
-			t11 = space();
-			pre = element("pre");
-			t12 = text(t12_value);
-			attr(h1, "class", "svelte-1tcyft5");
-			attr(pre, "class", "debug svelte-1tcyft5");
-			attr(main, "class", "svelte-1tcyft5");
+			if (if_block1) if_block1.c();
+			attr(h1, "class", "svelte-100xnvf");
+			attr(div, "class", "controls svelte-100xnvf");
+			attr(main, "class", "svelte-100xnvf");
 		},
 		m(target, anchor) {
 			insert(target, main, anchor);
@@ -1755,43 +1998,37 @@ function create_fragment(ctx) {
 			append(h1, t1);
 			append(h1, t2);
 			append(main, t3);
-			if (if_block) if_block.m(main, null);
+			if (if_block0) if_block0.m(main, null);
 			append(main, t4);
-			append(main, button0);
+			append(main, div);
+			append(div, button);
 			append(main, t6);
+			append(main, h3);
+			append(main, t8);
 			mount_component(questions, main, null);
-			append(main, t7);
-			append(main, button1);
 			append(main, t9);
-			append(main, h4);
-			append(main, t11);
-			append(main, pre);
-			append(pre, t12);
+			if (if_block1) if_block1.m(main, null);
 			current = true;
 
 			if (!mounted) {
-				dispose = [
-					listen(button0, "click", prevent_default(/*handleExport*/ ctx[3])),
-					listen(button1, "click", prevent_default(/*addRow*/ ctx[2]))
-				];
-
+				dispose = listen(button, "click", prevent_default(/*handleExport*/ ctx[4]));
 				mounted = true;
 			}
 		},
 		p(ctx, [dirty]) {
 			if ((!current || dirty & /*snapshot*/ 1) && t1_value !== (t1_value = (/*snapshot*/ ctx[0].title || 'no name') + "")) set_data(t1, t1_value);
 
-			if (/*haveTitle*/ ctx[1]) {
-				if (if_block) {
-					if_block.p(ctx, dirty);
+			if (/*haveTitle*/ ctx[2]) {
+				if (if_block0) {
+					if_block0.p(ctx, dirty);
 				} else {
-					if_block = create_if_block(ctx);
-					if_block.c();
-					if_block.m(main, t4);
+					if_block0 = create_if_block_1(ctx);
+					if_block0.c();
+					if_block0.m(main, t4);
 				}
-			} else if (if_block) {
-				if_block.d(1);
-				if_block = null;
+			} else if (if_block0) {
+				if_block0.d(1);
+				if_block0 = null;
 			}
 
 			const questions_changes = {};
@@ -1802,8 +2039,26 @@ function create_fragment(ctx) {
 				add_flush_callback(() => updating_questions = false);
 			}
 
+			if (!updating_customInputNames && dirty & /*customInputNames*/ 2) {
+				updating_customInputNames = true;
+				questions_changes.customInputNames = /*customInputNames*/ ctx[1];
+				add_flush_callback(() => updating_customInputNames = false);
+			}
+
 			questions.$set(questions_changes);
-			if ((!current || dirty & /*snapshot*/ 1) && t12_value !== (t12_value = JSON.stringify(/*snapshot*/ ctx[0], null, 2) + "")) set_data(t12, t12_value);
+
+			if (/*debug*/ ctx[3]) {
+				if (if_block1) {
+					if_block1.p(ctx, dirty);
+				} else {
+					if_block1 = create_if_block(ctx);
+					if_block1.c();
+					if_block1.m(main, null);
+				}
+			} else if (if_block1) {
+				if_block1.d(1);
+				if_block1 = null;
+			}
 		},
 		i(local) {
 			if (current) return;
@@ -1816,10 +2071,11 @@ function create_fragment(ctx) {
 		},
 		d(detaching) {
 			if (detaching) detach(main);
-			if (if_block) if_block.d();
+			if (if_block0) if_block0.d();
 			destroy_component(questions);
+			if (if_block1) if_block1.d();
 			mounted = false;
-			run_all(dispose);
+			dispose();
 		}
 	};
 }
@@ -1827,6 +2083,7 @@ function create_fragment(ctx) {
 function instance($$self, $$props, $$invalidate) {
 	
 	let { haveTitle = true } = $$props;
+	let { customInputNames = true } = $$props;
 	let { snapshot = {} } = $$props;
 
 	let { onChange = () => {
@@ -1837,17 +2094,7 @@ function instance($$self, $$props, $$invalidate) {
 		
 	} } = $$props;
 
-	function addRow() {
-		snapshot.questions.push({
-			id: genId(),
-			title: 'New question',
-			required: true,
-			type: SurveyBuilderTypes.TextInput
-		});
-
-		// to make it reactive, reassing value
-		$$invalidate(0, snapshot);
-	}
+	let { debug = false } = $$props;
 
 	function handleExport() {
 		if (typeof onExport === 'function') {
@@ -1869,15 +2116,22 @@ function instance($$self, $$props, $$invalidate) {
 		}
 	}
 
+	function questions_customInputNames_binding(value) {
+		customInputNames = value;
+		$$invalidate(1, customInputNames);
+	}
+
 	$$self.$$set = $$props => {
-		if ('haveTitle' in $$props) $$invalidate(1, haveTitle = $$props.haveTitle);
+		if ('haveTitle' in $$props) $$invalidate(2, haveTitle = $$props.haveTitle);
+		if ('customInputNames' in $$props) $$invalidate(1, customInputNames = $$props.customInputNames);
 		if ('snapshot' in $$props) $$invalidate(0, snapshot = $$props.snapshot);
-		if ('onChange' in $$props) $$invalidate(4, onChange = $$props.onChange);
-		if ('onExport' in $$props) $$invalidate(5, onExport = $$props.onExport);
+		if ('onChange' in $$props) $$invalidate(5, onChange = $$props.onChange);
+		if ('onExport' in $$props) $$invalidate(6, onExport = $$props.onExport);
+		if ('debug' in $$props) $$invalidate(3, debug = $$props.debug);
 	};
 
 	$$self.$$.update = () => {
-		if ($$self.$$.dirty & /*onChange, snapshot*/ 17) {
+		if ($$self.$$.dirty & /*onChange, snapshot*/ 33) {
 			{
 				if (typeof onChange === 'function') {
 					onChange(snapshot);
@@ -1888,13 +2142,15 @@ function instance($$self, $$props, $$invalidate) {
 
 	return [
 		snapshot,
+		customInputNames,
 		haveTitle,
-		addRow,
+		debug,
 		handleExport,
 		onChange,
 		onExport,
 		input_input_handler,
-		questions_questions_binding
+		questions_questions_binding,
+		questions_customInputNames_binding
 	];
 }
 
@@ -1903,10 +2159,12 @@ class SurveyBuilder extends SvelteComponent {
 		super();
 
 		init(this, options, instance, create_fragment, safe_not_equal, {
-			haveTitle: 1,
+			haveTitle: 2,
+			customInputNames: 1,
 			snapshot: 0,
-			onChange: 4,
-			onExport: 5
+			onChange: 5,
+			onExport: 6,
+			debug: 3
 		});
 	}
 }

@@ -1,9 +1,7 @@
 
 <script lang="ts">
   import type { SurveyBuilderSnapshot } from './types'
-  import { SurveyBuilderTypes } from './types'
   import Questions from './Questions.svelte'
-  import { genId } from './utils'
 
   // Props
   export let haveTitle = true
@@ -17,17 +15,6 @@
     if (typeof onChange === 'function') {
       onChange(snapshot)
     }
-  }
-
-  function addRow() {
-    snapshot.questions.push({
-      id: genId(),
-      title: 'New question',
-      required: true,
-      type: SurveyBuilderTypes.TextInput,
-    })
-    // to make it reactive, reassing value
-    snapshot = snapshot
   }
 
   function handleExport() {
@@ -50,7 +37,6 @@
     </div>
   {/if}
   <div class="controls">
-    <button on:click|preventDefault={addRow}> + Add row </button>
     <button on:click|preventDefault={handleExport}> Export </button>
   </div>
 
@@ -79,6 +65,7 @@
   main {
     padding: 8px 10px;
     font-size: 15px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
   }
 
   main :global(button) {
