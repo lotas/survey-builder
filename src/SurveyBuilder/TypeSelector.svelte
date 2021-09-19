@@ -16,7 +16,7 @@
 </script>
 
 <main>
-  <select bind:value={questionType} on:input={handleInput}>
+  <select bind:value={questionType} on:input|preventDefault={handleInput}>
     {#each dropdownOptions as [value, label]}
       <option value={value}>{label}</option>
     {/each}

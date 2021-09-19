@@ -45,13 +45,13 @@
     <input id="title" type="text" bind:value={snapshot.title} />
   </label>
   {/if}
-  <button on:click={handleExport}>
+  <button on:click|preventDefault={handleExport}>
     Export
   </button>
 
   <Questions bind:questions={snapshot.questions} />
 
-  <button on:click={addRow}>
+  <button on:click|preventDefault={addRow}>
     + Add row
   </button>
 

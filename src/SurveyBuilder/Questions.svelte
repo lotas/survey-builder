@@ -65,11 +65,11 @@
           <div></div>
         {/if}
         <div class="actions">
-          {#if idx < questions.length - 1}<button on:click={() => moveUp(idx)}
+          {#if idx < questions.length - 1}<button on:click|preventDefault={() => moveUp(idx)}
               >&darr;</button
             >{/if}
-          {#if idx > 0}<button on:click={() => moveDown(idx)}>&uarr;</button>{/if}
-          <button on:click={() => deleteRow(idx)}> Delete </button>
+          {#if idx > 0}<button on:click|preventDefault={() => moveDown(idx)}>&uarr;</button>{/if}
+          <button on:click|preventDefault={() => deleteRow(idx)}> Delete </button>
         </div>
 
         {#if !parentType}
@@ -82,7 +82,7 @@
           {/if}
           {#if item.type !== SurveyBuilderTypes.StarsRating}
             <svelte:self bind:questions={item.answers} bind:parentType={item.type} />
-            <button on:click={() => addAnswer(idx)}>+ Answer</button>
+            <button on:click|preventDefault={() => addAnswer(idx)}>+ Answer</button>
           {/if}
         </div>
         {/if}

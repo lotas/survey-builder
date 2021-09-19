@@ -100,6 +100,13 @@ function listen(node, event, handler, options) {
     node.addEventListener(event, handler, options);
     return () => node.removeEventListener(event, handler, options);
 }
+function prevent_default(fn) {
+    return function (event) {
+        event.preventDefault();
+        // @ts-ignore
+        return fn.call(this, event);
+    };
+}
 function attr(node, attribute, value) {
     if (value == null)
         node.removeAttribute(attribute);
@@ -673,7 +680,7 @@ function create_fragment$2(ctx) {
 			if (!mounted) {
 				dispose = [
 					listen(select, "change", /*select_change_handler*/ ctx[4]),
-					listen(select, "input", /*handleInput*/ ctx[2])
+					listen(select, "input", prevent_default(/*handleInput*/ ctx[2]))
 				];
 
 				mounted = true;
@@ -939,7 +946,7 @@ function create_if_block_4(ctx) {
 			insert(target, button, anchor);
 
 			if (!mounted) {
-				dispose = listen(button, "click", click_handler);
+				dispose = listen(button, "click", prevent_default(click_handler));
 				mounted = true;
 			}
 		},
@@ -973,7 +980,7 @@ function create_if_block_3(ctx) {
 			insert(target, button, anchor);
 
 			if (!mounted) {
-				dispose = listen(button, "click", click_handler_1);
+				dispose = listen(button, "click", prevent_default(click_handler_1));
 				mounted = true;
 			}
 		},
@@ -1162,7 +1169,7 @@ function create_if_block_1(ctx) {
 			current = true;
 
 			if (!mounted) {
-				dispose = listen(button, "click", click_handler_3);
+				dispose = listen(button, "click", prevent_default(click_handler_3));
 				mounted = true;
 			}
 		},
@@ -1315,7 +1322,7 @@ function create_each_block(key_1, ctx) {
 			if (!mounted) {
 				dispose = [
 					listen(input, "input", input_input_handler),
-					listen(button, "click", click_handler_2)
+					listen(button, "click", prevent_default(click_handler_2))
 				];
 
 				mounted = true;
@@ -1764,8 +1771,8 @@ function create_fragment(ctx) {
 
 			if (!mounted) {
 				dispose = [
-					listen(button0, "click", /*handleExport*/ ctx[3]),
-					listen(button1, "click", /*addRow*/ ctx[2])
+					listen(button0, "click", prevent_default(/*handleExport*/ ctx[3])),
+					listen(button1, "click", prevent_default(/*addRow*/ ctx[2]))
 				];
 
 				mounted = true;
