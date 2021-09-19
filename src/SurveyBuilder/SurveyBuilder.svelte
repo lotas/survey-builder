@@ -1,15 +1,18 @@
 <svelte:options immutable={false} />
 
 <script lang="ts">
-  import type { SurveyBuilderSnapshot } from './types';
-  import { SurveyBuilderTypes } from './types';
-  import Questions from './Questions.svelte';
-  import { genId } from './utils';
+  import type { SurveyBuilderSnapshot } from './types'
+  import { SurveyBuilderTypes } from './types'
+  import Questions from './Questions.svelte'
+  import { genId } from './utils'
 
-  export let haveTitle = true;
-  export let snapshot: SurveyBuilderSnapshot = {};
-  export let onChange: (snapshot: SurveyBuilderSnapshot) => void = () => {};
-  export let onExport: (snapshot: SurveyBuilderSnapshot) => void = () => {};
+  // Props
+  export let haveTitle = true
+  export let customInputNames = true
+  export let snapshot: SurveyBuilderSnapshot = {}
+  export let onChange: (snapshot: SurveyBuilderSnapshot) => void = () => {}
+  export let onExport: (snapshot: SurveyBuilderSnapshot) => void = () => {}
+  export let debug = false
 
   $: {
     if (typeof onChange === 'function') {
@@ -40,51 +43,66 @@
 <main>
   <h1>Survey builder &quot;{snapshot.title || 'no name'}&quot;</h1>
   {#if haveTitle}
-  <label for="title">
-    Title:
-    <input id="title" type="text" bind:value={snapshot.title} />
-  </label>
+    <label for="title">
+      Title:
+      <input id="title" type="text" bind:value={snapshot.title} />
+    </label>
   {/if}
-  <button on:click|preventDefault={handleExport}>
-    Export
-  </button>
+  <div class="controls">
+    <button on:click|preventDefault={addRow}> + Add row </button>
+    <button on:click|preventDefault={handleExport}> Export </button>
+  </div>
 
-  <Questions bind:questions={snapshot.questions} />
+  <h3>Questions:</h3>
+  <Questions bind:questions={snapshot.questions} bind:customInputNames />
 
-  <button on:click|preventDefault={addRow}>
-    + Add row
-  </button>
-
-  <h4>Data model:</h4>
+  {#if debug}
+  <h3>Data model:</h3>
   <pre class="debug">
     {JSON.stringify(snapshot, null, 2)}
   </pre>
+  {/if}
+
 </main>
 
 <style>
-  :global(:root){
+  :global(:root) {
     --survey-builder-button-color: rgb(14, 40, 53);
-    --survey-builder-button-border: rgb(34, 151, 172);
     --survey-builder-button-border-hover: rgb(52, 196, 240);
-    --survey-builder-button-background: rgb(184, 227, 247);
+    --survey-builder-button-background: rgb(215, 237, 247);
     --survey-builder-button-background-hover: rgb(154, 220, 250);
-    --survey-builder-secondary-button-border: rgb(34, 172, 92);
-    --survey-builder-secondary-button-background: rgb(184, 247, 195);
+    --survey-builder-secondary-button-background: rgb(208, 243, 214);
+    --survey-builder-input-border: rgb(136, 157, 185);
   }
 
   main {
     padding: 8px 10px;
+    font-size: 15px;
   }
 
   main :global(button) {
-    padding: 4px 6px;
+    padding: 4px 8px;
     color: var(--survey-builder-button-color);
-    border: 1px solid var(--survey-builder-button-border);
     background-color: var(--survey-builder-button-background);
+    box-shadow: 2px 2px 5px #ccc;
+    font-size: 15px;
+    line-height: 20px;
+    border: 0;
   }
   main :global(button:hover) {
-    border-color: var(--survey-builder-button-hover);
+    cursor: pointer;
     background-color: var(--survey-builder-button-background-hover);
+  }
+  main :global(button.secondary) {
+    background-color: var(--survey-builder-secondary-button-background);
+  }
+  main :global(select),
+  main :global(input) {
+    padding: 4px 8px;
+    font-size: 15px;
+    border: 1px solid var(--survey-builder-input-border);
+    border-radius: 2px;
+    line-height: 24px;
   }
 
   h1 {
@@ -94,9 +112,14 @@
     font-weight: 100;
   }
 
+  .controls {
+    margin: 2px 5px;
+    display: flex;
+    justify-content: space-between;
+  }
+
   .debug {
     width: 100%;
     text-align: left;
   }
 </style>
-

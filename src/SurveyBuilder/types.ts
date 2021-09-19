@@ -9,6 +9,7 @@ export enum SurveyBuilderTypes {
 export interface SurveyBuilderQuestion {
   id: string;
   title: string;
+  name?: string;
   type: SurveyBuilderTypes;
   required?: boolean;
   answers?: SurveyBuilderQuestion[];
@@ -24,6 +25,8 @@ export interface SurveyBuilderOpts {
   target: HTMLElement | Element;
   props: {
     haveTitle?: boolean;
+    customInputNames?: boolean;
+    debug?: boolean;
     snapshot?: SurveyBuilderSnapshot;
     onChange?: (snapshot: SurveyBuilderSnapshot) => void;
     onExport?: (snapshot: SurveyBuilderSnapshot) => void;

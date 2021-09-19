@@ -7,10 +7,17 @@
 
   export let questions: SurveyBuilderQuestion[] = []
   export let parentType: SurveyBuilderTypes | null = null
+  export let customInputNames: boolean = true
 
+  let deleteConfirmation = -1
   function deleteRow(idx: number) {
+    deleteConfirmation = idx
+  }
+
+  function deleteRowConfirm(idx: number) {
     questions.splice(idx, 1)
     questions = questions
+    deleteConfirmation = -1
   }
 
   function onQuestionTypeChange(idx: number, newType: SurveyBuilderTypes) {
@@ -36,6 +43,7 @@
     questions[idx].answers.push({
       id: genId(),
       title: 'Answer ',
+      name: '',
       type: SurveyBuilderTypes.TextValue,
     })
     questions = questions
@@ -49,6 +57,9 @@
         <span class="number">{idx + 1}</span>
         <input class="title" type="text" bind:value={item.title} />
         {#if !parentType}
+        {#if customInputNames}
+          <input class="name" type="text" bind:value={item.name} placeholder="input-name" />
+        {/if}
         <label>
           <input type="checkbox" bind:checked={item.required} />
           Required
@@ -69,7 +80,12 @@
               >&darr;</button
             >{/if}
           {#if idx > 0}<button on:click|preventDefault={() => moveDown(idx)}>&uarr;</button>{/if}
-          <button on:click|preventDefault={() => deleteRow(idx)}> Delete </button>
+          {#if deleteConfirmation !== idx}
+          <button class="danger" on:click|preventDefault={() => deleteRow(idx)}>&times; Delete </button>
+          {:else}
+          <button class="danger" on:click|preventDefault={() => deleteRowConfirm(idx)}>&times; Yes, delete </button>
+          <button class="danger" on:click|preventDefault={() => deleteRow(-1)}> Cancel </button>
+          {/if}
         </div>
 
         {#if !parentType}
@@ -93,20 +109,30 @@
 
 <style>
   .questions {
-    border: 1px dotted #eee;
     padding-left: 0px;
     list-style-type: none;
+    font-size: 15px;
+  }
+  button.danger {
+    color: red;
   }
   .questions li {
-    margin: 10px 0;
-    padding: 2px 4px;
+    margin: 20px 0;
+    padding: 8px 4px;
     border: 1px dotted #eee;
 
     align-items: center;
     display: grid;
-    grid-template-columns: 20px auto 100px 200px 140px;
-    column-gap: 5px;
+    grid-template-columns: 20px auto 150px 100px 200px 240px;
+    grid-gap: 5px 5px;
   }
+  .questions li button {
+    opacity: 0.7;
+  }
+  .questions li button:hover {
+    opacity: 1;
+  }
+
   .questions li .number {
     color: gray;
     font-weight: 100;
@@ -125,7 +151,6 @@
   }
 
   .questions :global(.questions button) {
-    border: 1px solid var(--survey-builder-secondary-button-border);
     background-color: var(--survey-builder-secondary-button-background);
   }
 </style>

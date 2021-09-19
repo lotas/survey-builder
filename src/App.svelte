@@ -8,18 +8,22 @@
       target: document.getElementById('survey-builder'),
       props: {
         haveTitle: false,
+        customInputNames: true,
+        debug: true,
         snapshot: {
           title: 'Sample survey',
           questions: [
             {
               id: genId('q'),
               title: 'User name',
+              name: 'userName',
               type: 'input',
               required: true,
             },
             {
               id: genId('q'),
-              title: 'User name',
+              title: 'User rating',
+              name: 'userRating',
               type: 'rating',
               required: true,
               options: 5,
@@ -27,6 +31,7 @@
             {
               id: genId('q'),
               title: 'Account type',
+              name: 'accountType',
               type: 'single',
               required: true,
               answers: [
