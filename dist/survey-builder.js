@@ -686,7 +686,7 @@ function create_fragment$2(ctx) {
 			attr(label, "for", label_for_value = "qtype-" + /*id*/ ctx[1]);
 			attr(label, "class", "absolute inset-y-3 left-2 hidden lg:block uppercase tracking-wide text-gray-400 text-xs font-bold");
 			attr(select, "id", select_id_value = "qtype-" + /*id*/ ctx[1]);
-			attr(select, "class", "dropdown svelte-dlycjd");
+			attr(select, "class", "dropdown svelte-1cnreoq");
 			if (/*questionType*/ ctx[0] === void 0) add_render_callback(() => /*select_change_handler*/ ctx[5].call(select));
 			attr(div0, "class", "pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700");
 			attr(div1, "class", "relative");
@@ -1146,10 +1146,10 @@ function create_if_block_5(ctx) {
 			t0 = text("Name:");
 			t1 = space();
 			input = element("input");
-			attr(label, "class", "label-inline svelte-1xk6kv8");
+			attr(label, "class", "label-inline svelte-r3h0zx");
 			attr(label, "for", label_for_value = "name-" + /*item*/ ctx[24].id);
 			attr(input, "id", input_id_value = "name-" + /*item*/ ctx[24].id);
-			attr(input, "class", "w-40 lg:w-64 px-4 svelte-1xk6kv8");
+			attr(input, "class", "w-40 lg:w-64 px-4 svelte-r3h0zx");
 			attr(input, "type", "text");
 			attr(input, "placeholder", "inputName");
 			attr(div, "class", "flex-auto relative mr-4");
@@ -1210,13 +1210,13 @@ function create_if_block_4(ctx) {
 		c() {
 			div = element("div");
 			label = element("label");
-			t0 = text("Max");
+			t0 = text("Max:");
 			t1 = space();
 			input = element("input");
-			attr(label, "class", "label-inline svelte-1xk6kv8");
+			attr(label, "class", "label-inline svelte-r3h0zx");
 			attr(label, "for", label_for_value = "opts-" + /*item*/ ctx[24].id);
 			attr(input, "id", input_id_value = "opts-" + /*item*/ ctx[24].id);
-			attr(input, "class", "w-24 lg:w-32 svelte-1xk6kv8");
+			attr(input, "class", "w-24 lg:w-32 svelte-r3h0zx");
 			attr(input, "type", "number");
 			attr(input, "placeholder", "5");
 			attr(div, "class", "relative flex-auto");
@@ -1479,15 +1479,15 @@ function create_each_block(key_1, ctx) {
 			t9 = space();
 			if (if_block4) if_block4.c();
 			attr(span, "class", "number w-8 text-xl");
-			attr(label, "class", "label-inline svelte-1xk6kv8");
+			attr(label, "class", "label-inline svelte-r3h0zx");
 			attr(label, "for", label_for_value = "title-" + /*item*/ ctx[24].id);
 			attr(input, "id", input_id_value = "title-" + /*item*/ ctx[24].id);
-			attr(input, "class", "w-full px-4 svelte-1xk6kv8");
+			attr(input, "class", "w-full px-4 svelte-r3h0zx");
 			attr(input, "type", "text");
 			attr(div0, "class", "flex-auto relative");
 			attr(div1, "class", "actions w-auto px-4 content-end text-right");
 			attr(div2, "class", "w-full flex items-center py-2");
-			attr(li, "class", "svelte-1xk6kv8");
+			attr(li, "class", "svelte-r3h0zx");
 			this.first = li;
 		},
 		m(target, anchor) {
@@ -1669,7 +1669,7 @@ function create_if_block$1(ctx) {
 			button = element("button");
 			button.textContent = "+ Add question";
 			attr(button, "class", "w-full");
-			attr(li, "class", "add-question svelte-1xk6kv8");
+			attr(li, "class", "add-question svelte-r3h0zx");
 		},
 		m(target, anchor) {
 			insert(target, li, anchor);
@@ -1719,7 +1719,7 @@ function create_fragment$1(ctx) {
 
 			t = space();
 			if (if_block) if_block.c();
-			attr(ol, "class", ol_class_value = "" + (null_to_empty(/*parentType*/ ctx[1] ? 'answers' : 'questions') + " svelte-1xk6kv8"));
+			attr(ol, "class", ol_class_value = "" + (null_to_empty(/*parentType*/ ctx[1] ? 'answers' : 'questions') + " svelte-r3h0zx"));
 		},
 		m(target, anchor) {
 			insert(target, main, anchor);
@@ -1756,7 +1756,7 @@ function create_fragment$1(ctx) {
 				if_block = null;
 			}
 
-			if (!current || dirty & /*parentType*/ 2 && ol_class_value !== (ol_class_value = "" + (null_to_empty(/*parentType*/ ctx[1] ? 'answers' : 'questions') + " svelte-1xk6kv8"))) {
+			if (!current || dirty & /*parentType*/ 2 && ol_class_value !== (ol_class_value = "" + (null_to_empty(/*parentType*/ ctx[1] ? 'answers' : 'questions') + " svelte-r3h0zx"))) {
 				attr(ol, "class", ol_class_value);
 			}
 		},

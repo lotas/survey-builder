@@ -43,7 +43,7 @@
       rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500
       w-44 lg:w-52;
 
-    text-indent: 2.5rem;
+    text-indent: 15px;
   }
   @media (max-width: 1024px) {
     .dropdown {

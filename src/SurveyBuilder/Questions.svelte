@@ -102,7 +102,7 @@
           {/if}
           {#if item.type === SurveyBuilderTypes.StarsRating}
           <div class="relative flex-auto">
-            <label class="label-inline" for="opts-{item.id}">Max</label>
+            <label class="label-inline" for="opts-{item.id}">Max: </label>
             <input id="opts-{item.id}" class="w-24 lg:w-32" type="number" bind:value={item.options} placeholder="5" />
           </div>
           {/if}
@@ -144,7 +144,7 @@ li {
 
 input[type="text"],
 input[type="number"] {
-  text-indent: 2.5rem;
+  text-indent: 35px;
 }
 
 @media (max-width: 1024px) {
