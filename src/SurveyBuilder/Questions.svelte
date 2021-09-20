@@ -61,54 +61,59 @@
 </script>
 
 <main>
-  <ol class="questions">
+  <ol class="{ parentType ? 'answers' : 'questions' }">
     {#each questions as item, idx (item.id)}
-      <li animate:flip={{ duration: 250 }} class="flex flex-wrap my-4">
-        <div class="w-full">
-          <span class="number w-8">{idx + 1}</span>
-          <input class="w-1/2 px-4" type="text" bind:value={item.title} />
-          <div class="actions w-1/4 px-4">
+      <li animate:flip={{ duration: 250 }}>
+        <div class="w-full flex items-center py-2">
+          <span class="number w-8 text-xl">{idx + 1}.</span>
+          <div class="flex-auto relative">
+            <label class="label-inline" for="title-{item.id}">Title:</label>
+            <input id="title-{item.id}" class="w-full px-4" type="text" bind:value={item.title} />
+          </div>
+          <div class="actions w-auto px-4 content-end text-right">
           {#if idx < questions.length - 1}<button on:click|preventDefault={() => moveUp(idx)}
             >&darr;</button
             >{/if}
             {#if idx > 0}<button on:click|preventDefault={() => moveDown(idx)}>&uarr;</button>{/if}
             {#if deleteConfirmation !== idx}
-            <button class="text-red-700" on:click|preventDefault={() => deleteRow(idx)}>&times; Delete </button>
+            <button class="warning" on:click|preventDefault={() => deleteRow(idx)}>&times; Delete </button>
             {:else}
-            <button class="text-red-700" on:click|preventDefault={() => deleteRowConfirm(idx)}>&times; Yes, delete </button>
-            <button class="text-red-700" on:click|preventDefault={() => deleteRow(-1)}> Cancel </button>
+            <button class="danger" on:click|preventDefault={() => deleteRowConfirm(idx)}>&times; Yes, delete </button>
+            <button class="warning" on:click|preventDefault={() => deleteRow(-1)}> Cancel </button>
             {/if}
           </div>
         </div>
         {#if !parentType}
-        <div class="type-selector">
+        <div class="flex w-3/4 items-center ml-8 py-2">
           <TypeSelector
+            id={item.id}
             questionType={item.type}
             onChange={(value) => onQuestionTypeChange(idx, value)}
           />
-        </div>
-        {/if}
-        {#if !parentType}
-        {#if customInputNames}
-          <input class="name" type="text" bind:value={item.name} placeholder="input-name" />
-        {/if}
-        <label>
-          <input type="checkbox" bind:checked={item.required} />
-          Required
-        </label>
-        {/if}
-        {#if item.type === SurveyBuilderTypes.StarsRating}
-          <label>
-            Max rating
-            <input type="number" bind:value={item.options} placeholder="5" />
+          <label class="mx-4 whitespace-nowrap">
+            <input type="checkbox" bind:checked={item.required} />
+            Required
           </label>
+          {#if  customInputNames}
+          <div class="flex-auto relative mr-4">
+            <label class="label-inline" for="name-{item.id}">Name:</label>
+            <input id="name-{item.id}" class="w-40 lg:w-64 px-4" type="text" bind:value={item.name} placeholder="inputName" />
+          </div>
+          {/if}
+          {#if item.type === SurveyBuilderTypes.StarsRating}
+          <div class="relative flex-auto">
+            <label class="label-inline" for="opts-{item.id}">Max</label>
+            <input id="opts-{item.id}" class="w-24 lg:w-32" type="number" bind:value={item.options} placeholder="5" />
+          </div>
+          {/if}
+        </div>
         {/if}
 
         {#if !parentType}
-        <div class="answers">
+        <div class="ml-8 w-3/4">
           {#if item.type !== SurveyBuilderTypes.StarsRating && item.type !== SurveyBuilderTypes.TextInput}
             <svelte:self bind:questions={item.answers} bind:parentType={item.type} />
-            <button class="add-answer" on:click|preventDefault={() => addAnswer(idx)}>+ Answer</button>
+            <button class="secondary w-full" on:click|preventDefault={() => addAnswer(idx)}>+ Answer</button>
           {/if}
         </div>
         {/if}
@@ -116,91 +121,36 @@
     {/each}
     {#if !parentType}
     <li class="add-question">
-      <button on:click|preventDefault={addRow}> &plus; Add question </button>
+      <button class="w-full" on:click|preventDefault={addRow}> &plus; Add question </button>
     </li>
     {/if}
   </ol>
 </main>
 
 <style lang="postcss">
-  .questions {
-    /* padding-left: 0px;
-    list-style-type: none;
-    font-size: 15px; */
-  }
+li {
+  @apply flex flex-wrap my-1 p-2 items-center rounded;
+}
+.questions li {
+  @apply bg-indigo-50 bg-opacity-30 hover:bg-opacity-50;
+}
+.answers li {
+  @apply bg-green-50 bg-opacity-30 hover:bg-opacity-50;
+}
 
-  .questions li {
-    /* margin: 20px 0;
-    padding: 8px 4px;
-    border-bottom: 1px solid #ccc;
+.label-inline {
+  @apply absolute inset-y-3 left-2 hidden lg:block uppercase tracking-wide text-gray-400 text-xs font-bold;
+}
 
-    align-items: center; */
-    /* display: flex;
-    flex: 0 1 auto;
-    flex-wrap: wrap;
-    flex-direction: row;
-    box-sizing: border-box;
-     justify-content: space-between;
-    align-items: center; */
-  }
-/*
-  .questions li button {
-    opacity: 0.7;
-  }
-  .questions li button:hover {
-    opacity: 1;
-  }
+input[type="text"],
+input[type="number"] {
+  text-indent: 2.5rem;
+}
 
-  .questions li .number {
-    color: gray;
-    font-weight: 100;
-    flex-basis: 30px;
-    max-width: 30px;
-    margin-bottom: 20px;
+@media (max-width: 1024px) {
+  input[type="text"],
+  input[type="number"] {
+    text-indent: initial;
   }
-  .questions li .title {
-    flex-basis: 60%;
-    max-width: 60%;
-    margin-bottom: 20px;
-  }
-  .questions li .actions {
-    flex-basis: 30%;
-    margin-bottom: 20px;
-
-    display: flex;
-    justify-content: flex-end;
-    align-items: flex-end;
-  }
-
-  .questions li:hover {
-    border-color: rgb(76, 115, 160);
-    background-color: rgba(239, 248, 250, 0.295);
-    cursor: pointer;
-  }
-  .questions li .answers {
-    flex-basis: 100%;
-    max-width: 80%;
-    margin-left: 30px;
-    margin-top: 20px;
-  }
-
-  .questions li.add-question {
-    display: block;
-  }
-  .questions li.add-question button {
-    width: 100%;
-    background: rgb(232, 248, 252);
-    padding: 10px 0;
-  }
-
-  .questions .add-answer {
-    display: block;
-    width: 100%;
-    padding: 10px 0;
-    background: rgb(232, 252, 234);
-  }
-
-  .questions :global(.questions button) {
-    background-color: var(--survey-builder-secondary-button-background);
-  } */
+}
 </style>

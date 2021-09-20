@@ -20,6 +20,9 @@ function safe_not_equal(a, b) {
 function is_empty(obj) {
     return Object.keys(obj).length === 0;
 }
+function null_to_empty(value) {
+    return value == null ? '' : value;
+}
 
 const is_client = typeof window !== 'undefined';
 let now = is_client
@@ -614,15 +617,15 @@ var SurveyBuilderTypes;
 
 function get_each_context$1(ctx, list, i) {
 	const child_ctx = ctx.slice();
-	child_ctx[5] = list[i][0];
-	child_ctx[6] = list[i][1];
+	child_ctx[6] = list[i][0];
+	child_ctx[7] = list[i][1];
 	return child_ctx;
 }
 
-// (16:6) {#each dropdownOptions as [value, label]}
+// (18:6) {#each dropdownOptions as [value, label]}
 function create_each_block$1(ctx) {
 	let option;
-	let t_value = /*label*/ ctx[6] + "";
+	let t_value = /*label*/ ctx[7] + "";
 	let t;
 	let option_value_value;
 
@@ -630,7 +633,7 @@ function create_each_block$1(ctx) {
 		c() {
 			option = element("option");
 			t = text(t_value);
-			option.__value = option_value_value = /*value*/ ctx[5];
+			option.__value = option_value_value = /*value*/ ctx[6];
 			option.value = option.__value;
 		},
 		m(target, anchor) {
@@ -647,12 +650,17 @@ function create_each_block$1(ctx) {
 function create_fragment$2(ctx) {
 	let main;
 	let div1;
+	let label;
+	let t0;
+	let label_for_value;
+	let t1;
 	let select;
-	let t;
+	let select_id_value;
+	let t2;
 	let div0;
 	let mounted;
 	let dispose;
-	let each_value = /*dropdownOptions*/ ctx[1];
+	let each_value = /*dropdownOptions*/ ctx[2];
 	let each_blocks = [];
 
 	for (let i = 0; i < each_value.length; i += 1) {
@@ -663,23 +671,32 @@ function create_fragment$2(ctx) {
 		c() {
 			main = element("main");
 			div1 = element("div");
+			label = element("label");
+			t0 = text("Type:");
+			t1 = space();
 			select = element("select");
 
 			for (let i = 0; i < each_blocks.length; i += 1) {
 				each_blocks[i].c();
 			}
 
-			t = space();
+			t2 = space();
 			div0 = element("div");
 			div0.innerHTML = `<svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"></path></svg>`;
-			attr(select, "class", "dropdown svelte-11mngg4");
-			if (/*questionType*/ ctx[0] === void 0) add_render_callback(() => /*select_change_handler*/ ctx[4].call(select));
+			attr(label, "for", label_for_value = "qtype-" + /*id*/ ctx[1]);
+			attr(label, "class", "absolute inset-y-3 left-2 hidden lg:block uppercase tracking-wide text-gray-400 text-xs font-bold");
+			attr(select, "id", select_id_value = "qtype-" + /*id*/ ctx[1]);
+			attr(select, "class", "dropdown svelte-dlycjd");
+			if (/*questionType*/ ctx[0] === void 0) add_render_callback(() => /*select_change_handler*/ ctx[5].call(select));
 			attr(div0, "class", "pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700");
 			attr(div1, "class", "relative");
 		},
 		m(target, anchor) {
 			insert(target, main, anchor);
 			append(main, div1);
+			append(div1, label);
+			append(label, t0);
+			append(div1, t1);
 			append(div1, select);
 
 			for (let i = 0; i < each_blocks.length; i += 1) {
@@ -687,21 +704,25 @@ function create_fragment$2(ctx) {
 			}
 
 			select_option(select, /*questionType*/ ctx[0]);
-			append(div1, t);
+			append(div1, t2);
 			append(div1, div0);
 
 			if (!mounted) {
 				dispose = [
-					listen(select, "change", /*select_change_handler*/ ctx[4]),
-					listen(select, "input", prevent_default(/*handleInput*/ ctx[2]))
+					listen(select, "change", /*select_change_handler*/ ctx[5]),
+					listen(select, "input", prevent_default(/*handleInput*/ ctx[3]))
 				];
 
 				mounted = true;
 			}
 		},
 		p(ctx, [dirty]) {
-			if (dirty & /*dropdownOptions*/ 2) {
-				each_value = /*dropdownOptions*/ ctx[1];
+			if (dirty & /*id*/ 2 && label_for_value !== (label_for_value = "qtype-" + /*id*/ ctx[1])) {
+				attr(label, "for", label_for_value);
+			}
+
+			if (dirty & /*dropdownOptions*/ 4) {
+				each_value = /*dropdownOptions*/ ctx[2];
 				let i;
 
 				for (i = 0; i < each_value.length; i += 1) {
@@ -723,7 +744,11 @@ function create_fragment$2(ctx) {
 				each_blocks.length = each_value.length;
 			}
 
-			if (dirty & /*questionType, dropdownOptions*/ 3) {
+			if (dirty & /*id*/ 2 && select_id_value !== (select_id_value = "qtype-" + /*id*/ ctx[1])) {
+				attr(select, "id", select_id_value);
+			}
+
+			if (dirty & /*questionType, dropdownOptions*/ 5) {
 				select_option(select, /*questionType*/ ctx[0]);
 			}
 		},
@@ -740,6 +765,7 @@ function create_fragment$2(ctx) {
 
 function instance$2($$self, $$props, $$invalidate) {
 	let { questionType } = $$props;
+	let { id = "qt" } = $$props;
 
 	const dropdownOptions = [
 		[SurveyBuilderTypes.TextInput, 'User input'],
@@ -754,21 +780,29 @@ function instance$2($$self, $$props, $$invalidate) {
 	function select_change_handler() {
 		questionType = select_value(this);
 		$$invalidate(0, questionType);
-		$$invalidate(1, dropdownOptions);
+		$$invalidate(2, dropdownOptions);
 	}
 
 	$$self.$$set = $$props => {
 		if ('questionType' in $$props) $$invalidate(0, questionType = $$props.questionType);
-		if ('onChange' in $$props) $$invalidate(3, onChange = $$props.onChange);
+		if ('id' in $$props) $$invalidate(1, id = $$props.id);
+		if ('onChange' in $$props) $$invalidate(4, onChange = $$props.onChange);
 	};
 
-	return [questionType, dropdownOptions, handleInput, onChange, select_change_handler];
+	return [
+		questionType,
+		id,
+		dropdownOptions,
+		handleInput,
+		onChange,
+		select_change_handler
+	];
 }
 
 class TypeSelector extends SvelteComponent {
 	constructor(options) {
 		super();
-		init(this, options, instance$2, create_fragment$2, safe_not_equal, { questionType: 0, onChange: 3 });
+		init(this, options, instance$2, create_fragment$2, safe_not_equal, { questionType: 0, id: 1, onChange: 4 });
 	}
 }
 
@@ -811,8 +845,8 @@ function get_each_context(ctx, list, i) {
 	return child_ctx;
 }
 
-// (63:10) {#if idx < questions.length - 1}
-function create_if_block_9(ctx) {
+// (66:10) {#if idx < questions.length - 1}
+function create_if_block_8(ctx) {
 	let button;
 	let mounted;
 	let dispose;
@@ -845,8 +879,8 @@ function create_if_block_9(ctx) {
 	};
 }
 
-// (66:12) {#if idx > 0}
-function create_if_block_8(ctx) {
+// (69:12) {#if idx > 0}
+function create_if_block_7(ctx) {
 	let button;
 	let mounted;
 	let dispose;
@@ -879,7 +913,7 @@ function create_if_block_8(ctx) {
 	};
 }
 
-// (69:12) {:else}
+// (72:12) {:else}
 function create_else_block(ctx) {
 	let button0;
 	let t1;
@@ -898,8 +932,8 @@ function create_else_block(ctx) {
 			t1 = space();
 			button1 = element("button");
 			button1.textContent = "Cancel";
-			attr(button0, "class", "text-red-700");
-			attr(button1, "class", "text-red-700");
+			attr(button0, "class", "danger");
+			attr(button1, "class", "warning");
 		},
 		m(target, anchor) {
 			insert(target, button0, anchor);
@@ -928,8 +962,8 @@ function create_else_block(ctx) {
 	};
 }
 
-// (67:12) {#if deleteConfirmation !== idx}
-function create_if_block_7(ctx) {
+// (70:12) {#if deleteConfirmation !== idx}
+function create_if_block_6(ctx) {
 	let button;
 	let mounted;
 	let dispose;
@@ -942,7 +976,7 @@ function create_if_block_7(ctx) {
 		c() {
 			button = element("button");
 			button.textContent = "× Delete";
-			attr(button, "class", "text-red-700");
+			attr(button, "class", "warning");
 		},
 		m(target, anchor) {
 			insert(target, button, anchor);
@@ -963,11 +997,19 @@ function create_if_block_7(ctx) {
 	};
 }
 
-// (75:8) {#if !parentType}
-function create_if_block_6(ctx) {
+// (78:8) {#if !parentType}
+function create_if_block_3(ctx) {
 	let div;
 	let typeselector;
+	let t0;
+	let label;
+	let input;
+	let t1;
+	let t2;
+	let t3;
 	let current;
+	let mounted;
+	let dispose;
 
 	function func(...args) {
 		return /*func*/ ctx[17](/*idx*/ ctx[26], ...args);
@@ -975,28 +1017,91 @@ function create_if_block_6(ctx) {
 
 	typeselector = new TypeSelector({
 			props: {
+				id: /*item*/ ctx[24].id,
 				questionType: /*item*/ ctx[24].type,
 				onChange: func
 			}
 		});
 
+	function input_change_handler() {
+		/*input_change_handler*/ ctx[18].call(input, /*each_value*/ ctx[25], /*idx*/ ctx[26]);
+	}
+
+	let if_block0 = /*customInputNames*/ ctx[2] && create_if_block_5(ctx);
+	let if_block1 = /*item*/ ctx[24].type === SurveyBuilderTypes.StarsRating && create_if_block_4(ctx);
+
 	return {
 		c() {
 			div = element("div");
 			create_component(typeselector.$$.fragment);
-			attr(div, "class", "type-selector");
+			t0 = space();
+			label = element("label");
+			input = element("input");
+			t1 = text("\n            Required");
+			t2 = space();
+			if (if_block0) if_block0.c();
+			t3 = space();
+			if (if_block1) if_block1.c();
+			attr(input, "type", "checkbox");
+			attr(label, "class", "mx-4 whitespace-nowrap");
+			attr(div, "class", "flex w-3/4 items-center ml-8 py-2");
 		},
 		m(target, anchor) {
 			insert(target, div, anchor);
 			mount_component(typeselector, div, null);
+			append(div, t0);
+			append(div, label);
+			append(label, input);
+			input.checked = /*item*/ ctx[24].required;
+			append(label, t1);
+			append(div, t2);
+			if (if_block0) if_block0.m(div, null);
+			append(div, t3);
+			if (if_block1) if_block1.m(div, null);
 			current = true;
+
+			if (!mounted) {
+				dispose = listen(input, "change", input_change_handler);
+				mounted = true;
+			}
 		},
 		p(new_ctx, dirty) {
 			ctx = new_ctx;
 			const typeselector_changes = {};
+			if (dirty & /*questions*/ 1) typeselector_changes.id = /*item*/ ctx[24].id;
 			if (dirty & /*questions*/ 1) typeselector_changes.questionType = /*item*/ ctx[24].type;
 			if (dirty & /*questions*/ 1) typeselector_changes.onChange = func;
 			typeselector.$set(typeselector_changes);
+
+			if (dirty & /*questions*/ 1) {
+				input.checked = /*item*/ ctx[24].required;
+			}
+
+			if (/*customInputNames*/ ctx[2]) {
+				if (if_block0) {
+					if_block0.p(ctx, dirty);
+				} else {
+					if_block0 = create_if_block_5(ctx);
+					if_block0.c();
+					if_block0.m(div, t3);
+				}
+			} else if (if_block0) {
+				if_block0.d(1);
+				if_block0 = null;
+			}
+
+			if (/*item*/ ctx[24].type === SurveyBuilderTypes.StarsRating) {
+				if (if_block1) {
+					if_block1.p(ctx, dirty);
+				} else {
+					if_block1 = create_if_block_4(ctx);
+					if_block1.c();
+					if_block1.m(div, null);
+				}
+			} else if (if_block1) {
+				if_block1.d(1);
+				if_block1 = null;
+			}
 		},
 		i(local) {
 			if (current) return;
@@ -1010,95 +1115,51 @@ function create_if_block_6(ctx) {
 		d(detaching) {
 			if (detaching) detach(div);
 			destroy_component(typeselector);
-		}
-	};
-}
-
-// (83:8) {#if !parentType}
-function create_if_block_4(ctx) {
-	let t0;
-	let label;
-	let input;
-	let t1;
-	let mounted;
-	let dispose;
-	let if_block = /*customInputNames*/ ctx[2] && create_if_block_5(ctx);
-
-	function input_change_handler() {
-		/*input_change_handler*/ ctx[19].call(input, /*each_value*/ ctx[25], /*idx*/ ctx[26]);
-	}
-
-	return {
-		c() {
-			if (if_block) if_block.c();
-			t0 = space();
-			label = element("label");
-			input = element("input");
-			t1 = text("\n          Required");
-			attr(input, "type", "checkbox");
-		},
-		m(target, anchor) {
-			if (if_block) if_block.m(target, anchor);
-			insert(target, t0, anchor);
-			insert(target, label, anchor);
-			append(label, input);
-			input.checked = /*item*/ ctx[24].required;
-			append(label, t1);
-
-			if (!mounted) {
-				dispose = listen(input, "change", input_change_handler);
-				mounted = true;
-			}
-		},
-		p(new_ctx, dirty) {
-			ctx = new_ctx;
-
-			if (/*customInputNames*/ ctx[2]) {
-				if (if_block) {
-					if_block.p(ctx, dirty);
-				} else {
-					if_block = create_if_block_5(ctx);
-					if_block.c();
-					if_block.m(t0.parentNode, t0);
-				}
-			} else if (if_block) {
-				if_block.d(1);
-				if_block = null;
-			}
-
-			if (dirty & /*questions*/ 1) {
-				input.checked = /*item*/ ctx[24].required;
-			}
-		},
-		d(detaching) {
-			if (if_block) if_block.d(detaching);
-			if (detaching) detach(t0);
-			if (detaching) detach(label);
+			if (if_block0) if_block0.d();
+			if (if_block1) if_block1.d();
 			mounted = false;
 			dispose();
 		}
 	};
 }
 
-// (84:8) {#if customInputNames}
+// (89:10) {#if  customInputNames}
 function create_if_block_5(ctx) {
+	let div;
+	let label;
+	let t0;
+	let label_for_value;
+	let t1;
 	let input;
+	let input_id_value;
 	let mounted;
 	let dispose;
 
 	function input_input_handler_1() {
-		/*input_input_handler_1*/ ctx[18].call(input, /*each_value*/ ctx[25], /*idx*/ ctx[26]);
+		/*input_input_handler_1*/ ctx[19].call(input, /*each_value*/ ctx[25], /*idx*/ ctx[26]);
 	}
 
 	return {
 		c() {
+			div = element("div");
+			label = element("label");
+			t0 = text("Name:");
+			t1 = space();
 			input = element("input");
-			attr(input, "class", "name");
+			attr(label, "class", "label-inline svelte-1xk6kv8");
+			attr(label, "for", label_for_value = "name-" + /*item*/ ctx[24].id);
+			attr(input, "id", input_id_value = "name-" + /*item*/ ctx[24].id);
+			attr(input, "class", "w-40 lg:w-64 px-4 svelte-1xk6kv8");
 			attr(input, "type", "text");
-			attr(input, "placeholder", "input-name");
+			attr(input, "placeholder", "inputName");
+			attr(div, "class", "flex-auto relative mr-4");
 		},
 		m(target, anchor) {
-			insert(target, input, anchor);
+			insert(target, div, anchor);
+			append(div, label);
+			append(label, t0);
+			append(div, t1);
+			append(div, input);
 			set_input_value(input, /*item*/ ctx[24].name);
 
 			if (!mounted) {
@@ -1109,23 +1170,35 @@ function create_if_block_5(ctx) {
 		p(new_ctx, dirty) {
 			ctx = new_ctx;
 
+			if (dirty & /*questions*/ 1 && label_for_value !== (label_for_value = "name-" + /*item*/ ctx[24].id)) {
+				attr(label, "for", label_for_value);
+			}
+
+			if (dirty & /*questions*/ 1 && input_id_value !== (input_id_value = "name-" + /*item*/ ctx[24].id)) {
+				attr(input, "id", input_id_value);
+			}
+
 			if (dirty & /*questions*/ 1 && input.value !== /*item*/ ctx[24].name) {
 				set_input_value(input, /*item*/ ctx[24].name);
 			}
 		},
 		d(detaching) {
-			if (detaching) detach(input);
+			if (detaching) detach(div);
 			mounted = false;
 			dispose();
 		}
 	};
 }
 
-// (92:8) {#if item.type === SurveyBuilderTypes.StarsRating}
-function create_if_block_3(ctx) {
+// (95:10) {#if item.type === SurveyBuilderTypes.StarsRating}
+function create_if_block_4(ctx) {
+	let div;
 	let label;
-	let t;
+	let t0;
+	let label_for_value;
+	let t1;
 	let input;
+	let input_id_value;
 	let mounted;
 	let dispose;
 
@@ -1135,16 +1208,25 @@ function create_if_block_3(ctx) {
 
 	return {
 		c() {
+			div = element("div");
 			label = element("label");
-			t = text("Max rating\n            ");
+			t0 = text("Max");
+			t1 = space();
 			input = element("input");
+			attr(label, "class", "label-inline svelte-1xk6kv8");
+			attr(label, "for", label_for_value = "opts-" + /*item*/ ctx[24].id);
+			attr(input, "id", input_id_value = "opts-" + /*item*/ ctx[24].id);
+			attr(input, "class", "w-24 lg:w-32 svelte-1xk6kv8");
 			attr(input, "type", "number");
 			attr(input, "placeholder", "5");
+			attr(div, "class", "relative flex-auto");
 		},
 		m(target, anchor) {
-			insert(target, label, anchor);
-			append(label, t);
-			append(label, input);
+			insert(target, div, anchor);
+			append(div, label);
+			append(label, t0);
+			append(div, t1);
+			append(div, input);
 			set_input_value(input, /*item*/ ctx[24].options);
 
 			if (!mounted) {
@@ -1155,19 +1237,27 @@ function create_if_block_3(ctx) {
 		p(new_ctx, dirty) {
 			ctx = new_ctx;
 
+			if (dirty & /*questions*/ 1 && label_for_value !== (label_for_value = "opts-" + /*item*/ ctx[24].id)) {
+				attr(label, "for", label_for_value);
+			}
+
+			if (dirty & /*questions*/ 1 && input_id_value !== (input_id_value = "opts-" + /*item*/ ctx[24].id)) {
+				attr(input, "id", input_id_value);
+			}
+
 			if (dirty & /*questions*/ 1 && to_number(input.value) !== /*item*/ ctx[24].options) {
 				set_input_value(input, /*item*/ ctx[24].options);
 			}
 		},
 		d(detaching) {
-			if (detaching) detach(label);
+			if (detaching) detach(div);
 			mounted = false;
 			dispose();
 		}
 	};
 }
 
-// (99:8) {#if !parentType}
+// (104:8) {#if !parentType}
 function create_if_block_1$1(ctx) {
 	let div;
 	let current;
@@ -1177,7 +1267,7 @@ function create_if_block_1$1(ctx) {
 		c() {
 			div = element("div");
 			if (if_block) if_block.c();
-			attr(div, "class", "answers");
+			attr(div, "class", "ml-8 w-3/4");
 		},
 		m(target, anchor) {
 			insert(target, div, anchor);
@@ -1224,7 +1314,7 @@ function create_if_block_1$1(ctx) {
 	};
 }
 
-// (101:10) {#if item.type !== SurveyBuilderTypes.StarsRating && item.type !== SurveyBuilderTypes.TextInput}
+// (106:10) {#if item.type !== SurveyBuilderTypes.StarsRating && item.type !== SurveyBuilderTypes.TextInput}
 function create_if_block_2(ctx) {
 	let questions_1;
 	let updating_questions;
@@ -1267,7 +1357,7 @@ function create_if_block_2(ctx) {
 			t0 = space();
 			button = element("button");
 			button.textContent = "+ Answer";
-			attr(button, "class", "add-answer");
+			attr(button, "class", "secondary w-full");
 		},
 		m(target, anchor) {
 			mount_component(questions_1, target, anchor);
@@ -1320,20 +1410,25 @@ function create_if_block_2(ctx) {
 // (57:4) {#each questions as item, idx (item.id)}
 function create_each_block(key_1, ctx) {
 	let li;
-	let div1;
+	let div2;
 	let span;
 	let t0_value = /*idx*/ ctx[26] + 1 + "";
 	let t0;
 	let t1;
-	let input;
 	let t2;
 	let div0;
+	let label;
 	let t3;
+	let label_for_value;
 	let t4;
+	let input;
+	let input_id_value;
 	let t5;
+	let div1;
 	let t6;
 	let t7;
 	let t8;
+	let t9;
 	let rect;
 	let stop_animation = noop;
 	let current;
@@ -1344,77 +1439,81 @@ function create_each_block(key_1, ctx) {
 		/*input_input_handler*/ ctx[11].call(input, /*each_value*/ ctx[25], /*idx*/ ctx[26]);
 	}
 
-	let if_block0 = /*idx*/ ctx[26] < /*questions*/ ctx[0].length - 1 && create_if_block_9(ctx);
-	let if_block1 = /*idx*/ ctx[26] > 0 && create_if_block_8(ctx);
+	let if_block0 = /*idx*/ ctx[26] < /*questions*/ ctx[0].length - 1 && create_if_block_8(ctx);
+	let if_block1 = /*idx*/ ctx[26] > 0 && create_if_block_7(ctx);
 
 	function select_block_type(ctx, dirty) {
-		if (/*deleteConfirmation*/ ctx[3] !== /*idx*/ ctx[26]) return create_if_block_7;
+		if (/*deleteConfirmation*/ ctx[3] !== /*idx*/ ctx[26]) return create_if_block_6;
 		return create_else_block;
 	}
 
 	let current_block_type = select_block_type(ctx);
 	let if_block2 = current_block_type(ctx);
-	let if_block3 = !/*parentType*/ ctx[1] && create_if_block_6(ctx);
-	let if_block4 = !/*parentType*/ ctx[1] && create_if_block_4(ctx);
-	let if_block5 = /*item*/ ctx[24].type === SurveyBuilderTypes.StarsRating && create_if_block_3(ctx);
-	let if_block6 = !/*parentType*/ ctx[1] && create_if_block_1$1(ctx);
+	let if_block3 = !/*parentType*/ ctx[1] && create_if_block_3(ctx);
+	let if_block4 = !/*parentType*/ ctx[1] && create_if_block_1$1(ctx);
 
 	return {
 		key: key_1,
 		first: null,
 		c() {
 			li = element("li");
-			div1 = element("div");
+			div2 = element("div");
 			span = element("span");
 			t0 = text(t0_value);
-			t1 = space();
-			input = element("input");
+			t1 = text(".");
 			t2 = space();
 			div0 = element("div");
-			if (if_block0) if_block0.c();
-			t3 = space();
-			if (if_block1) if_block1.c();
+			label = element("label");
+			t3 = text("Title:");
 			t4 = space();
-			if_block2.c();
+			input = element("input");
 			t5 = space();
-			if (if_block3) if_block3.c();
+			div1 = element("div");
+			if (if_block0) if_block0.c();
 			t6 = space();
-			if (if_block4) if_block4.c();
+			if (if_block1) if_block1.c();
 			t7 = space();
-			if (if_block5) if_block5.c();
+			if_block2.c();
 			t8 = space();
-			if (if_block6) if_block6.c();
-			attr(span, "class", "number w-8");
-			attr(input, "class", "w-1/2 px-4");
+			if (if_block3) if_block3.c();
+			t9 = space();
+			if (if_block4) if_block4.c();
+			attr(span, "class", "number w-8 text-xl");
+			attr(label, "class", "label-inline svelte-1xk6kv8");
+			attr(label, "for", label_for_value = "title-" + /*item*/ ctx[24].id);
+			attr(input, "id", input_id_value = "title-" + /*item*/ ctx[24].id);
+			attr(input, "class", "w-full px-4 svelte-1xk6kv8");
 			attr(input, "type", "text");
-			attr(div0, "class", "actions w-1/4 px-4");
-			attr(div1, "class", "w-full");
-			attr(li, "class", "flex flex-wrap my-4 svelte-14nmdpl");
+			attr(div0, "class", "flex-auto relative");
+			attr(div1, "class", "actions w-auto px-4 content-end text-right");
+			attr(div2, "class", "w-full flex items-center py-2");
+			attr(li, "class", "svelte-1xk6kv8");
 			this.first = li;
 		},
 		m(target, anchor) {
 			insert(target, li, anchor);
-			append(li, div1);
-			append(div1, span);
+			append(li, div2);
+			append(div2, span);
 			append(span, t0);
-			append(div1, t1);
-			append(div1, input);
-			set_input_value(input, /*item*/ ctx[24].title);
-			append(div1, t2);
-			append(div1, div0);
-			if (if_block0) if_block0.m(div0, null);
-			append(div0, t3);
-			if (if_block1) if_block1.m(div0, null);
+			append(span, t1);
+			append(div2, t2);
+			append(div2, div0);
+			append(div0, label);
+			append(label, t3);
 			append(div0, t4);
-			if_block2.m(div0, null);
-			append(li, t5);
-			if (if_block3) if_block3.m(li, null);
-			append(li, t6);
-			if (if_block4) if_block4.m(li, null);
-			append(li, t7);
-			if (if_block5) if_block5.m(li, null);
+			append(div0, input);
+			set_input_value(input, /*item*/ ctx[24].title);
+			append(div2, t5);
+			append(div2, div1);
+			if (if_block0) if_block0.m(div1, null);
+			append(div1, t6);
+			if (if_block1) if_block1.m(div1, null);
+			append(div1, t7);
+			if_block2.m(div1, null);
 			append(li, t8);
-			if (if_block6) if_block6.m(li, null);
+			if (if_block3) if_block3.m(li, null);
+			append(li, t9);
+			if (if_block4) if_block4.m(li, null);
 			current = true;
 
 			if (!mounted) {
@@ -1426,6 +1525,14 @@ function create_each_block(key_1, ctx) {
 			ctx = new_ctx;
 			if ((!current || dirty & /*questions*/ 1) && t0_value !== (t0_value = /*idx*/ ctx[26] + 1 + "")) set_data(t0, t0_value);
 
+			if (!current || dirty & /*questions*/ 1 && label_for_value !== (label_for_value = "title-" + /*item*/ ctx[24].id)) {
+				attr(label, "for", label_for_value);
+			}
+
+			if (!current || dirty & /*questions*/ 1 && input_id_value !== (input_id_value = "title-" + /*item*/ ctx[24].id)) {
+				attr(input, "id", input_id_value);
+			}
+
 			if (dirty & /*questions*/ 1 && input.value !== /*item*/ ctx[24].title) {
 				set_input_value(input, /*item*/ ctx[24].title);
 			}
@@ -1434,9 +1541,9 @@ function create_each_block(key_1, ctx) {
 				if (if_block0) {
 					if_block0.p(ctx, dirty);
 				} else {
-					if_block0 = create_if_block_9(ctx);
+					if_block0 = create_if_block_8(ctx);
 					if_block0.c();
-					if_block0.m(div0, t3);
+					if_block0.m(div1, t6);
 				}
 			} else if (if_block0) {
 				if_block0.d(1);
@@ -1447,9 +1554,9 @@ function create_each_block(key_1, ctx) {
 				if (if_block1) {
 					if_block1.p(ctx, dirty);
 				} else {
-					if_block1 = create_if_block_8(ctx);
+					if_block1 = create_if_block_7(ctx);
 					if_block1.c();
-					if_block1.m(div0, t4);
+					if_block1.m(div1, t7);
 				}
 			} else if (if_block1) {
 				if_block1.d(1);
@@ -1464,7 +1571,7 @@ function create_each_block(key_1, ctx) {
 
 				if (if_block2) {
 					if_block2.c();
-					if_block2.m(div0, null);
+					if_block2.m(div1, null);
 				}
 			}
 
@@ -1476,10 +1583,10 @@ function create_each_block(key_1, ctx) {
 						transition_in(if_block3, 1);
 					}
 				} else {
-					if_block3 = create_if_block_6(ctx);
+					if_block3 = create_if_block_3(ctx);
 					if_block3.c();
 					transition_in(if_block3, 1);
-					if_block3.m(li, t6);
+					if_block3.m(li, t9);
 				}
 			} else if (if_block3) {
 				group_outros();
@@ -1494,47 +1601,21 @@ function create_each_block(key_1, ctx) {
 			if (!/*parentType*/ ctx[1]) {
 				if (if_block4) {
 					if_block4.p(ctx, dirty);
-				} else {
-					if_block4 = create_if_block_4(ctx);
-					if_block4.c();
-					if_block4.m(li, t7);
-				}
-			} else if (if_block4) {
-				if_block4.d(1);
-				if_block4 = null;
-			}
-
-			if (/*item*/ ctx[24].type === SurveyBuilderTypes.StarsRating) {
-				if (if_block5) {
-					if_block5.p(ctx, dirty);
-				} else {
-					if_block5 = create_if_block_3(ctx);
-					if_block5.c();
-					if_block5.m(li, t8);
-				}
-			} else if (if_block5) {
-				if_block5.d(1);
-				if_block5 = null;
-			}
-
-			if (!/*parentType*/ ctx[1]) {
-				if (if_block6) {
-					if_block6.p(ctx, dirty);
 
 					if (dirty & /*parentType*/ 2) {
-						transition_in(if_block6, 1);
+						transition_in(if_block4, 1);
 					}
 				} else {
-					if_block6 = create_if_block_1$1(ctx);
-					if_block6.c();
-					transition_in(if_block6, 1);
-					if_block6.m(li, null);
+					if_block4 = create_if_block_1$1(ctx);
+					if_block4.c();
+					transition_in(if_block4, 1);
+					if_block4.m(li, null);
 				}
-			} else if (if_block6) {
+			} else if (if_block4) {
 				group_outros();
 
-				transition_out(if_block6, 1, 1, () => {
-					if_block6 = null;
+				transition_out(if_block4, 1, 1, () => {
+					if_block4 = null;
 				});
 
 				check_outros();
@@ -1554,12 +1635,12 @@ function create_each_block(key_1, ctx) {
 		i(local) {
 			if (current) return;
 			transition_in(if_block3);
-			transition_in(if_block6);
+			transition_in(if_block4);
 			current = true;
 		},
 		o(local) {
 			transition_out(if_block3);
-			transition_out(if_block6);
+			transition_out(if_block4);
 			current = false;
 		},
 		d(detaching) {
@@ -1569,15 +1650,13 @@ function create_each_block(key_1, ctx) {
 			if_block2.d();
 			if (if_block3) if_block3.d();
 			if (if_block4) if_block4.d();
-			if (if_block5) if_block5.d();
-			if (if_block6) if_block6.d();
 			mounted = false;
 			dispose();
 		}
 	};
 }
 
-// (109:4) {#if !parentType}
+// (114:4) {#if !parentType}
 function create_if_block$1(ctx) {
 	let li;
 	let button;
@@ -1589,7 +1668,8 @@ function create_if_block$1(ctx) {
 			li = element("li");
 			button = element("button");
 			button.textContent = "+ Add question";
-			attr(li, "class", "add-question svelte-14nmdpl");
+			attr(button, "class", "w-full");
+			attr(li, "class", "add-question svelte-1xk6kv8");
 		},
 		m(target, anchor) {
 			insert(target, li, anchor);
@@ -1615,6 +1695,7 @@ function create_fragment$1(ctx) {
 	let each_blocks = [];
 	let each_1_lookup = new Map();
 	let t;
+	let ol_class_value;
 	let current;
 	let each_value = /*questions*/ ctx[0];
 	const get_key = ctx => /*item*/ ctx[24].id;
@@ -1638,7 +1719,7 @@ function create_fragment$1(ctx) {
 
 			t = space();
 			if (if_block) if_block.c();
-			attr(ol, "class", "questions svelte-14nmdpl");
+			attr(ol, "class", ol_class_value = "" + (null_to_empty(/*parentType*/ ctx[1] ? 'answers' : 'questions') + " svelte-1xk6kv8"));
 		},
 		m(target, anchor) {
 			insert(target, main, anchor);
@@ -1673,6 +1754,10 @@ function create_fragment$1(ctx) {
 			} else if (if_block) {
 				if_block.d(1);
 				if_block = null;
+			}
+
+			if (!current || dirty & /*parentType*/ 2 && ol_class_value !== (ol_class_value = "" + (null_to_empty(/*parentType*/ ctx[1] ? 'answers' : 'questions') + " svelte-1xk6kv8"))) {
+				attr(ol, "class", ol_class_value);
 			}
 		},
 		i(local) {
@@ -1775,13 +1860,13 @@ function instance$1($$self, $$props, $$invalidate) {
 	const click_handler_4 = () => deleteRow(-1);
 	const func = (idx, value) => onQuestionTypeChange(idx, value);
 
-	function input_input_handler_1(each_value, idx) {
-		each_value[idx].name = this.value;
+	function input_change_handler(each_value, idx) {
+		each_value[idx].required = this.checked;
 		$$invalidate(0, questions);
 	}
 
-	function input_change_handler(each_value, idx) {
-		each_value[idx].required = this.checked;
+	function input_input_handler_1(each_value, idx) {
+		each_value[idx].name = this.value;
 		$$invalidate(0, questions);
 	}
 
@@ -1831,8 +1916,8 @@ function instance$1($$self, $$props, $$invalidate) {
 		click_handler_3,
 		click_handler_4,
 		func,
-		input_input_handler_1,
 		input_change_handler,
+		input_input_handler_1,
 		input_input_handler_2,
 		questions_1_questions_binding,
 		questions_1_parentType_binding,

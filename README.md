@@ -2,7 +2,8 @@
 
 Small library to build custom surveys, export/import to JSON.
 
-![](docs/2021-09-19-23-27-03.png)
+![](docs/2021-09-20-17-54-20.png)
+
 # Installation
 
 Use sources or include `dist/survey-builder.css`, `dist/survey-builder[.min].js` files.
