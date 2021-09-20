@@ -94,21 +94,3 @@ To use it:
   })
 </script>
 ```
-
-# Styling options
-
-Currently following CSS variables are being used:
-
-```css
-:root {
-  --survey-builder-button-color: rgb(14, 40, 53);
-  --survey-builder-button-border: rgb(34, 151, 172);
-  --survey-builder-button-border-hover: rgb(52, 196, 240);
-  --survey-builder-button-background: rgb(184, 227, 247);
-  --survey-builder-button-background-hover: rgb(154, 220, 250);
-  --survey-builder-secondary-button-border: rgb(34, 172, 92);
-  --survey-builder-secondary-button-background: rgb(184, 247, 195);
-}
-```
-
-They can be redefined on a component or document level
