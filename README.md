@@ -45,18 +45,18 @@ To use it:
       haveTitle: false,
       customInputNames: true,
       debug: true,
-      snapshot: {
+      snapshot: snapshot: {
         title: 'Sample survey',
         questions: [
           {
-            id: genId('q'),
+            id: 'q-1',
             title: 'User name',
             name: 'userName',
             type: 'input',
             required: true,
           },
           {
-            id: genId('q'),
+            id: 'q-2',
             title: 'User rating',
             name: 'userRating',
             type: 'rating',
@@ -64,19 +64,19 @@ To use it:
             options: 5,
           },
           {
-            id: genId('q'),
+            id: 'q-3',
             title: 'Account type',
             name: 'accountType',
             type: 'single',
             required: true,
             answers: [
               {
-                id: genId('a'),
+                id: 'a-1',
                 title: 'Private account',
                 type: 'text',
               },
               {
-                id: genId('a'),
+                id: 'a-2',
                 title: 'Business account',
                 type: 'text',
               },
@@ -84,10 +84,10 @@ To use it:
           },
         ],
       },
-      onExport: (data: SurveyBuilderSnapshot) => {
+      onExport: (data) => {
         console.log('Congrats: export', data)
       },
-      onChange: (data: SurveyBuilderSnapshot) => {
+      onChange: (data) => {
         console.log('Model changed', data)
       },
     },

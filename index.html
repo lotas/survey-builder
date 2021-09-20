@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset='utf-8'>
+  <meta name='viewport' content='width=device-width,initial-scale=1'>
+
+  <title>Survey builder</title>
+
+  <link rel='stylesheet' href='/dist/survey-builder.css'>
+  <script src='/dist/survey-builder.min.js'></script>
+</head>
+
+<body>
+  <div id="survey-builder"></div>
+
+  <script>
+    SurveyBuilderInit({
+      target: document.getElementById('survey-builder'),
+      props: {
+        haveTitle: false,
+        customInputNames: true,
+        debug: true,
+        snapshot: {
+          title: 'Sample survey',
+          questions: [
+            {
+              id: 'q-1',
+              title: 'User name',
+              name: 'userName',
+              type: 'input',
+              required: true,
+            },
+            {
+              id: 'q-2',
+              title: 'User rating',
+              name: 'userRating',
+              type: 'rating',
+              required: true,
+              options: 5,
+            },
+            {
+              id: 'q-3',
+              title: 'Account type',
+              name: 'accountType',
+              type: 'single',
+              required: true,
+              answers: [
+                {
+                  id: 'a-1',
+                  title: 'Private account',
+                  type: 'text',
+                },
+                {
+                  id: 'a-2',
+                  title: 'Business account',
+                  type: 'text',
+                },
+              ],
+            },
+          ],
+        },
+        onExport: (data) => {
+          console.log('Congrats: export', data)
+        },
+        onChange: (data) => {
+          console.log('Model changed', data)
+        },
+      }
+    })
+  </script>
+</body>
+</html>
