@@ -59,12 +59,21 @@
   @tailwind utilities;
 
   .survey-builder button {
-    @apply font-bold py-2 px-4 rounded bg-blue-200 text-blue-800 hover:bg-blue-100;
+    @apply font-bold py-2 px-4 rounded bg-blue-200 text-blue-900 hover:bg-blue-100;
   }
-
+  .survey-builder button.danger {
+    @apply bg-red-400 text-red-900 hover:bg-red-200;
+  }
+  .survey-builder button.warning {
+    @apply bg-red-100 text-red-900 hover:bg-red-50;
+  }
+  .survey-builder button.secondary {
+    @apply bg-green-100 text-green-900 hover:bg-green-50;
+  }
   .survey-builder input[type="text"],
   .survey-builder input[type="number"] {
-    @apply bg-gray-200 appearance-none border-2 border-gray-200 rounded
-      py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500;
+    @apply bg-blue-50 bg-opacity-10 appearance-none border-2 border-blue-200 rounded h-10
+      py-2 px-4 text-gray-800 leading-tight
+      focus:outline-none focus:bg-white focus:border-blue-500;
   }
 </style>

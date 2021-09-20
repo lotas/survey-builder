@@ -2,6 +2,7 @@
   import { SurveyBuilderTypes } from './types'
 
   export let questionType: string
+  export let id: string = "qt"
 
   const dropdownOptions = [
     [SurveyBuilderTypes.TextInput, 'User input'],
@@ -17,7 +18,8 @@
 
 <main>
   <div class="relative">
-    <select class="dropdown" bind:value={questionType} on:input|preventDefault={handleInput}>
+    <label for="qtype-{id}" class="absolute inset-y-3 left-2 hidden lg:block uppercase tracking-wide text-gray-400 text-xs font-bold">Type:</label>
+    <select id="qtype-{id}" class="dropdown" bind:value={questionType} on:input|preventDefault={handleInput}>
       {#each dropdownOptions as [value, label]}
         <option {value}>{label}</option>
       {/each}
@@ -36,8 +38,16 @@
 
 <style lang="postcss">
   .dropdown {
-    @apply appearance-none w-full bg-gray-200 cursor-pointer
-      border border-gray-200 text-gray-700 py-3 px-4 pr-8
-      rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500;
+    @apply appearance-none bg-blue-50 bg-opacity-10 cursor-pointer h-10
+      border border-blue-200 text-gray-700 py-2 px-4 pr-8
+      rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500
+      w-44 lg:w-52;
+
+    text-indent: 2.5rem;
+  }
+  @media (max-width: 1024px) {
+    .dropdown {
+      text-indent: initial;
+    }
   }
 </style>
