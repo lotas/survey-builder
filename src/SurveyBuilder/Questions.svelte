@@ -63,20 +63,22 @@
 <main>
   <ol class="questions">
     {#each questions as item, idx (item.id)}
-      <li animate:flip={{ duration: 250 }}>
-        <span class="number">{idx + 1}</span>
-        <input class="title" type="text" bind:value={item.title} />
-        <div class="actions">
-        {#if idx < questions.length - 1}<button on:click|preventDefault={() => moveUp(idx)}
-          >&darr;</button
-          >{/if}
-          {#if idx > 0}<button on:click|preventDefault={() => moveDown(idx)}>&uarr;</button>{/if}
-          {#if deleteConfirmation !== idx}
-          <button class="danger" on:click|preventDefault={() => deleteRow(idx)}>&times; Delete </button>
-          {:else}
-          <button class="danger" on:click|preventDefault={() => deleteRowConfirm(idx)}>&times; Yes, delete </button>
-          <button class="danger" on:click|preventDefault={() => deleteRow(-1)}> Cancel </button>
-          {/if}
+      <li animate:flip={{ duration: 250 }} class="flex flex-wrap my-4">
+        <div class="w-full">
+          <span class="number w-8">{idx + 1}</span>
+          <input class="w-1/2 px-4" type="text" bind:value={item.title} />
+          <div class="actions w-1/4 px-4">
+          {#if idx < questions.length - 1}<button on:click|preventDefault={() => moveUp(idx)}
+            >&darr;</button
+            >{/if}
+            {#if idx > 0}<button on:click|preventDefault={() => moveDown(idx)}>&uarr;</button>{/if}
+            {#if deleteConfirmation !== idx}
+            <button class="text-red-700" on:click|preventDefault={() => deleteRow(idx)}>&times; Delete </button>
+            {:else}
+            <button class="text-red-700" on:click|preventDefault={() => deleteRowConfirm(idx)}>&times; Yes, delete </button>
+            <button class="text-red-700" on:click|preventDefault={() => deleteRow(-1)}> Cancel </button>
+            {/if}
+          </div>
         </div>
         {#if !parentType}
         <div class="type-selector">
@@ -120,36 +122,30 @@
   </ol>
 </main>
 
-<style>
+<style lang="postcss">
   .questions {
-    padding-left: 0px;
+    /* padding-left: 0px;
     list-style-type: none;
-    font-size: 15px;
+    font-size: 15px; */
   }
-  button.danger {
-    color: rgb(119, 66, 30);
-  }
+
   .questions li {
-    margin: 20px 0;
+    /* margin: 20px 0;
     padding: 8px 4px;
     border-bottom: 1px solid #ccc;
 
-    align-items: center;
-    display: flex;
+    align-items: center; */
+    /* display: flex;
     flex: 0 1 auto;
     flex-wrap: wrap;
     flex-direction: row;
     box-sizing: border-box;
-    /* justify-content: space-between; */
-    align-items: center;
+     justify-content: space-between;
+    align-items: center; */
   }
-  .questions li > * {
-    padding-left: 8px;
-    padding-right: 8px;
-  }
+/*
   .questions li button {
     opacity: 0.7;
-    margin: auto 10px;
   }
   .questions li button:hover {
     opacity: 1;
@@ -175,9 +171,7 @@
     justify-content: flex-end;
     align-items: flex-end;
   }
-  .questions li .type-selector {
-    margin-left: 35px;
-  }
+
   .questions li:hover {
     border-color: rgb(76, 115, 160);
     background-color: rgba(239, 248, 250, 0.295);
@@ -208,5 +202,5 @@
 
   .questions :global(.questions button) {
     background-color: var(--survey-builder-secondary-button-background);
-  }
+  } */
 </style>

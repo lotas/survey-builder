@@ -619,7 +619,7 @@ function get_each_context$1(ctx, list, i) {
 	return child_ctx;
 }
 
-// (15:4) {#each dropdownOptions as [value, label]}
+// (16:6) {#each dropdownOptions as [value, label]}
 function create_each_block$1(ctx) {
 	let option;
 	let t_value = /*label*/ ctx[6] + "";
@@ -646,7 +646,10 @@ function create_each_block$1(ctx) {
 
 function create_fragment$2(ctx) {
 	let main;
+	let div1;
 	let select;
+	let t;
+	let div0;
 	let mounted;
 	let dispose;
 	let each_value = /*dropdownOptions*/ ctx[1];
@@ -659,23 +662,33 @@ function create_fragment$2(ctx) {
 	return {
 		c() {
 			main = element("main");
+			div1 = element("div");
 			select = element("select");
 
 			for (let i = 0; i < each_blocks.length; i += 1) {
 				each_blocks[i].c();
 			}
 
+			t = space();
+			div0 = element("div");
+			div0.innerHTML = `<svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"></path></svg>`;
+			attr(select, "class", "dropdown svelte-11mngg4");
 			if (/*questionType*/ ctx[0] === void 0) add_render_callback(() => /*select_change_handler*/ ctx[4].call(select));
+			attr(div0, "class", "pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700");
+			attr(div1, "class", "relative");
 		},
 		m(target, anchor) {
 			insert(target, main, anchor);
-			append(main, select);
+			append(main, div1);
+			append(div1, select);
 
 			for (let i = 0; i < each_blocks.length; i += 1) {
 				each_blocks[i].m(select, null);
 			}
 
 			select_option(select, /*questionType*/ ctx[0]);
+			append(div1, t);
+			append(div1, div0);
 
 			if (!mounted) {
 				dispose = [
@@ -798,7 +811,7 @@ function get_each_context(ctx, list, i) {
 	return child_ctx;
 }
 
-// (62:8) {#if idx < questions.length - 1}
+// (63:10) {#if idx < questions.length - 1}
 function create_if_block_9(ctx) {
 	let button;
 	let mounted;
@@ -812,7 +825,6 @@ function create_if_block_9(ctx) {
 		c() {
 			button = element("button");
 			button.textContent = "↓";
-			attr(button, "class", "svelte-1d6g9ie");
 		},
 		m(target, anchor) {
 			insert(target, button, anchor);
@@ -833,7 +845,7 @@ function create_if_block_9(ctx) {
 	};
 }
 
-// (65:10) {#if idx > 0}
+// (66:12) {#if idx > 0}
 function create_if_block_8(ctx) {
 	let button;
 	let mounted;
@@ -847,7 +859,6 @@ function create_if_block_8(ctx) {
 		c() {
 			button = element("button");
 			button.textContent = "↑";
-			attr(button, "class", "svelte-1d6g9ie");
 		},
 		m(target, anchor) {
 			insert(target, button, anchor);
@@ -868,7 +879,7 @@ function create_if_block_8(ctx) {
 	};
 }
 
-// (68:10) {:else}
+// (69:12) {:else}
 function create_else_block(ctx) {
 	let button0;
 	let t1;
@@ -887,8 +898,8 @@ function create_else_block(ctx) {
 			t1 = space();
 			button1 = element("button");
 			button1.textContent = "Cancel";
-			attr(button0, "class", "danger svelte-1d6g9ie");
-			attr(button1, "class", "danger svelte-1d6g9ie");
+			attr(button0, "class", "text-red-700");
+			attr(button1, "class", "text-red-700");
 		},
 		m(target, anchor) {
 			insert(target, button0, anchor);
@@ -917,7 +928,7 @@ function create_else_block(ctx) {
 	};
 }
 
-// (66:10) {#if deleteConfirmation !== idx}
+// (67:12) {#if deleteConfirmation !== idx}
 function create_if_block_7(ctx) {
 	let button;
 	let mounted;
@@ -931,7 +942,7 @@ function create_if_block_7(ctx) {
 		c() {
 			button = element("button");
 			button.textContent = "× Delete";
-			attr(button, "class", "danger svelte-1d6g9ie");
+			attr(button, "class", "text-red-700");
 		},
 		m(target, anchor) {
 			insert(target, button, anchor);
@@ -952,7 +963,7 @@ function create_if_block_7(ctx) {
 	};
 }
 
-// (73:8) {#if !parentType}
+// (75:8) {#if !parentType}
 function create_if_block_6(ctx) {
 	let div;
 	let typeselector;
@@ -973,7 +984,7 @@ function create_if_block_6(ctx) {
 		c() {
 			div = element("div");
 			create_component(typeselector.$$.fragment);
-			attr(div, "class", "type-selector svelte-1d6g9ie");
+			attr(div, "class", "type-selector");
 		},
 		m(target, anchor) {
 			insert(target, div, anchor);
@@ -1003,7 +1014,7 @@ function create_if_block_6(ctx) {
 	};
 }
 
-// (81:8) {#if !parentType}
+// (83:8) {#if !parentType}
 function create_if_block_4(ctx) {
 	let t0;
 	let label;
@@ -1025,7 +1036,6 @@ function create_if_block_4(ctx) {
 			input = element("input");
 			t1 = text("\n          Required");
 			attr(input, "type", "checkbox");
-			attr(label, "class", "svelte-1d6g9ie");
 		},
 		m(target, anchor) {
 			if (if_block) if_block.m(target, anchor);
@@ -1070,7 +1080,7 @@ function create_if_block_4(ctx) {
 	};
 }
 
-// (82:8) {#if customInputNames}
+// (84:8) {#if customInputNames}
 function create_if_block_5(ctx) {
 	let input;
 	let mounted;
@@ -1083,7 +1093,7 @@ function create_if_block_5(ctx) {
 	return {
 		c() {
 			input = element("input");
-			attr(input, "class", "name svelte-1d6g9ie");
+			attr(input, "class", "name");
 			attr(input, "type", "text");
 			attr(input, "placeholder", "input-name");
 		},
@@ -1111,7 +1121,7 @@ function create_if_block_5(ctx) {
 	};
 }
 
-// (90:8) {#if item.type === SurveyBuilderTypes.StarsRating}
+// (92:8) {#if item.type === SurveyBuilderTypes.StarsRating}
 function create_if_block_3(ctx) {
 	let label;
 	let t;
@@ -1130,7 +1140,6 @@ function create_if_block_3(ctx) {
 			input = element("input");
 			attr(input, "type", "number");
 			attr(input, "placeholder", "5");
-			attr(label, "class", "svelte-1d6g9ie");
 		},
 		m(target, anchor) {
 			insert(target, label, anchor);
@@ -1158,7 +1167,7 @@ function create_if_block_3(ctx) {
 	};
 }
 
-// (97:8) {#if !parentType}
+// (99:8) {#if !parentType}
 function create_if_block_1$1(ctx) {
 	let div;
 	let current;
@@ -1168,7 +1177,7 @@ function create_if_block_1$1(ctx) {
 		c() {
 			div = element("div");
 			if (if_block) if_block.c();
-			attr(div, "class", "answers svelte-1d6g9ie");
+			attr(div, "class", "answers");
 		},
 		m(target, anchor) {
 			insert(target, div, anchor);
@@ -1215,7 +1224,7 @@ function create_if_block_1$1(ctx) {
 	};
 }
 
-// (99:10) {#if item.type !== SurveyBuilderTypes.StarsRating && item.type !== SurveyBuilderTypes.TextInput}
+// (101:10) {#if item.type !== SurveyBuilderTypes.StarsRating && item.type !== SurveyBuilderTypes.TextInput}
 function create_if_block_2(ctx) {
 	let questions_1;
 	let updating_questions;
@@ -1258,7 +1267,7 @@ function create_if_block_2(ctx) {
 			t0 = space();
 			button = element("button");
 			button.textContent = "+ Answer";
-			attr(button, "class", "add-answer svelte-1d6g9ie");
+			attr(button, "class", "add-answer");
 		},
 		m(target, anchor) {
 			mount_component(questions_1, target, anchor);
@@ -1311,13 +1320,14 @@ function create_if_block_2(ctx) {
 // (57:4) {#each questions as item, idx (item.id)}
 function create_each_block(key_1, ctx) {
 	let li;
+	let div1;
 	let span;
 	let t0_value = /*idx*/ ctx[26] + 1 + "";
 	let t0;
 	let t1;
 	let input;
 	let t2;
-	let div;
+	let div0;
 	let t3;
 	let t4;
 	let t5;
@@ -1354,12 +1364,13 @@ function create_each_block(key_1, ctx) {
 		first: null,
 		c() {
 			li = element("li");
+			div1 = element("div");
 			span = element("span");
 			t0 = text(t0_value);
 			t1 = space();
 			input = element("input");
 			t2 = space();
-			div = element("div");
+			div0 = element("div");
 			if (if_block0) if_block0.c();
 			t3 = space();
 			if (if_block1) if_block1.c();
@@ -1373,27 +1384,29 @@ function create_each_block(key_1, ctx) {
 			if (if_block5) if_block5.c();
 			t8 = space();
 			if (if_block6) if_block6.c();
-			attr(span, "class", "number svelte-1d6g9ie");
-			attr(input, "class", "title svelte-1d6g9ie");
+			attr(span, "class", "number w-8");
+			attr(input, "class", "w-1/2 px-4");
 			attr(input, "type", "text");
-			attr(div, "class", "actions svelte-1d6g9ie");
-			attr(li, "class", "svelte-1d6g9ie");
+			attr(div0, "class", "actions w-1/4 px-4");
+			attr(div1, "class", "w-full");
+			attr(li, "class", "flex flex-wrap my-4 svelte-14nmdpl");
 			this.first = li;
 		},
 		m(target, anchor) {
 			insert(target, li, anchor);
-			append(li, span);
+			append(li, div1);
+			append(div1, span);
 			append(span, t0);
-			append(li, t1);
-			append(li, input);
+			append(div1, t1);
+			append(div1, input);
 			set_input_value(input, /*item*/ ctx[24].title);
-			append(li, t2);
-			append(li, div);
-			if (if_block0) if_block0.m(div, null);
-			append(div, t3);
-			if (if_block1) if_block1.m(div, null);
-			append(div, t4);
-			if_block2.m(div, null);
+			append(div1, t2);
+			append(div1, div0);
+			if (if_block0) if_block0.m(div0, null);
+			append(div0, t3);
+			if (if_block1) if_block1.m(div0, null);
+			append(div0, t4);
+			if_block2.m(div0, null);
 			append(li, t5);
 			if (if_block3) if_block3.m(li, null);
 			append(li, t6);
@@ -1423,7 +1436,7 @@ function create_each_block(key_1, ctx) {
 				} else {
 					if_block0 = create_if_block_9(ctx);
 					if_block0.c();
-					if_block0.m(div, t3);
+					if_block0.m(div0, t3);
 				}
 			} else if (if_block0) {
 				if_block0.d(1);
@@ -1436,7 +1449,7 @@ function create_each_block(key_1, ctx) {
 				} else {
 					if_block1 = create_if_block_8(ctx);
 					if_block1.c();
-					if_block1.m(div, t4);
+					if_block1.m(div0, t4);
 				}
 			} else if (if_block1) {
 				if_block1.d(1);
@@ -1451,7 +1464,7 @@ function create_each_block(key_1, ctx) {
 
 				if (if_block2) {
 					if_block2.c();
-					if_block2.m(div, null);
+					if_block2.m(div0, null);
 				}
 			}
 
@@ -1564,7 +1577,7 @@ function create_each_block(key_1, ctx) {
 	};
 }
 
-// (107:4) {#if !parentType}
+// (109:4) {#if !parentType}
 function create_if_block$1(ctx) {
 	let li;
 	let button;
@@ -1576,8 +1589,7 @@ function create_if_block$1(ctx) {
 			li = element("li");
 			button = element("button");
 			button.textContent = "+ Add question";
-			attr(button, "class", "svelte-1d6g9ie");
-			attr(li, "class", "add-question svelte-1d6g9ie");
+			attr(li, "class", "add-question svelte-14nmdpl");
 		},
 		m(target, anchor) {
 			insert(target, li, anchor);
@@ -1626,7 +1638,7 @@ function create_fragment$1(ctx) {
 
 			t = space();
 			if (if_block) if_block.c();
-			attr(ol, "class", "questions svelte-1d6g9ie");
+			attr(ol, "class", "questions svelte-14nmdpl");
 		},
 		m(target, anchor) {
 			insert(target, main, anchor);
@@ -1856,11 +1868,8 @@ function create_if_block_1(ctx) {
 			label = element("label");
 			t = text("Title:\n        ");
 			input = element("input");
-			attr(input, "id", "survey-title");
 			attr(input, "type", "text");
-			attr(label, "for", "survey-title");
-			attr(label, "class", "svelte-100xnvf");
-			attr(div, "class", "survey-title svelte-100xnvf");
+			attr(div, "class", "my-4");
 		},
 		m(target, anchor) {
 			insert(target, div, anchor);
@@ -1902,7 +1911,7 @@ function create_if_block(ctx) {
 			t1 = space();
 			pre = element("pre");
 			t2 = text(t2_value);
-			attr(pre, "class", "debug svelte-100xnvf");
+			attr(pre, "class", "debug");
 		},
 		m(target, anchor) {
 			insert(target, h3, anchor);
@@ -1987,9 +1996,9 @@ function create_fragment(ctx) {
 			create_component(questions.$$.fragment);
 			t9 = space();
 			if (if_block1) if_block1.c();
-			attr(h1, "class", "svelte-100xnvf");
-			attr(div, "class", "controls svelte-100xnvf");
-			attr(main, "class", "svelte-100xnvf");
+			attr(h1, "class", "text-3xl");
+			attr(div, "class", "my-4");
+			attr(main, "class", "survey-builder container mx-auto font-sans");
 		},
 		m(target, anchor) {
 			insert(target, main, anchor);

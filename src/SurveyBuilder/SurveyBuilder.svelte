@@ -26,17 +26,17 @@
   }
 </script>
 
-<main>
-  <h1>Survey builder &quot;{snapshot.title || 'no name'}&quot;</h1>
+<main class="survey-builder container mx-auto font-sans">
+  <h1 class="text-3xl">Survey builder &quot;{snapshot.title || 'no name'}&quot;</h1>
   {#if haveTitle}
-    <div class="survey-title">
-      <label for="survey-title">
+    <div class="my-4">
+      <label>
         Title:
-        <input id="survey-title" type="text" bind:value={snapshot.title} />
+        <input type="text" bind:value={snapshot.title} />
       </label>
     </div>
   {/if}
-  <div class="controls">
+  <div class="my-4">
     <button on:click|preventDefault={handleExport}> Export </button>
   </div>
 
@@ -52,68 +52,19 @@
 
 </main>
 
-<style>
-  :global(:root) {
-    --survey-builder-button-color: rgb(14, 40, 53);
-    --survey-builder-button-border-hover: rgb(52, 196, 240);
-    --survey-builder-button-background: rgb(215, 237, 247);
-    --survey-builder-button-background-hover: rgb(154, 220, 250);
-    --survey-builder-secondary-button-background: rgb(208, 243, 214);
-    --survey-builder-input-border: rgb(136, 157, 185);
+
+<style global lang="postcss">
+  @tailwind base;
+  @tailwind components;
+  @tailwind utilities;
+
+  .survey-builder button {
+    @apply font-bold py-2 px-4 rounded bg-blue-200 text-blue-800 hover:bg-blue-100;
   }
 
-  main {
-    padding: 8px 10px;
-    font-size: 15px;
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
-  }
-
-  main :global(button) {
-    padding: 4px 8px;
-    color: var(--survey-builder-button-color);
-    background-color: var(--survey-builder-button-background);
-    box-shadow: 2px 2px 5px #ccc;
-    font-size: 15px;
-    line-height: 20px;
-    border: 0;
-  }
-  main :global(button:hover) {
-    cursor: pointer;
-    background-color: var(--survey-builder-button-background-hover);
-  }
-  main :global(button.secondary) {
-    background-color: var(--survey-builder-secondary-button-background);
-  }
-  main :global(select),
-  main :global(input) {
-    padding: 4px 8px;
-    font-size: 15px;
-    border: 1px solid var(--survey-builder-input-border);
-    border-radius: 2px;
-    line-height: 24px;
-  }
-
-  h1 {
-    color: #533;
-    text-transform: uppercase;
-    font-size: 1.5em;
-    font-weight: 100;
-  }
-
-  .controls {
-    margin: 2px 5px;
-    display: flex;
-    justify-content: space-between;
-  }
-  .survey-title {
-    margin: 20px 0;
-  }
-
-  .debug {
-    width: 100%;
-    text-align: left;
-  }
-  label {
-    font-size: 15px;
+  .survey-builder input[type="text"],
+  .survey-builder input[type="number"] {
+    @apply bg-gray-200 appearance-none border-2 border-gray-200 rounded
+      py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500;
   }
 </style>

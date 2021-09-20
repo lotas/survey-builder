@@ -57,8 +57,8 @@
   }
 </script>
 
-<main>
-  <div class="options">
+<main class="container mx-auto">
+  <div class="border-2 my-4 px-8 py-4">
     <label>
       <input type="checkbox" bind:checked={props.haveTitle} />
       Have title?
@@ -80,11 +80,3 @@
     bind:snapshot={props.snapshot}
   />
 </main>
-
-<style>
-  .options {
-    margin: 20px 0;
-    border: 1px solid #ccc;
-    padding: 10px 20px;
-  }
-</style>
