@@ -8,11 +8,44 @@
   <title>Survey builder</title>
 
   <link rel='stylesheet' href='dist/survey-builder.css'>
+  <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/github-fork-ribbon-css/0.2.3/gh-fork-ribbon.min.css" />
+
+    <style>
+      .github-fork-ribbon:before {
+        background-color: rgb(124, 189, 180);
+      }
+
+      body {
+        margin: 40px 0;
+        padding: 20px 10px;
+      }
+      footer {
+        margin: 50px -10px 0 -10px;
+        padding-left: 20px;
+        border-top: 1px solid #999;
+        padding-top: 20px;
+        color: #aaa;
+        text-align: center;
+      }
+      footer a {
+        margin-left: 50px;
+      }
+    </style>
+
   <script src='dist/survey-builder.min.js'></script>
 </head>
 
 <body>
+  <a class="github-fork-ribbon" href="https://github.com/lotas/survey-builder/" data-ribbon="Fork me on GitHub"
+    title="Fork me on GitHub">Fork me on GitHub</a>
+
   <div id="survey-builder"></div>
+
+  <footer>
+    &copy; 2021
+    <a href="https://github.com/lotas/survey-builder/">github.com/lotas/survey-builder</a>
+  </footer>
 
   <script>
     SurveyBuilderInit({
