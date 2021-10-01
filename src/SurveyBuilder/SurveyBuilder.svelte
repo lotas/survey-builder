@@ -44,10 +44,12 @@
   <Questions bind:questions={snapshot.questions} bind:customInputNames />
 
   {#if debug}
-  <h3>Data model:</h3>
-  <pre class="debug">
-    {JSON.stringify(snapshot, null, 2)}
-  </pre>
+  <div class="debug">
+    <h3>Data model:</h3>
+    <pre>
+      {JSON.stringify(snapshot, null, 2)}
+    </pre>
+  </div>
   {/if}
 
 </main>

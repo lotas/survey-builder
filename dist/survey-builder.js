@@ -1983,6 +1983,7 @@ function create_if_block_1(ctx) {
 
 // (43:2) {#if debug}
 function create_if_block(ctx) {
+	let div;
 	let h3;
 	let t1;
 	let pre;
@@ -1991,26 +1992,26 @@ function create_if_block(ctx) {
 
 	return {
 		c() {
+			div = element("div");
 			h3 = element("h3");
 			h3.textContent = "Data model:";
 			t1 = space();
 			pre = element("pre");
 			t2 = text(t2_value);
-			attr(pre, "class", "debug");
+			attr(div, "class", "debug");
 		},
 		m(target, anchor) {
-			insert(target, h3, anchor);
-			insert(target, t1, anchor);
-			insert(target, pre, anchor);
+			insert(target, div, anchor);
+			append(div, h3);
+			append(div, t1);
+			append(div, pre);
 			append(pre, t2);
 		},
 		p(ctx, dirty) {
 			if (dirty & /*snapshot*/ 1 && t2_value !== (t2_value = JSON.stringify(/*snapshot*/ ctx[0], null, 2) + "")) set_data(t2, t2_value);
 		},
 		d(detaching) {
-			if (detaching) detach(h3);
-			if (detaching) detach(t1);
-			if (detaching) detach(pre);
+			if (detaching) detach(div);
 		}
 	};
 }

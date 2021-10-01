@@ -20,6 +20,36 @@
         margin: 40px 0;
         padding: 20px 10px;
       }
+
+      p.intro {
+        padding: 10px 10px 50px 20px;
+      }
+
+      #survey-builder {
+        position: relative;
+        padding-right: 30%;
+      }
+
+      #survey-builder .debug {
+        position: absolute;
+        right: 10px;
+        top: 50px;
+        height: 80%;
+        width: 25%;
+        padding-right: initial;
+        overflow-y: auto;
+        font-size: 14px;
+      }
+
+      @media (max-width: 1200px) {
+        #survey-builder {
+          padding-right: initial;
+        }
+        #survey-builder .debug {
+          position: initial;
+        }
+      }
+
       footer {
         margin: 50px -10px 0 -10px;
         padding-left: 20px;
@@ -39,6 +69,12 @@
 <body>
   <a class="github-fork-ribbon" href="https://github.com/lotas/survey-builder/" data-ribbon="Fork me on GitHub"
     title="Fork me on GitHub">Fork me on GitHub</a>
+
+  <p class="intro">
+    Simple survey builder to create dynamic forms.
+    <br/>
+    Example:
+  </p>
 
   <div id="survey-builder"></div>
 
