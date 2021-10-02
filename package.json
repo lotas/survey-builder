@@ -8,6 +8,7 @@
   },
   "scripts": {
     "build": "rollup -c",
+    "build:demo": "ROLLUP_CUSTOM_INPUT=src/main.ts ROLLUP_CUSTOM_OUTPUT=demo rollup -c",
     "dev": "rollup -c -w",
     "start": "sirv public --no-clear",
     "check": "svelte-check --compiler-warnings 'css-semi-colon-expected:ignore,css-rule-or-selector-expected:ignore' --tsconfig ./tsconfig.json"

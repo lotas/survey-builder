@@ -7,7 +7,7 @@
 
   <title>Survey builder</title>
 
-  <link rel='stylesheet' href='dist/survey-builder.css'>
+  <link rel='stylesheet' href='dist/demo.css'>
   <link rel="stylesheet"
     href="https://cdnjs.cloudflare.com/ajax/libs/github-fork-ribbon-css/0.2.3/gh-fork-ribbon.min.css" />
 
@@ -62,8 +62,6 @@
         margin-left: 50px;
       }
     </style>
-
-  <script src='dist/survey-builder.min.js'></script>
 </head>
 
 <body>
@@ -72,11 +70,11 @@
 
   <p class="intro">
     Simple survey builder to create dynamic forms.
-    <br/>
-    Example:
   </p>
 
   <div id="survey-builder"></div>
+
+  <div id="svelte-app"></div>
 
   <footer>
     &copy; 2021
@@ -84,60 +82,62 @@
   </footer>
 
   <script>
-    SurveyBuilderInit({
-      target: document.getElementById('survey-builder'),
-      props: {
-        haveTitle: false,
-        customInputNames: true,
-        showExportButton: false,
-        debug: true,
-        snapshot: {
-          title: 'Sample survey',
-          questions: [
-            {
-              id: 'q-1',
-              title: 'User name',
-              name: 'userName',
-              type: 'input',
-              required: true,
-            },
-            {
-              id: 'q-2',
-              title: 'User rating',
-              name: 'userRating',
-              type: 'rating',
-              required: true,
-              options: 5,
-            },
-            {
-              id: 'q-3',
-              title: 'Account type',
-              name: 'accountType',
-              type: 'single',
-              required: true,
-              answers: [
-                {
-                  id: 'a-1',
-                  title: 'Private account',
-                  type: 'text',
-                },
-                {
-                  id: 'a-2',
-                  title: 'Business account',
-                  type: 'text',
-                },
-              ],
-            },
-          ],
-        },
-        onExport: (data) => {
-          console.log('Congrats: export', data)
-        },
-        onChange: (data) => {
-          console.log('Model changed', data)
-        },
-      }
-    })
+    // SurveyBuilderInit({
+    //   target: document.getElementById('survey-builder'),
+    //   props: {
+    //     haveTitle: false,
+    //     customInputNames: true,
+    //     showExportButton: false,
+    //     debug: true,
+    //     snapshot: {
+    //       title: 'Sample survey',
+    //       questions: [
+    //         {
+    //           id: 'q-1',
+    //           title: 'User name',
+    //           name: 'userName',
+    //           type: 'input',
+    //           required: true,
+    //         },
+    //         {
+    //           id: 'q-2',
+    //           title: 'User rating',
+    //           name: 'userRating',
+    //           type: 'rating',
+    //           required: true,
+    //           options: 5,
+    //         },
+    //         {
+    //           id: 'q-3',
+    //           title: 'Account type',
+    //           name: 'accountType',
+    //           type: 'single',
+    //           required: true,
+    //           answers: [
+    //             {
+    //               id: 'a-1',
+    //               title: 'Private account',
+    //               type: 'text',
+    //             },
+    //             {
+    //               id: 'a-2',
+    //               title: 'Business account',
+    //               type: 'text',
+    //             },
+    //           ],
+    //         },
+    //       ],
+    //     },
+    //     onExport: (data) => {
+    //       console.log('Congrats: export', data)
+    //     },
+    //     onChange: (data) => {
+    //       console.log('Model changed', data)
+    //     },
+    //   }
+    // })
   </script>
+
+  <script src='dist/demo.js'></script>
 </body>
 </html>

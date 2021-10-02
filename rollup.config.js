@@ -30,13 +30,17 @@ function serve() {
 	};
 }
 
+const customInput = process.env.ROLLUP_CUSTOM_INPUT || 'src/lib.ts'
+const customOutput = process.env.ROLLUP_CUSTOM_OUTPUT || 'survey-builder'
+
+
 const output = production ? [{
 	format: 'cjs',
-	file: 'dist/survey-builder.js'
+	file: `dist/${customOutput}.js`
 }, {
 	format: 'iife',
 	name: 'SurveyBuilder',
-	file: 'dist/survey-builder.min.js',
+	file: `dist/${customOutput}.min.js`,
 	plugins: [terser()]
 }] : {
 	sourcemap: true,
@@ -46,12 +50,12 @@ const output = production ? [{
 }
 
 const cssOutput = production ? {
-	output: 'survey-builder.css'
+	output: `${customOutput}.css`
 } : {
 	output: 'bundle.css'
 }
 
-const input = production ? 'src/lib.ts' : 'src/main.ts'
+const input = production ? customInput : 'src/main.ts'
 
 export default {
 	input,
