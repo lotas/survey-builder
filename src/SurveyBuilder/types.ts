@@ -26,6 +26,7 @@ export interface SurveyBuilderOpts {
   props: {
     haveTitle?: boolean;
     customInputNames?: boolean;
+    showLabels?: boolean;
     debug?: boolean;
     snapshot?: SurveyBuilderSnapshot;
     onChange?: (snapshot: SurveyBuilderSnapshot) => void;

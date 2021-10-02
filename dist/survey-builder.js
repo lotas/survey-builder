@@ -144,6 +144,9 @@ function select_value(select) {
     const selected_option = select.querySelector(':checked') || select.options[0];
     return selected_option && selected_option.__value;
 }
+function toggle_class(element, name, toggle) {
+    element.classList[toggle ? 'add' : 'remove'](name);
+}
 
 const active_docs = new Set();
 let active = 0;
@@ -617,15 +620,15 @@ var SurveyBuilderTypes;
 
 function get_each_context$1(ctx, list, i) {
 	const child_ctx = ctx.slice();
-	child_ctx[6] = list[i][0];
-	child_ctx[7] = list[i][1];
+	child_ctx[7] = list[i][0];
+	child_ctx[8] = list[i][1];
 	return child_ctx;
 }
 
-// (18:6) {#each dropdownOptions as [value, label]}
+// (19:6) {#each dropdownOptions as [value, label]}
 function create_each_block$1(ctx) {
 	let option;
-	let t_value = /*label*/ ctx[7] + "";
+	let t_value = /*label*/ ctx[8] + "";
 	let t;
 	let option_value_value;
 
@@ -633,7 +636,7 @@ function create_each_block$1(ctx) {
 		c() {
 			option = element("option");
 			t = text(t_value);
-			option.__value = option_value_value = /*value*/ ctx[6];
+			option.__value = option_value_value = /*value*/ ctx[7];
 			option.value = option.__value;
 		},
 		m(target, anchor) {
@@ -660,7 +663,7 @@ function create_fragment$2(ctx) {
 	let div0;
 	let mounted;
 	let dispose;
-	let each_value = /*dropdownOptions*/ ctx[2];
+	let each_value = /*dropdownOptions*/ ctx[3];
 	let each_blocks = [];
 
 	for (let i = 0; i < each_value.length; i += 1) {
@@ -684,12 +687,13 @@ function create_fragment$2(ctx) {
 			div0 = element("div");
 			div0.innerHTML = `<svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"></path></svg>`;
 			attr(label, "for", label_for_value = "qtype-" + /*id*/ ctx[1]);
-			attr(label, "class", "absolute inset-y-3 left-2 hidden lg:block uppercase tracking-wide text-gray-400 text-xs font-bold");
+			attr(label, "class", "label-inline svelte-qomrjm");
 			attr(select, "id", select_id_value = "qtype-" + /*id*/ ctx[1]);
-			attr(select, "class", "dropdown svelte-1cnreoq");
-			if (/*questionType*/ ctx[0] === void 0) add_render_callback(() => /*select_change_handler*/ ctx[5].call(select));
+			attr(select, "class", "dropdown svelte-qomrjm");
+			if (/*questionType*/ ctx[0] === void 0) add_render_callback(() => /*select_change_handler*/ ctx[6].call(select));
 			attr(div0, "class", "pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700");
-			attr(div1, "class", "relative");
+			attr(div1, "class", "relative svelte-qomrjm");
+			toggle_class(div1, "showLabels", /*showLabels*/ ctx[2]);
 		},
 		m(target, anchor) {
 			insert(target, main, anchor);
@@ -709,8 +713,8 @@ function create_fragment$2(ctx) {
 
 			if (!mounted) {
 				dispose = [
-					listen(select, "change", /*select_change_handler*/ ctx[5]),
-					listen(select, "input", prevent_default(/*handleInput*/ ctx[3]))
+					listen(select, "change", /*select_change_handler*/ ctx[6]),
+					listen(select, "input", prevent_default(/*handleInput*/ ctx[4]))
 				];
 
 				mounted = true;
@@ -721,8 +725,8 @@ function create_fragment$2(ctx) {
 				attr(label, "for", label_for_value);
 			}
 
-			if (dirty & /*dropdownOptions*/ 4) {
-				each_value = /*dropdownOptions*/ ctx[2];
+			if (dirty & /*dropdownOptions*/ 8) {
+				each_value = /*dropdownOptions*/ ctx[3];
 				let i;
 
 				for (i = 0; i < each_value.length; i += 1) {
@@ -748,8 +752,12 @@ function create_fragment$2(ctx) {
 				attr(select, "id", select_id_value);
 			}
 
-			if (dirty & /*questionType, dropdownOptions*/ 5) {
+			if (dirty & /*questionType, dropdownOptions*/ 9) {
 				select_option(select, /*questionType*/ ctx[0]);
+			}
+
+			if (dirty & /*showLabels*/ 4) {
+				toggle_class(div1, "showLabels", /*showLabels*/ ctx[2]);
 			}
 		},
 		i: noop,
@@ -766,6 +774,7 @@ function create_fragment$2(ctx) {
 function instance$2($$self, $$props, $$invalidate) {
 	let { questionType } = $$props;
 	let { id = "qt" } = $$props;
+	let { showLabels = true } = $$props;
 
 	const dropdownOptions = [
 		[SurveyBuilderTypes.TextInput, 'User input'],
@@ -780,18 +789,20 @@ function instance$2($$self, $$props, $$invalidate) {
 	function select_change_handler() {
 		questionType = select_value(this);
 		$$invalidate(0, questionType);
-		$$invalidate(2, dropdownOptions);
+		$$invalidate(3, dropdownOptions);
 	}
 
 	$$self.$$set = $$props => {
 		if ('questionType' in $$props) $$invalidate(0, questionType = $$props.questionType);
 		if ('id' in $$props) $$invalidate(1, id = $$props.id);
-		if ('onChange' in $$props) $$invalidate(4, onChange = $$props.onChange);
+		if ('showLabels' in $$props) $$invalidate(2, showLabels = $$props.showLabels);
+		if ('onChange' in $$props) $$invalidate(5, onChange = $$props.onChange);
 	};
 
 	return [
 		questionType,
 		id,
+		showLabels,
 		dropdownOptions,
 		handleInput,
 		onChange,
@@ -802,7 +813,13 @@ function instance$2($$self, $$props, $$invalidate) {
 class TypeSelector extends SvelteComponent {
 	constructor(options) {
 		super();
-		init(this, options, instance$2, create_fragment$2, safe_not_equal, { questionType: 0, id: 1, onChange: 4 });
+
+		init(this, options, instance$2, create_fragment$2, safe_not_equal, {
+			questionType: 0,
+			id: 1,
+			showLabels: 2,
+			onChange: 5
+		});
 	}
 }
 
@@ -839,20 +856,20 @@ const genId = (prefix = 'q') => `${prefix}-${randomBase32()}`;
 
 function get_each_context(ctx, list, i) {
 	const child_ctx = ctx.slice();
-	child_ctx[24] = list[i];
-	child_ctx[25] = list;
-	child_ctx[26] = i;
+	child_ctx[26] = list[i];
+	child_ctx[27] = list;
+	child_ctx[28] = i;
 	return child_ctx;
 }
 
-// (65:10) {#if idx < questions.length - 1}
+// (66:10) {#if idx < questions.length - 1}
 function create_if_block_8(ctx) {
 	let button;
 	let mounted;
 	let dispose;
 
 	function click_handler() {
-		return /*click_handler*/ ctx[12](/*idx*/ ctx[26]);
+		return /*click_handler*/ ctx[13](/*idx*/ ctx[28]);
 	}
 
 	return {
@@ -879,14 +896,14 @@ function create_if_block_8(ctx) {
 	};
 }
 
-// (68:12) {#if idx > 0}
+// (69:12) {#if idx > 0}
 function create_if_block_7(ctx) {
 	let button;
 	let mounted;
 	let dispose;
 
 	function click_handler_1() {
-		return /*click_handler_1*/ ctx[13](/*idx*/ ctx[26]);
+		return /*click_handler_1*/ ctx[14](/*idx*/ ctx[28]);
 	}
 
 	return {
@@ -913,7 +930,7 @@ function create_if_block_7(ctx) {
 	};
 }
 
-// (71:12) {:else}
+// (72:12) {:else}
 function create_else_block(ctx) {
 	let button0;
 	let t1;
@@ -922,7 +939,7 @@ function create_else_block(ctx) {
 	let dispose;
 
 	function click_handler_3() {
-		return /*click_handler_3*/ ctx[15](/*idx*/ ctx[26]);
+		return /*click_handler_3*/ ctx[16](/*idx*/ ctx[28]);
 	}
 
 	return {
@@ -943,7 +960,7 @@ function create_else_block(ctx) {
 			if (!mounted) {
 				dispose = [
 					listen(button0, "click", prevent_default(click_handler_3)),
-					listen(button1, "click", prevent_default(/*click_handler_4*/ ctx[16]))
+					listen(button1, "click", prevent_default(/*click_handler_4*/ ctx[17]))
 				];
 
 				mounted = true;
@@ -962,14 +979,14 @@ function create_else_block(ctx) {
 	};
 }
 
-// (69:12) {#if deleteConfirmation !== idx}
+// (70:12) {#if deleteConfirmation !== idx}
 function create_if_block_6(ctx) {
 	let button;
 	let mounted;
 	let dispose;
 
 	function click_handler_2() {
-		return /*click_handler_2*/ ctx[14](/*idx*/ ctx[26]);
+		return /*click_handler_2*/ ctx[15](/*idx*/ ctx[28]);
 	}
 
 	return {
@@ -997,7 +1014,7 @@ function create_if_block_6(ctx) {
 	};
 }
 
-// (77:8) {#if !parentType}
+// (78:8) {#if !parentType}
 function create_if_block_3(ctx) {
 	let div;
 	let typeselector;
@@ -1012,23 +1029,24 @@ function create_if_block_3(ctx) {
 	let dispose;
 
 	function func(...args) {
-		return /*func*/ ctx[17](/*idx*/ ctx[26], ...args);
+		return /*func*/ ctx[18](/*idx*/ ctx[28], ...args);
 	}
 
 	typeselector = new TypeSelector({
 			props: {
-				id: /*item*/ ctx[24].id,
-				questionType: /*item*/ ctx[24].type,
-				onChange: func
+				id: /*item*/ ctx[26].id,
+				questionType: /*item*/ ctx[26].type,
+				onChange: func,
+				showLabels: /*showLabels*/ ctx[1]
 			}
 		});
 
 	function input_change_handler() {
-		/*input_change_handler*/ ctx[18].call(input, /*each_value*/ ctx[25], /*idx*/ ctx[26]);
+		/*input_change_handler*/ ctx[19].call(input, /*each_value*/ ctx[27], /*idx*/ ctx[28]);
 	}
 
-	let if_block0 = /*customInputNames*/ ctx[2] && create_if_block_5(ctx);
-	let if_block1 = /*item*/ ctx[24].type === SurveyBuilderTypes.StarsRating && create_if_block_4(ctx);
+	let if_block0 = /*customInputNames*/ ctx[3] && create_if_block_5(ctx);
+	let if_block1 = /*item*/ ctx[26].type === SurveyBuilderTypes.StarsRating && create_if_block_4(ctx);
 
 	return {
 		c() {
@@ -1052,7 +1070,7 @@ function create_if_block_3(ctx) {
 			append(div, t0);
 			append(div, label);
 			append(label, input);
-			input.checked = /*item*/ ctx[24].required;
+			input.checked = /*item*/ ctx[26].required;
 			append(label, t1);
 			append(div, t2);
 			if (if_block0) if_block0.m(div, null);
@@ -1068,16 +1086,17 @@ function create_if_block_3(ctx) {
 		p(new_ctx, dirty) {
 			ctx = new_ctx;
 			const typeselector_changes = {};
-			if (dirty & /*questions*/ 1) typeselector_changes.id = /*item*/ ctx[24].id;
-			if (dirty & /*questions*/ 1) typeselector_changes.questionType = /*item*/ ctx[24].type;
+			if (dirty & /*questions*/ 1) typeselector_changes.id = /*item*/ ctx[26].id;
+			if (dirty & /*questions*/ 1) typeselector_changes.questionType = /*item*/ ctx[26].type;
 			if (dirty & /*questions*/ 1) typeselector_changes.onChange = func;
+			if (dirty & /*showLabels*/ 2) typeselector_changes.showLabels = /*showLabels*/ ctx[1];
 			typeselector.$set(typeselector_changes);
 
 			if (dirty & /*questions*/ 1) {
-				input.checked = /*item*/ ctx[24].required;
+				input.checked = /*item*/ ctx[26].required;
 			}
 
-			if (/*customInputNames*/ ctx[2]) {
+			if (/*customInputNames*/ ctx[3]) {
 				if (if_block0) {
 					if_block0.p(ctx, dirty);
 				} else {
@@ -1090,7 +1109,7 @@ function create_if_block_3(ctx) {
 				if_block0 = null;
 			}
 
-			if (/*item*/ ctx[24].type === SurveyBuilderTypes.StarsRating) {
+			if (/*item*/ ctx[26].type === SurveyBuilderTypes.StarsRating) {
 				if (if_block1) {
 					if_block1.p(ctx, dirty);
 				} else {
@@ -1123,7 +1142,7 @@ function create_if_block_3(ctx) {
 	};
 }
 
-// (88:10) {#if  customInputNames}
+// (90:10) {#if  customInputNames}
 function create_if_block_5(ctx) {
 	let div;
 	let label;
@@ -1136,7 +1155,7 @@ function create_if_block_5(ctx) {
 	let dispose;
 
 	function input_input_handler_1() {
-		/*input_input_handler_1*/ ctx[19].call(input, /*each_value*/ ctx[25], /*idx*/ ctx[26]);
+		/*input_input_handler_1*/ ctx[20].call(input, /*each_value*/ ctx[27], /*idx*/ ctx[28]);
 	}
 
 	return {
@@ -1146,10 +1165,10 @@ function create_if_block_5(ctx) {
 			t0 = text("Name:");
 			t1 = space();
 			input = element("input");
-			attr(label, "class", "label-inline svelte-r3h0zx");
-			attr(label, "for", label_for_value = "name-" + /*item*/ ctx[24].id);
-			attr(input, "id", input_id_value = "name-" + /*item*/ ctx[24].id);
-			attr(input, "class", "w-40 lg:w-64 px-4 svelte-r3h0zx");
+			attr(label, "class", "label-inline svelte-9w4mm4");
+			attr(label, "for", label_for_value = "name-" + /*item*/ ctx[26].id);
+			attr(input, "id", input_id_value = "name-" + /*item*/ ctx[26].id);
+			attr(input, "class", "w-40 lg:w-64 px-4 svelte-9w4mm4");
 			attr(input, "type", "text");
 			attr(input, "placeholder", "inputName");
 			attr(div, "class", "flex-auto relative mr-4");
@@ -1160,7 +1179,7 @@ function create_if_block_5(ctx) {
 			append(label, t0);
 			append(div, t1);
 			append(div, input);
-			set_input_value(input, /*item*/ ctx[24].name);
+			set_input_value(input, /*item*/ ctx[26].name);
 
 			if (!mounted) {
 				dispose = listen(input, "input", input_input_handler_1);
@@ -1170,16 +1189,16 @@ function create_if_block_5(ctx) {
 		p(new_ctx, dirty) {
 			ctx = new_ctx;
 
-			if (dirty & /*questions*/ 1 && label_for_value !== (label_for_value = "name-" + /*item*/ ctx[24].id)) {
+			if (dirty & /*questions*/ 1 && label_for_value !== (label_for_value = "name-" + /*item*/ ctx[26].id)) {
 				attr(label, "for", label_for_value);
 			}
 
-			if (dirty & /*questions*/ 1 && input_id_value !== (input_id_value = "name-" + /*item*/ ctx[24].id)) {
+			if (dirty & /*questions*/ 1 && input_id_value !== (input_id_value = "name-" + /*item*/ ctx[26].id)) {
 				attr(input, "id", input_id_value);
 			}
 
-			if (dirty & /*questions*/ 1 && input.value !== /*item*/ ctx[24].name) {
-				set_input_value(input, /*item*/ ctx[24].name);
+			if (dirty & /*questions*/ 1 && input.value !== /*item*/ ctx[26].name) {
+				set_input_value(input, /*item*/ ctx[26].name);
 			}
 		},
 		d(detaching) {
@@ -1190,7 +1209,7 @@ function create_if_block_5(ctx) {
 	};
 }
 
-// (94:10) {#if item.type === SurveyBuilderTypes.StarsRating}
+// (96:10) {#if item.type === SurveyBuilderTypes.StarsRating}
 function create_if_block_4(ctx) {
 	let div;
 	let label;
@@ -1203,7 +1222,7 @@ function create_if_block_4(ctx) {
 	let dispose;
 
 	function input_input_handler_2() {
-		/*input_input_handler_2*/ ctx[20].call(input, /*each_value*/ ctx[25], /*idx*/ ctx[26]);
+		/*input_input_handler_2*/ ctx[21].call(input, /*each_value*/ ctx[27], /*idx*/ ctx[28]);
 	}
 
 	return {
@@ -1213,10 +1232,10 @@ function create_if_block_4(ctx) {
 			t0 = text("Max:");
 			t1 = space();
 			input = element("input");
-			attr(label, "class", "label-inline svelte-r3h0zx");
-			attr(label, "for", label_for_value = "opts-" + /*item*/ ctx[24].id);
-			attr(input, "id", input_id_value = "opts-" + /*item*/ ctx[24].id);
-			attr(input, "class", "w-24 lg:w-32 svelte-r3h0zx");
+			attr(label, "class", "label-inline svelte-9w4mm4");
+			attr(label, "for", label_for_value = "opts-" + /*item*/ ctx[26].id);
+			attr(input, "id", input_id_value = "opts-" + /*item*/ ctx[26].id);
+			attr(input, "class", "w-24 lg:w-32 svelte-9w4mm4");
 			attr(input, "type", "number");
 			attr(input, "placeholder", "5");
 			attr(div, "class", "relative flex-auto");
@@ -1227,7 +1246,7 @@ function create_if_block_4(ctx) {
 			append(label, t0);
 			append(div, t1);
 			append(div, input);
-			set_input_value(input, /*item*/ ctx[24].options);
+			set_input_value(input, /*item*/ ctx[26].options);
 
 			if (!mounted) {
 				dispose = listen(input, "input", input_input_handler_2);
@@ -1237,16 +1256,16 @@ function create_if_block_4(ctx) {
 		p(new_ctx, dirty) {
 			ctx = new_ctx;
 
-			if (dirty & /*questions*/ 1 && label_for_value !== (label_for_value = "opts-" + /*item*/ ctx[24].id)) {
+			if (dirty & /*questions*/ 1 && label_for_value !== (label_for_value = "opts-" + /*item*/ ctx[26].id)) {
 				attr(label, "for", label_for_value);
 			}
 
-			if (dirty & /*questions*/ 1 && input_id_value !== (input_id_value = "opts-" + /*item*/ ctx[24].id)) {
+			if (dirty & /*questions*/ 1 && input_id_value !== (input_id_value = "opts-" + /*item*/ ctx[26].id)) {
 				attr(input, "id", input_id_value);
 			}
 
-			if (dirty & /*questions*/ 1 && to_number(input.value) !== /*item*/ ctx[24].options) {
-				set_input_value(input, /*item*/ ctx[24].options);
+			if (dirty & /*questions*/ 1 && to_number(input.value) !== /*item*/ ctx[26].options) {
+				set_input_value(input, /*item*/ ctx[26].options);
 			}
 		},
 		d(detaching) {
@@ -1257,11 +1276,11 @@ function create_if_block_4(ctx) {
 	};
 }
 
-// (103:8) {#if !parentType}
+// (105:8) {#if !parentType}
 function create_if_block_1$1(ctx) {
 	let div;
 	let current;
-	let if_block = /*item*/ ctx[24].type !== SurveyBuilderTypes.StarsRating && /*item*/ ctx[24].type !== SurveyBuilderTypes.TextInput && create_if_block_2$1(ctx);
+	let if_block = /*item*/ ctx[26].type !== SurveyBuilderTypes.StarsRating && /*item*/ ctx[26].type !== SurveyBuilderTypes.TextInput && create_if_block_2$1(ctx);
 
 	return {
 		c() {
@@ -1275,7 +1294,7 @@ function create_if_block_1$1(ctx) {
 			current = true;
 		},
 		p(ctx, dirty) {
-			if (/*item*/ ctx[24].type !== SurveyBuilderTypes.StarsRating && /*item*/ ctx[24].type !== SurveyBuilderTypes.TextInput) {
+			if (/*item*/ ctx[26].type !== SurveyBuilderTypes.StarsRating && /*item*/ ctx[26].type !== SurveyBuilderTypes.TextInput) {
 				if (if_block) {
 					if_block.p(ctx, dirty);
 
@@ -1314,11 +1333,12 @@ function create_if_block_1$1(ctx) {
 	};
 }
 
-// (105:10) {#if item.type !== SurveyBuilderTypes.StarsRating && item.type !== SurveyBuilderTypes.TextInput}
+// (107:10) {#if item.type !== SurveyBuilderTypes.StarsRating && item.type !== SurveyBuilderTypes.TextInput}
 function create_if_block_2$1(ctx) {
 	let questions_1;
 	let updating_questions;
 	let updating_parentType;
+	let updating_showLabels;
 	let t0;
 	let button;
 	let current;
@@ -1326,29 +1346,38 @@ function create_if_block_2$1(ctx) {
 	let dispose;
 
 	function questions_1_questions_binding(value) {
-		/*questions_1_questions_binding*/ ctx[21](value, /*item*/ ctx[24]);
+		/*questions_1_questions_binding*/ ctx[22](value, /*item*/ ctx[26]);
 	}
 
 	function questions_1_parentType_binding(value) {
-		/*questions_1_parentType_binding*/ ctx[22](value, /*item*/ ctx[24]);
+		/*questions_1_parentType_binding*/ ctx[23](value, /*item*/ ctx[26]);
+	}
+
+	function questions_1_showLabels_binding(value) {
+		/*questions_1_showLabels_binding*/ ctx[24](value);
 	}
 
 	let questions_1_props = {};
 
-	if (/*item*/ ctx[24].answers !== void 0) {
-		questions_1_props.questions = /*item*/ ctx[24].answers;
+	if (/*item*/ ctx[26].answers !== void 0) {
+		questions_1_props.questions = /*item*/ ctx[26].answers;
 	}
 
-	if (/*item*/ ctx[24].type !== void 0) {
-		questions_1_props.parentType = /*item*/ ctx[24].type;
+	if (/*item*/ ctx[26].type !== void 0) {
+		questions_1_props.parentType = /*item*/ ctx[26].type;
+	}
+
+	if (/*showLabels*/ ctx[1] !== void 0) {
+		questions_1_props.showLabels = /*showLabels*/ ctx[1];
 	}
 
 	questions_1 = new Questions({ props: questions_1_props });
 	binding_callbacks.push(() => bind(questions_1, 'questions', questions_1_questions_binding));
 	binding_callbacks.push(() => bind(questions_1, 'parentType', questions_1_parentType_binding));
+	binding_callbacks.push(() => bind(questions_1, 'showLabels', questions_1_showLabels_binding));
 
 	function click_handler_5() {
-		return /*click_handler_5*/ ctx[23](/*idx*/ ctx[26]);
+		return /*click_handler_5*/ ctx[25](/*idx*/ ctx[28]);
 	}
 
 	return {
@@ -1376,14 +1405,20 @@ function create_if_block_2$1(ctx) {
 
 			if (!updating_questions && dirty & /*questions*/ 1) {
 				updating_questions = true;
-				questions_1_changes.questions = /*item*/ ctx[24].answers;
+				questions_1_changes.questions = /*item*/ ctx[26].answers;
 				add_flush_callback(() => updating_questions = false);
 			}
 
 			if (!updating_parentType && dirty & /*questions*/ 1) {
 				updating_parentType = true;
-				questions_1_changes.parentType = /*item*/ ctx[24].type;
+				questions_1_changes.parentType = /*item*/ ctx[26].type;
 				add_flush_callback(() => updating_parentType = false);
+			}
+
+			if (!updating_showLabels && dirty & /*showLabels*/ 2) {
+				updating_showLabels = true;
+				questions_1_changes.showLabels = /*showLabels*/ ctx[1];
+				add_flush_callback(() => updating_showLabels = false);
 			}
 
 			questions_1.$set(questions_1_changes);
@@ -1407,12 +1442,12 @@ function create_if_block_2$1(ctx) {
 	};
 }
 
-// (56:4) {#each questions as item, idx (item.id)}
+// (57:4) {#each questions as item, idx (item.id)}
 function create_each_block(key_1, ctx) {
 	let li;
 	let div2;
 	let span;
-	let t0_value = /*idx*/ ctx[26] + 1 + "";
+	let t0_value = /*idx*/ ctx[28] + 1 + "";
 	let t0;
 	let t1;
 	let t2;
@@ -1436,21 +1471,21 @@ function create_each_block(key_1, ctx) {
 	let dispose;
 
 	function input_input_handler() {
-		/*input_input_handler*/ ctx[11].call(input, /*each_value*/ ctx[25], /*idx*/ ctx[26]);
+		/*input_input_handler*/ ctx[12].call(input, /*each_value*/ ctx[27], /*idx*/ ctx[28]);
 	}
 
-	let if_block0 = /*idx*/ ctx[26] < /*questions*/ ctx[0].length - 1 && create_if_block_8(ctx);
-	let if_block1 = /*idx*/ ctx[26] > 0 && create_if_block_7(ctx);
+	let if_block0 = /*idx*/ ctx[28] < /*questions*/ ctx[0].length - 1 && create_if_block_8(ctx);
+	let if_block1 = /*idx*/ ctx[28] > 0 && create_if_block_7(ctx);
 
 	function select_block_type(ctx, dirty) {
-		if (/*deleteConfirmation*/ ctx[3] !== /*idx*/ ctx[26]) return create_if_block_6;
+		if (/*deleteConfirmation*/ ctx[4] !== /*idx*/ ctx[28]) return create_if_block_6;
 		return create_else_block;
 	}
 
 	let current_block_type = select_block_type(ctx);
 	let if_block2 = current_block_type(ctx);
-	let if_block3 = !/*parentType*/ ctx[1] && create_if_block_3(ctx);
-	let if_block4 = !/*parentType*/ ctx[1] && create_if_block_1$1(ctx);
+	let if_block3 = !/*parentType*/ ctx[2] && create_if_block_3(ctx);
+	let if_block4 = !/*parentType*/ ctx[2] && create_if_block_1$1(ctx);
 
 	return {
 		key: key_1,
@@ -1479,15 +1514,15 @@ function create_each_block(key_1, ctx) {
 			t9 = space();
 			if (if_block4) if_block4.c();
 			attr(span, "class", "number w-8 text-xl");
-			attr(label, "class", "label-inline svelte-r3h0zx");
-			attr(label, "for", label_for_value = "title-" + /*item*/ ctx[24].id);
-			attr(input, "id", input_id_value = "title-" + /*item*/ ctx[24].id);
-			attr(input, "class", "w-full px-4 svelte-r3h0zx");
+			attr(label, "class", "label-inline svelte-9w4mm4");
+			attr(label, "for", label_for_value = "title-" + /*item*/ ctx[26].id);
+			attr(input, "id", input_id_value = "title-" + /*item*/ ctx[26].id);
+			attr(input, "class", "w-full px-4 svelte-9w4mm4");
 			attr(input, "type", "text");
 			attr(div0, "class", "flex-auto relative");
 			attr(div1, "class", "actions w-auto px-4 content-end text-right");
 			attr(div2, "class", "w-full flex items-center py-2");
-			attr(li, "class", "svelte-r3h0zx");
+			attr(li, "class", "svelte-9w4mm4");
 			this.first = li;
 		},
 		m(target, anchor) {
@@ -1502,7 +1537,7 @@ function create_each_block(key_1, ctx) {
 			append(label, t3);
 			append(div0, t4);
 			append(div0, input);
-			set_input_value(input, /*item*/ ctx[24].title);
+			set_input_value(input, /*item*/ ctx[26].title);
 			append(div2, t5);
 			append(div2, div1);
 			if (if_block0) if_block0.m(div1, null);
@@ -1523,21 +1558,21 @@ function create_each_block(key_1, ctx) {
 		},
 		p(new_ctx, dirty) {
 			ctx = new_ctx;
-			if ((!current || dirty & /*questions*/ 1) && t0_value !== (t0_value = /*idx*/ ctx[26] + 1 + "")) set_data(t0, t0_value);
+			if ((!current || dirty & /*questions*/ 1) && t0_value !== (t0_value = /*idx*/ ctx[28] + 1 + "")) set_data(t0, t0_value);
 
-			if (!current || dirty & /*questions*/ 1 && label_for_value !== (label_for_value = "title-" + /*item*/ ctx[24].id)) {
+			if (!current || dirty & /*questions*/ 1 && label_for_value !== (label_for_value = "title-" + /*item*/ ctx[26].id)) {
 				attr(label, "for", label_for_value);
 			}
 
-			if (!current || dirty & /*questions*/ 1 && input_id_value !== (input_id_value = "title-" + /*item*/ ctx[24].id)) {
+			if (!current || dirty & /*questions*/ 1 && input_id_value !== (input_id_value = "title-" + /*item*/ ctx[26].id)) {
 				attr(input, "id", input_id_value);
 			}
 
-			if (dirty & /*questions*/ 1 && input.value !== /*item*/ ctx[24].title) {
-				set_input_value(input, /*item*/ ctx[24].title);
+			if (dirty & /*questions*/ 1 && input.value !== /*item*/ ctx[26].title) {
+				set_input_value(input, /*item*/ ctx[26].title);
 			}
 
-			if (/*idx*/ ctx[26] < /*questions*/ ctx[0].length - 1) {
+			if (/*idx*/ ctx[28] < /*questions*/ ctx[0].length - 1) {
 				if (if_block0) {
 					if_block0.p(ctx, dirty);
 				} else {
@@ -1550,7 +1585,7 @@ function create_each_block(key_1, ctx) {
 				if_block0 = null;
 			}
 
-			if (/*idx*/ ctx[26] > 0) {
+			if (/*idx*/ ctx[28] > 0) {
 				if (if_block1) {
 					if_block1.p(ctx, dirty);
 				} else {
@@ -1575,11 +1610,11 @@ function create_each_block(key_1, ctx) {
 				}
 			}
 
-			if (!/*parentType*/ ctx[1]) {
+			if (!/*parentType*/ ctx[2]) {
 				if (if_block3) {
 					if_block3.p(ctx, dirty);
 
-					if (dirty & /*parentType*/ 2) {
+					if (dirty & /*parentType*/ 4) {
 						transition_in(if_block3, 1);
 					}
 				} else {
@@ -1598,11 +1633,11 @@ function create_each_block(key_1, ctx) {
 				check_outros();
 			}
 
-			if (!/*parentType*/ ctx[1]) {
+			if (!/*parentType*/ ctx[2]) {
 				if (if_block4) {
 					if_block4.p(ctx, dirty);
 
-					if (dirty & /*parentType*/ 2) {
+					if (dirty & /*parentType*/ 4) {
 						transition_in(if_block4, 1);
 					}
 				} else {
@@ -1656,7 +1691,7 @@ function create_each_block(key_1, ctx) {
 	};
 }
 
-// (113:4) {#if !parentType}
+// (115:4) {#if !parentType}
 function create_if_block$1(ctx) {
 	let li;
 	let button;
@@ -1669,14 +1704,14 @@ function create_if_block$1(ctx) {
 			button = element("button");
 			button.textContent = "+ Add question";
 			attr(button, "class", "w-full");
-			attr(li, "class", "add-question svelte-r3h0zx");
+			attr(li, "class", "add-question svelte-9w4mm4");
 		},
 		m(target, anchor) {
 			insert(target, li, anchor);
 			append(li, button);
 
 			if (!mounted) {
-				dispose = listen(button, "click", prevent_default(/*addRow*/ ctx[10]));
+				dispose = listen(button, "click", prevent_default(/*addRow*/ ctx[11]));
 				mounted = true;
 			}
 		},
@@ -1698,7 +1733,7 @@ function create_fragment$1(ctx) {
 	let ol_class_value;
 	let current;
 	let each_value = /*questions*/ ctx[0];
-	const get_key = ctx => /*item*/ ctx[24].id;
+	const get_key = ctx => /*item*/ ctx[26].id;
 
 	for (let i = 0; i < each_value.length; i += 1) {
 		let child_ctx = get_each_context(ctx, each_value, i);
@@ -1706,7 +1741,7 @@ function create_fragment$1(ctx) {
 		each_1_lookup.set(key, each_blocks[i] = create_each_block(key, child_ctx));
 	}
 
-	let if_block = !/*parentType*/ ctx[1] && create_if_block$1(ctx);
+	let if_block = !/*parentType*/ ctx[2] && create_if_block$1(ctx);
 
 	return {
 		c() {
@@ -1719,7 +1754,8 @@ function create_fragment$1(ctx) {
 
 			t = space();
 			if (if_block) if_block.c();
-			attr(ol, "class", ol_class_value = "" + (null_to_empty(/*parentType*/ ctx[1] ? 'answers' : 'questions') + " svelte-r3h0zx"));
+			attr(ol, "class", ol_class_value = "" + (null_to_empty(/*parentType*/ ctx[2] ? 'answers' : 'questions') + " svelte-9w4mm4"));
+			toggle_class(ol, "showLabels", /*showLabels*/ ctx[1]);
 		},
 		m(target, anchor) {
 			insert(target, main, anchor);
@@ -1734,7 +1770,7 @@ function create_fragment$1(ctx) {
 			current = true;
 		},
 		p(ctx, [dirty]) {
-			if (dirty & /*addAnswer, questions, SurveyBuilderTypes, parentType, customInputNames, onQuestionTypeChange, deleteRow, deleteConfirmation, deleteRowConfirm, moveDown, moveUp*/ 1023) {
+			if (dirty & /*addAnswer, questions, showLabels, SurveyBuilderTypes, parentType, customInputNames, onQuestionTypeChange, deleteRow, deleteConfirmation, deleteRowConfirm, moveDown, moveUp*/ 2047) {
 				each_value = /*questions*/ ctx[0];
 				group_outros();
 				for (let i = 0; i < each_blocks.length; i += 1) each_blocks[i].r();
@@ -1743,7 +1779,7 @@ function create_fragment$1(ctx) {
 				check_outros();
 			}
 
-			if (!/*parentType*/ ctx[1]) {
+			if (!/*parentType*/ ctx[2]) {
 				if (if_block) {
 					if_block.p(ctx, dirty);
 				} else {
@@ -1756,8 +1792,12 @@ function create_fragment$1(ctx) {
 				if_block = null;
 			}
 
-			if (!current || dirty & /*parentType*/ 2 && ol_class_value !== (ol_class_value = "" + (null_to_empty(/*parentType*/ ctx[1] ? 'answers' : 'questions') + " svelte-r3h0zx"))) {
+			if (!current || dirty & /*parentType*/ 4 && ol_class_value !== (ol_class_value = "" + (null_to_empty(/*parentType*/ ctx[2] ? 'answers' : 'questions') + " svelte-9w4mm4"))) {
 				attr(ol, "class", ol_class_value);
+			}
+
+			if (dirty & /*parentType, showLabels*/ 6) {
+				toggle_class(ol, "showLabels", /*showLabels*/ ctx[1]);
 			}
 		},
 		i(local) {
@@ -1792,16 +1832,17 @@ function instance$1($$self, $$props, $$invalidate) {
 	let { questions = [] } = $$props;
 	let { parentType = null } = $$props;
 	let { customInputNames = true } = $$props;
+	let { showLabels = true } = $$props;
 	let deleteConfirmation = -1;
 
 	function deleteRow(idx) {
-		$$invalidate(3, deleteConfirmation = idx);
+		$$invalidate(4, deleteConfirmation = idx);
 	}
 
 	function deleteRowConfirm(idx) {
 		questions.splice(idx, 1);
 		$$invalidate(0, questions);
-		$$invalidate(3, deleteConfirmation = -1);
+		$$invalidate(4, deleteConfirmation = -1);
 	}
 
 	function onQuestionTypeChange(idx, newType) {
@@ -1888,16 +1929,23 @@ function instance$1($$self, $$props, $$invalidate) {
 		}
 	}
 
+	function questions_1_showLabels_binding(value) {
+		showLabels = value;
+		$$invalidate(1, showLabels);
+	}
+
 	const click_handler_5 = idx => addAnswer(idx);
 
 	$$self.$$set = $$props => {
 		if ('questions' in $$props) $$invalidate(0, questions = $$props.questions);
-		if ('parentType' in $$props) $$invalidate(1, parentType = $$props.parentType);
-		if ('customInputNames' in $$props) $$invalidate(2, customInputNames = $$props.customInputNames);
+		if ('parentType' in $$props) $$invalidate(2, parentType = $$props.parentType);
+		if ('customInputNames' in $$props) $$invalidate(3, customInputNames = $$props.customInputNames);
+		if ('showLabels' in $$props) $$invalidate(1, showLabels = $$props.showLabels);
 	};
 
 	return [
 		questions,
+		showLabels,
 		parentType,
 		customInputNames,
 		deleteConfirmation,
@@ -1920,6 +1968,7 @@ function instance$1($$self, $$props, $$invalidate) {
 		input_input_handler_2,
 		questions_1_questions_binding,
 		questions_1_parentType_binding,
+		questions_1_showLabels_binding,
 		click_handler_5
 	];
 }
@@ -1930,8 +1979,9 @@ class Questions extends SvelteComponent {
 
 		init(this, options, instance$1, create_fragment$1, safe_not_equal, {
 			questions: 0,
-			parentType: 1,
-			customInputNames: 2
+			parentType: 2,
+			customInputNames: 3,
+			showLabels: 1
 		});
 	}
 }
@@ -1963,7 +2013,7 @@ function create_if_block_2(ctx) {
 			set_input_value(input, /*snapshot*/ ctx[0].title);
 
 			if (!mounted) {
-				dispose = listen(input, "input", /*input_input_handler*/ ctx[8]);
+				dispose = listen(input, "input", /*input_input_handler*/ ctx[9]);
 				mounted = true;
 			}
 		},
@@ -1980,7 +2030,7 @@ function create_if_block_2(ctx) {
 	};
 }
 
-// (36:2) {#if showExportButton}
+// (37:2) {#if showExportButton}
 function create_if_block_1(ctx) {
 	let div;
 	let button;
@@ -1999,7 +2049,7 @@ function create_if_block_1(ctx) {
 			append(div, button);
 
 			if (!mounted) {
-				dispose = listen(button, "click", prevent_default(/*handleExport*/ ctx[5]));
+				dispose = listen(button, "click", prevent_default(/*handleExport*/ ctx[6]));
 				mounted = true;
 			}
 		},
@@ -2012,7 +2062,7 @@ function create_if_block_1(ctx) {
 	};
 }
 
-// (45:2) {#if debug}
+// (49:2) {#if debug}
 function create_if_block(ctx) {
 	let div;
 	let h3;
@@ -2062,17 +2112,22 @@ function create_fragment(ctx) {
 	let questions;
 	let updating_questions;
 	let updating_customInputNames;
+	let updating_showLabels;
 	let t8;
 	let current;
-	let if_block0 = /*haveTitle*/ ctx[2] && create_if_block_2(ctx);
-	let if_block1 = /*showExportButton*/ ctx[3] && create_if_block_1(ctx);
+	let if_block0 = /*haveTitle*/ ctx[3] && create_if_block_2(ctx);
+	let if_block1 = /*showExportButton*/ ctx[4] && create_if_block_1(ctx);
 
 	function questions_questions_binding(value) {
-		/*questions_questions_binding*/ ctx[9](value);
+		/*questions_questions_binding*/ ctx[10](value);
 	}
 
 	function questions_customInputNames_binding(value) {
-		/*questions_customInputNames_binding*/ ctx[10](value);
+		/*questions_customInputNames_binding*/ ctx[11](value);
+	}
+
+	function questions_showLabels_binding(value) {
+		/*questions_showLabels_binding*/ ctx[12](value);
 	}
 
 	let questions_props = {};
@@ -2085,10 +2140,15 @@ function create_fragment(ctx) {
 		questions_props.customInputNames = /*customInputNames*/ ctx[1];
 	}
 
+	if (/*showLabels*/ ctx[2] !== void 0) {
+		questions_props.showLabels = /*showLabels*/ ctx[2];
+	}
+
 	questions = new Questions({ props: questions_props });
 	binding_callbacks.push(() => bind(questions, 'questions', questions_questions_binding));
 	binding_callbacks.push(() => bind(questions, 'customInputNames', questions_customInputNames_binding));
-	let if_block2 = /*debug*/ ctx[4] && create_if_block(ctx);
+	binding_callbacks.push(() => bind(questions, 'showLabels', questions_showLabels_binding));
+	let if_block2 = /*debug*/ ctx[5] && create_if_block(ctx);
 
 	return {
 		c() {
@@ -2132,7 +2192,7 @@ function create_fragment(ctx) {
 		p(ctx, [dirty]) {
 			if ((!current || dirty & /*snapshot*/ 1) && t1_value !== (t1_value = (/*snapshot*/ ctx[0].title || 'no name') + "")) set_data(t1, t1_value);
 
-			if (/*haveTitle*/ ctx[2]) {
+			if (/*haveTitle*/ ctx[3]) {
 				if (if_block0) {
 					if_block0.p(ctx, dirty);
 				} else {
@@ -2145,7 +2205,7 @@ function create_fragment(ctx) {
 				if_block0 = null;
 			}
 
-			if (/*showExportButton*/ ctx[3]) {
+			if (/*showExportButton*/ ctx[4]) {
 				if (if_block1) {
 					if_block1.p(ctx, dirty);
 				} else {
@@ -2172,9 +2232,15 @@ function create_fragment(ctx) {
 				add_flush_callback(() => updating_customInputNames = false);
 			}
 
+			if (!updating_showLabels && dirty & /*showLabels*/ 4) {
+				updating_showLabels = true;
+				questions_changes.showLabels = /*showLabels*/ ctx[2];
+				add_flush_callback(() => updating_showLabels = false);
+			}
+
 			questions.$set(questions_changes);
 
-			if (/*debug*/ ctx[4]) {
+			if (/*debug*/ ctx[5]) {
 				if (if_block2) {
 					if_block2.p(ctx, dirty);
 				} else {
@@ -2222,6 +2288,7 @@ function instance($$self, $$props, $$invalidate) {
 	} } = $$props;
 
 	let { debug = false } = $$props;
+	let { showLabels = true } = $$props;
 
 	function handleExport() {
 		if (typeof onExport === 'function') {
@@ -2248,18 +2315,24 @@ function instance($$self, $$props, $$invalidate) {
 		$$invalidate(1, customInputNames);
 	}
 
+	function questions_showLabels_binding(value) {
+		showLabels = value;
+		$$invalidate(2, showLabels);
+	}
+
 	$$self.$$set = $$props => {
-		if ('haveTitle' in $$props) $$invalidate(2, haveTitle = $$props.haveTitle);
+		if ('haveTitle' in $$props) $$invalidate(3, haveTitle = $$props.haveTitle);
 		if ('customInputNames' in $$props) $$invalidate(1, customInputNames = $$props.customInputNames);
 		if ('snapshot' in $$props) $$invalidate(0, snapshot = $$props.snapshot);
-		if ('onChange' in $$props) $$invalidate(6, onChange = $$props.onChange);
-		if ('showExportButton' in $$props) $$invalidate(3, showExportButton = $$props.showExportButton);
-		if ('onExport' in $$props) $$invalidate(7, onExport = $$props.onExport);
-		if ('debug' in $$props) $$invalidate(4, debug = $$props.debug);
+		if ('onChange' in $$props) $$invalidate(7, onChange = $$props.onChange);
+		if ('showExportButton' in $$props) $$invalidate(4, showExportButton = $$props.showExportButton);
+		if ('onExport' in $$props) $$invalidate(8, onExport = $$props.onExport);
+		if ('debug' in $$props) $$invalidate(5, debug = $$props.debug);
+		if ('showLabels' in $$props) $$invalidate(2, showLabels = $$props.showLabels);
 	};
 
 	$$self.$$.update = () => {
-		if ($$self.$$.dirty & /*onChange, snapshot*/ 65) {
+		if ($$self.$$.dirty & /*onChange, snapshot*/ 129) {
 			{
 				if (typeof onChange === 'function') {
 					onChange(snapshot);
@@ -2271,6 +2344,7 @@ function instance($$self, $$props, $$invalidate) {
 	return [
 		snapshot,
 		customInputNames,
+		showLabels,
 		haveTitle,
 		showExportButton,
 		debug,
@@ -2279,7 +2353,8 @@ function instance($$self, $$props, $$invalidate) {
 		onExport,
 		input_input_handler,
 		questions_questions_binding,
-		questions_customInputNames_binding
+		questions_customInputNames_binding,
+		questions_showLabels_binding
 	];
 }
 
@@ -2288,13 +2363,14 @@ class SurveyBuilder extends SvelteComponent {
 		super();
 
 		init(this, options, instance, create_fragment, safe_not_equal, {
-			haveTitle: 2,
+			haveTitle: 3,
 			customInputNames: 1,
 			snapshot: 0,
-			onChange: 6,
-			showExportButton: 3,
-			onExport: 7,
-			debug: 4
+			onChange: 7,
+			showExportButton: 4,
+			onExport: 8,
+			debug: 5,
+			showLabels: 2
 		});
 	}
 }

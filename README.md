@@ -26,6 +26,8 @@ export interface SurveyBuilderOpts {
     onChange?: (snapshot: SurveyBuilderSnapshot) => void; // will be triggered on every change
     onExport?: (snapshot: SurveyBuilderSnapshot) => void; // will be triggered on export click
     debug?: boolean; // show debug info
+    showLabels?: boolean;
+    showExportButton?: boolean;
   };
 }
 ```
@@ -47,6 +49,8 @@ To use it:
       haveTitle: false,
       customInputNames: true,
       debug: true,
+      showLabels: true,
+      showExportButton: true,
       snapshot: snapshot: {
         title: 'Sample survey',
         questions: [

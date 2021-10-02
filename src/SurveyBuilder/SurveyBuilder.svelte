@@ -11,6 +11,7 @@
   export let showExportButton = true
   export let onExport: (snapshot: SurveyBuilderSnapshot) => void = () => {}
   export let debug = false
+  export let showLabels = true
 
   $: {
     if (typeof onChange === 'function') {
@@ -44,7 +45,10 @@
   {/if}
 
   <h3>Questions:</h3>
-  <Questions bind:questions={snapshot.questions} bind:customInputNames />
+  <Questions
+    bind:questions={snapshot.questions}
+    bind:customInputNames={customInputNames}
+    bind:showLabels={showLabels} />
 
   {#if debug}
   <div class="debug">

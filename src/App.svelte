@@ -10,6 +10,7 @@
     customInputNames: true,
     debug: true,
     showExportButton: true,
+    showLabels: true,
     snapshot: {
       title: 'Sample survey',
       questions: [
@@ -71,6 +72,10 @@
     <label>
       <input type="checkbox" bind:checked={props.customInputNames} />
       Custom input names
+    </label>
+    <label>
+      <input type="checkbox" bind:checked={props.showLabels} />
+      Show labels
     </label>
     <label>
       <input type="checkbox" bind:checked={props.debug} />

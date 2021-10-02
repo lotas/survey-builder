@@ -3,6 +3,7 @@
 
   export let questionType: string
   export let id: string = "qt"
+  export let showLabels = true
 
   const dropdownOptions = [
     [SurveyBuilderTypes.TextInput, 'User input'],
@@ -17,8 +18,8 @@
 </script>
 
 <main>
-  <div class="relative">
-    <label for="qtype-{id}" class="absolute inset-y-3 left-2 hidden lg:block uppercase tracking-wide text-gray-400 text-xs font-bold">Type:</label>
+  <div class="relative" class:showLabels>
+    <label for="qtype-{id}" class="label-inline">Type:</label>
     <select id="qtype-{id}" class="dropdown" bind:value={questionType} on:input|preventDefault={handleInput}>
       {#each dropdownOptions as [value, label]}
         <option {value}>{label}</option>
@@ -42,8 +43,15 @@
       border border-blue-200 text-gray-700 py-2 px-4 pr-8
       rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500
       w-44 lg:w-52;
-
+  }
+  .showLabels .dropdown {
     text-indent: 15px;
+  }
+  .label-inline {
+    @apply hidden;
+  }
+  .showLabels .label-inline {
+    @apply absolute inset-y-3 left-2 hidden lg:block uppercase tracking-wide text-gray-400 text-xs font-bold;
   }
   @media (max-width: 1024px) {
     .dropdown {

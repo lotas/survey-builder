@@ -8,6 +8,7 @@
   export let questions: SurveyBuilderQuestion[] = []
   export let parentType: SurveyBuilderTypes | null = null
   export let customInputNames: boolean = true
+  export let showLabels: boolean = true
 
   let deleteConfirmation = -1
   function deleteRow(idx: number) {
@@ -61,7 +62,7 @@
 </script>
 
 <main>
-  <ol class="{ parentType ? 'answers' : 'questions' }">
+  <ol class="{ parentType ? 'answers' : 'questions' }" class:showLabels>
     {#each questions as item, idx (item.id)}
       <li animate:flip={{ duration: 250 }}>
         <div class="w-full flex items-center py-2">
@@ -89,6 +90,7 @@
             id={item.id}
             questionType={item.type}
             onChange={(value) => onQuestionTypeChange(idx, value)}
+            showLabels={showLabels}
           />
           <label class="mx-4 whitespace-nowrap">
             <input type="checkbox" bind:checked={item.required} />
@@ -112,7 +114,7 @@
         {#if !parentType}
         <div class="ml-8 w-3/4">
           {#if item.type !== SurveyBuilderTypes.StarsRating && item.type !== SurveyBuilderTypes.TextInput}
-            <svelte:self bind:questions={item.answers} bind:parentType={item.type} />
+            <svelte:self bind:questions={item.answers} bind:parentType={item.type} bind:showLabels={showLabels} />
             <button class="secondary w-full" on:click|preventDefault={() => addAnswer(idx)}>+ Answer</button>
           {/if}
         </div>
@@ -139,11 +141,15 @@ li {
 }
 
 .label-inline {
+  @apply hidden;
+}
+.showLabels .label-inline {
   @apply absolute inset-y-3 left-2 hidden lg:block uppercase tracking-wide text-gray-400 text-xs font-bold;
 }
 
-input[type="text"],
-input[type="number"] {
+
+.showLabels input[type="text"],
+.showLabels input[type="number"] {
   text-indent: 35px;
 }
 
