@@ -1980,7 +1980,7 @@ function create_if_block_2(ctx) {
 	};
 }
 
-// (37:2) {#if showExportButton}
+// (36:2) {#if showExportButton}
 function create_if_block_1(ctx) {
 	let div;
 	let button;
@@ -2012,7 +2012,7 @@ function create_if_block_1(ctx) {
 	};
 }
 
-// (46:2) {#if debug}
+// (45:2) {#if debug}
 function create_if_block(ctx) {
 	let div;
 	let h3;
@@ -2057,14 +2057,12 @@ function create_fragment(ctx) {
 	let t3;
 	let t4;
 	let t5;
-	let t6;
-	let t7;
 	let h3;
-	let t9;
+	let t7;
 	let questions;
 	let updating_questions;
 	let updating_customInputNames;
-	let t10;
+	let t8;
 	let current;
 	let if_block0 = /*haveTitle*/ ctx[2] && create_if_block_2(ctx);
 	let if_block1 = /*showExportButton*/ ctx[3] && create_if_block_1(ctx);
@@ -2100,17 +2098,15 @@ function create_fragment(ctx) {
 			t1 = text(t1_value);
 			t2 = text("\"");
 			t3 = space();
-			t4 = text(/*showExportButton*/ ctx[3]);
-			t5 = space();
 			if (if_block0) if_block0.c();
-			t6 = space();
+			t4 = space();
 			if (if_block1) if_block1.c();
-			t7 = space();
+			t5 = space();
 			h3 = element("h3");
 			h3.textContent = "Questions:";
-			t9 = space();
+			t7 = space();
 			create_component(questions.$$.fragment);
-			t10 = space();
+			t8 = space();
 			if (if_block2) if_block2.c();
 			attr(h1, "class", "text-3xl");
 			attr(main, "class", "survey-builder container mx-auto font-sans");
@@ -2122,22 +2118,19 @@ function create_fragment(ctx) {
 			append(h1, t1);
 			append(h1, t2);
 			append(main, t3);
-			append(main, t4);
-			append(main, t5);
 			if (if_block0) if_block0.m(main, null);
-			append(main, t6);
+			append(main, t4);
 			if (if_block1) if_block1.m(main, null);
-			append(main, t7);
+			append(main, t5);
 			append(main, h3);
-			append(main, t9);
+			append(main, t7);
 			mount_component(questions, main, null);
-			append(main, t10);
+			append(main, t8);
 			if (if_block2) if_block2.m(main, null);
 			current = true;
 		},
 		p(ctx, [dirty]) {
 			if ((!current || dirty & /*snapshot*/ 1) && t1_value !== (t1_value = (/*snapshot*/ ctx[0].title || 'no name') + "")) set_data(t1, t1_value);
-			if (!current || dirty & /*showExportButton*/ 8) set_data(t4, /*showExportButton*/ ctx[3]);
 
 			if (/*haveTitle*/ ctx[2]) {
 				if (if_block0) {
@@ -2145,7 +2138,7 @@ function create_fragment(ctx) {
 				} else {
 					if_block0 = create_if_block_2(ctx);
 					if_block0.c();
-					if_block0.m(main, t6);
+					if_block0.m(main, t4);
 				}
 			} else if (if_block0) {
 				if_block0.d(1);
@@ -2158,7 +2151,7 @@ function create_fragment(ctx) {
 				} else {
 					if_block1 = create_if_block_1(ctx);
 					if_block1.c();
-					if_block1.m(main, t7);
+					if_block1.m(main, t5);
 				}
 			} else if (if_block1) {
 				if_block1.d(1);
