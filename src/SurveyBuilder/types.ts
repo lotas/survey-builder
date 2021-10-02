@@ -29,6 +29,7 @@ export interface SurveyBuilderOpts {
     debug?: boolean;
     snapshot?: SurveyBuilderSnapshot;
     onChange?: (snapshot: SurveyBuilderSnapshot) => void;
+    showExportButton?: boolean;
     onExport?: (snapshot: SurveyBuilderSnapshot) => void;
   };
 }

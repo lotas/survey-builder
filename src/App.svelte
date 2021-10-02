@@ -9,6 +9,7 @@
     haveTitle: false,
     customInputNames: true,
     debug: true,
+    showExportButton: false,
     snapshot: {
       title: 'Sample survey',
       questions: [
@@ -62,6 +63,10 @@
     <label>
       <input type="checkbox" bind:checked={props.haveTitle} />
       Have title?
+    </label>
+    <label>
+      <input type="checkbox" bind:checked={props.showExportButton} />
+      Show Export button?
     </label>
     <label>
       <input type="checkbox" bind:checked={props.customInputNames} />

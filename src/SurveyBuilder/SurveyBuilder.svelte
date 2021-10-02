@@ -8,6 +8,7 @@
   export let customInputNames = true
   export let snapshot: SurveyBuilderSnapshot = {}
   export let onChange: (snapshot: SurveyBuilderSnapshot) => void = () => {}
+  export let showExportButton = true
   export let onExport: (snapshot: SurveyBuilderSnapshot) => void = () => {}
   export let debug = false
 
@@ -28,6 +29,7 @@
 
 <main class="survey-builder container mx-auto font-sans">
   <h1 class="text-3xl">Survey builder &quot;{snapshot.title || 'no name'}&quot;</h1>
+  {showExportButton}
   {#if haveTitle}
     <div class="my-4">
       <label>
@@ -36,9 +38,11 @@
       </label>
     </div>
   {/if}
+  {#if showExportButton}
   <div class="my-4">
     <button on:click|preventDefault={handleExport}> Export </button>
   </div>
+  {/if}
 
   <h3>Questions:</h3>
   <Questions bind:questions={snapshot.questions} bind:customInputNames />
