@@ -9,7 +9,7 @@
     haveTitle: false,
     customInputNames: true,
     debug: true,
-    showExportButton: false,
+    showExportButton: true,
     snapshot: {
       title: 'Sample survey',
       questions: [
@@ -78,10 +78,5 @@
     </label>
   </div>
 
-  <SurveyBuilder
-    bind:haveTitle={props.haveTitle}
-    bind:customInputNames={props.customInputNames}
-    bind:debug={props.debug}
-    bind:snapshot={props.snapshot}
-  />
+  <SurveyBuilder {...props} />
 </main>

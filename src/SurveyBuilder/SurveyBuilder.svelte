@@ -29,7 +29,6 @@
 
 <main class="survey-builder container mx-auto font-sans">
   <h1 class="text-3xl">Survey builder &quot;{snapshot.title || 'no name'}&quot;</h1>
-  {showExportButton}
   {#if haveTitle}
     <div class="my-4">
       <label>
